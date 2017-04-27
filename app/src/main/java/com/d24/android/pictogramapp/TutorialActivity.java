@@ -14,7 +14,7 @@ public class TutorialActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_tutorial);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -28,6 +28,8 @@ public class TutorialActivity extends AppCompatActivity {
         });
     }
 
+
+    // METODE KAN SLETTES, eller lage egen meny for Tutorial. ?
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -35,6 +37,7 @@ public class TutorialActivity extends AppCompatActivity {
         return true;
     }
 
+    // METODE KAN SLETTES, eller lage egen meny for Tutorial. ?
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

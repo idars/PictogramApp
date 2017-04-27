@@ -1,5 +1,6 @@
 package com.d24.android.pictogramapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -27,9 +28,31 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View view) {
 				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 						.setAction("Action", null).show();
+
+
+				// Starts SceneActivity using Intent
+				gotoSceneActivity();	// eventuelt gotoTutorialActivity();
 			}
 		});
+
+
+
+
 	}
+
+
+	public void gotoSceneActivity() {
+		Intent intent = new Intent(this, SceneActivity.class);
+		startActivity(intent);
+	}
+
+
+	public void gotoTutorialActivity() {
+		Intent intent = new Intent(this, TutorialActivity.class);
+		startActivity(intent);
+	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

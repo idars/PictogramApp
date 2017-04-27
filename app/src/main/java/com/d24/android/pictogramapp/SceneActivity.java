@@ -1,5 +1,6 @@
 package com.d24.android.pictogramapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,6 +29,9 @@ public class SceneActivity extends AppCompatActivity {
         });
     }
 
+
+
+    // METODE KAN SLETTES, eller lage egen meny for Tutorial. ?
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -35,6 +39,7 @@ public class SceneActivity extends AppCompatActivity {
         return true;
     }
 
+    // METODE KAN SLETTES, eller lage egen meny for Tutorial. ?
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
