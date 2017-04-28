@@ -7,13 +7,22 @@ This project is a part of a Bachelor thesis and will be worked upon in private u
 
 ## Oppgaver
 
-* Startskjerm
-  - [ ] Lage instruksjoner, opplæring av hvordan man bruker programmet (screenshots)
-  - [ ] Navigere mellom instruksjoner (swiping)
-* Grafikkredigering
-  * Grafikk import
-    - [x] Laste ned vektor-piktogram
-    - [x] Konvertere piktogram til kompatibelt format
-  * Lagre scene                     // Lagring i XML
-    - [ ] Opprette XML fil              // I mappe res(ources) eller assets
-    - [ ] Opprette XML struktur         // <figur-pos> <figur-x> 24.7 </figur-x> </figur-pos>
+### Velkomstskjerm
+- [ ] Opprett skjerm med en velkomstsetning
+- [ ] Legg till knapp for å gå til appen
+### Menyskjerm
+- [ ] Ha mulighet til å velge ny scene
+### Grafikkredigering
+- [x] Laste ned piktogram fra nettside
+- [x] Konvertere piktogram til kompatibelt format
+- [ ] Legg til pluss-knapp
+- [ ] Vise frem liste (helst ikke heldekkende) ved klikk på pluss-knapp
+- [ ] Legg til piktogram i listen
+- [ ] Få piktogram til å dukke opp på skjermen ved å klikke på listen
+- [ ] Flytte på piktogram
+- [ ] Sett inn default bakgrunn
+### Lagring
+- [ ] Planlegg lagringsformat (xml?)
+- [ ] Gjør klart programmet for å spørre om lagringstillatelse og eventuelt 
+### Testing
+- [ ] Lage test cases
