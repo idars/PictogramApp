@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 				// Starts SceneActivity using Intent
-				gotoSceneActivity();	// eventuelt gotoTutorialActivity();
+				gotoStagingActivity();	// eventuelt gotoTutorialActivity();
 			}
 		});
 
@@ -41,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 
-	public void gotoSceneActivity() {
-		Intent intent = new Intent(this, SceneActivity.class);
+	public void gotoStagingActivity() {
+		Intent intent = new Intent(this, StagingActivity.class);
 		startActivity(intent);
 	}
 
 
-	public void gotoTutorialActivity() {
-		Intent intent = new Intent(this, TutorialActivity.class);
+	public void gotoIntroActivity() {
+		Intent intent = new Intent(this, IntroActivity.class);
 		startActivity(intent);
 	}
 
