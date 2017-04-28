@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
 	public void stageClick(View view) {
 
-		Log.i("D-bug", "stageClick");
 		Intent intent = new Intent(this, StagingActivity.class);
 		startActivity(intent);
 	}

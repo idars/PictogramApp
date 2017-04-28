@@ -24,6 +24,15 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".fragment.GridActivity"
+            android:label="@string/title_activity_staging"
+            android:parentActivityName=".StagingActivity"
+            android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.d24.android.pictogramapp.StagingActivity"/>
+        </activity>
+        <activity
             android:name=".StagingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_staging"

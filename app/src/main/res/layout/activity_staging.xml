@@ -44,5 +44,16 @@
 
         </LinearLayout>
     </FrameLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_label_stage"
+        android:id="@+id/selectButton"
+        android:onClick="selectClick"
+        android:layout_marginTop="78dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+
 
 </RelativeLayout>
