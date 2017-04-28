@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
+             android:id="@+id/view_root"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:background="#0099cc"
@@ -14,7 +15,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:keepScreenOn="true"
-        android:src="@drawable/pm_figures_004_halo_head"/>
+        android:src="@drawable/pm_figures_004_halo_head "/>
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
