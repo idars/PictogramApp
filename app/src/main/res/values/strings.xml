@@ -3,6 +3,8 @@
     <string name="action_settings">Settings</string>
 
     <string name="title_activity_staging">StagingActivity</string>
+
+    <string name="button_label_stage">Staging</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

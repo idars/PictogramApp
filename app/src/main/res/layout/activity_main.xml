@@ -31,4 +31,14 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_label_stage"
+        android:id="@+id/stageButton"
+        android:onClick="stageClick"
+        android:layout_marginTop="78dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
 </android.support.design.widget.CoordinatorLayout>
