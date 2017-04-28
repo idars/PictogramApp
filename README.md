@@ -13,7 +13,7 @@ This project is a part of a Bachelor thesis and will be worked upon in private u
 * Grafikkredigering
   * Grafikk import
     - [x] Laste ned vektor-piktogram
-    - [ ] Konvertere piktogram til kompatibelt format
+    - [x] Konvertere piktogram til kompatibelt format
   * Lagre scene                     // Lagring i XML
     - [ ] Opprette XML fil              // I mappe res(ources) eller assets
     - [ ] Opprette XML struktur         // <figur-pos> <figur-x> 24.7 </figur-x> </figur-pos>
