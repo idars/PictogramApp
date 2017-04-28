@@ -9,16 +9,26 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class StagingActivity extends AppCompatActivity {
+
+	private ImageView img;
+	private ViewGroup rootLayout;
+	private int _xDelta;
+	private int _yDelta;
+
 	/**
 	 * Whether or not the system UI should be auto-hidden after
 	 * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
 	 */
+
 	private static final boolean AUTO_HIDE = true;
 
 	/**
@@ -109,6 +119,13 @@ public class StagingActivity extends AppCompatActivity {
 			}
 		});
 
+		rootLayout = (ViewGroup) findViewById(R.id.view_root);
+		img = (ImageView) rootLayout.findViewById(R.id.fullscreen_content);
+
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
+		img.setLayoutParams(layoutParams);
+		img.setOnTouchListener(new ChoiceTouchListener());
+
 		// Upon interacting with UI controls, delay any scheduled hide()
 		// operations to prevent the jarring behavior of controls going away
 		// while interacting with the UI.
@@ -177,5 +194,36 @@ public class StagingActivity extends AppCompatActivity {
 	private void delayedHide(int delayMillis) {
 		mHideHandler.removeCallbacks(mHideRunnable);
 		mHideHandler.postDelayed(mHideRunnable, delayMillis);
+	}
+
+	private final class ChoiceTouchListener implements View.OnTouchListener {
+		public boolean onTouch(View view, MotionEvent event) {
+			final int X = (int) event.getRawX();
+			final int Y = (int) event.getRawY();
+			switch (event.getAction() & MotionEvent.ACTION_MASK) {
+				case MotionEvent.ACTION_DOWN:
+					RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
+					_xDelta = X - lParams.leftMargin;
+					_yDelta = Y - lParams.topMargin;
+					break;
+				case MotionEvent.ACTION_UP:
+					break;
+				case MotionEvent.ACTION_POINTER_DOWN:
+					break;
+				case MotionEvent.ACTION_POINTER_UP:
+					break;
+				case MotionEvent.ACTION_MOVE:
+					RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view
+							.getLayoutParams();
+					layoutParams.leftMargin = X - _xDelta;
+					layoutParams.topMargin = Y - _yDelta;
+					//layoutParams.rightMargin = -250;
+					//layoutParams.bottomMargin = -250;
+					view.setLayoutParams(layoutParams);
+					break;
+			}
+			rootLayout.invalidate();
+			return true;
+		}
 	}
 }
