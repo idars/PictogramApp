@@ -167,7 +167,6 @@ public class StagingActivity extends AppCompatActivity {
 		String tagBottom = "Frag_Bottom_tag";
 
 		transaction.add(idMid, selectFrag, tagBottom);
-		//transaction.add(idBottom, editFrag, tagBottom);
 
 		transaction.commit();
 	}
