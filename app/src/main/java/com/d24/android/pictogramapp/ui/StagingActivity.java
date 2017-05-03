@@ -19,12 +19,14 @@ import com.d24.android.pictogramapp.R;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class StagingActivity extends AppCompatActivity implements SelectingFragment.PictogramSelectedListener{
+public class StagingActivity extends AppCompatActivity
+		implements SelectingFragment.PictogramSelectedListener, ToolFragment.OnToolSelectedListener {
 
 	private ImageView img;
 
 	EditingFragment editingFragagment;
 	SelectingFragment selectingFragagment;
+	ToolFragment toolFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +42,10 @@ public class StagingActivity extends AppCompatActivity implements SelectingFragm
 		/* TODO, MOVE TO FRAGMENT */
 
 		// TODO, Over here nich! Start transaction
-		FrameLayout fr = (FrameLayout) findViewById(R.id.fragment_selection);
+		FrameLayout fr = (FrameLayout) findViewById(R.id.container_selection);
 		fr.setVisibility(View.GONE);
 
+		toolFragment = ToolFragment.newInstance();
 		editingFragagment	=new EditingFragment();//create the fragment instance for the top fragment
 		selectingFragagment =new SelectingFragment();//create the fragment instance for the bottom fragment
 		String editingFragmentTag = "Editing_tag";
@@ -50,8 +53,9 @@ public class StagingActivity extends AppCompatActivity implements SelectingFragm
 
 		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
 		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
-		transaction.add(R.id.fragment_editing, editingFragagment).addToBackStack(editingFragmentTag);
-		transaction.add(R.id.fragment_selection, selectingFragagment).addToBackStack(selectingFragmentTag);
+		transaction.add(R.id.container_tool, toolFragment);
+		transaction.add(R.id.container_editing, editingFragagment).addToBackStack(editingFragmentTag);
+		transaction.add(R.id.container_selection, selectingFragagment).addToBackStack(selectingFragmentTag);
 		transaction.hide(selectingFragagment);
 
 		transaction.commit();
@@ -60,7 +64,7 @@ public class StagingActivity extends AppCompatActivity implements SelectingFragm
 
 
 	public void selectClick(View view){
-		FrameLayout fr = (FrameLayout) findViewById(R.id.fragment_selection);
+		FrameLayout fr = (FrameLayout) findViewById(R.id.container_selection);
 		fr.setVisibility(View.VISIBLE);
 
 		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
@@ -91,7 +95,7 @@ public class StagingActivity extends AppCompatActivity implements SelectingFragm
 		String text = "sooooooome... BODY once told me the world is gonna roll me. I ain't the sharpest tool...";
 		//String text2 = "You sure you want to exit?";
 
-		FrameLayout frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
+		FrameLayout frameLayout = (FrameLayout) findViewById(R.id.frame_layout);
 
 		Snackbar.make(frameLayout, text, Snackbar.LENGTH_LONG)
 				.setAction("Action", null).show();
@@ -106,7 +110,7 @@ public class StagingActivity extends AppCompatActivity implements SelectingFragm
 		// Do something here to display that article
 
 		editingFragagment= (EditingFragment)
-				getSupportFragmentManager().findFragmentById(R.id.fragment_editing);
+				getSupportFragmentManager().findFragmentById(R.id.container_editing);
 
 		if (editingFragagment != null) {
 			// If article frag is available, we're in two-pane layout...
@@ -126,11 +130,48 @@ public class StagingActivity extends AppCompatActivity implements SelectingFragm
 
 			// Replace whatever is in the fragment_container view with this fragment,
 			// and add the transaction to the back stack so the user can navigate back
-			transaction.add(R.id.fragment_editing, editingFragagment);
+			transaction.add(R.id.container_editing, editingFragagment);
 			transaction.addToBackStack(null);
 
 			// Commit the transaction
 			transaction.commit();
 		}
+	}
+
+	@Override
+	public void onAddButtonSelected(View v) {
+		// TODO Display list of pictograms below toolbar
+	}
+
+	@Override
+	public void onBackgroundButtonSelected(View v) {
+		// TODO Display list of backgrounds below toolbar
+	}
+
+	@Override
+	public void onUndoButtonSelected(View v) {
+		// TODO Undo last change
+
+		// If undo is successful:
+		// toolFragment.setRedoAvailable(true);
+
+		// If there are no more changes to undo:
+		// toolFragment.setUndoAvailable(false);
+	}
+
+	@Override
+	public void onRedoButtonSelected(View v) {
+		// TODO Redo previous change
+
+		// If redo is successful:
+		// toolFragment.setUndoAvailable(true);
+
+		// If there are no more changes to redo:
+		// toolFragment.setRedoAvailable(false);
+	}
+
+	@Override
+	public void onInfoButtonSelected(View v) {
+		// TODO Display information about the scene/story
 	}
 }

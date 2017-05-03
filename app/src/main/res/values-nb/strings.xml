@@ -3,7 +3,7 @@
     <string name="app_name">PiktogramApp</string>
     <string name="action_settings">Innstillinger</string>
     <string name="welcome">Velkommen til PiktogramApp!</string>
-    <string name="start">Start</string>
+    <string name="button_start">Start</string>
     <string name="button_add">Legg til</string>
     <string name="button_background">Bakgrunn</string>
     <string name="button_info">Info</string>

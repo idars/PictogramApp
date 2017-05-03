@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
-              android:layout_height="65dp"
+              android:layout_height="64dp"
               android:layout_gravity="bottom"
               android:orientation="horizontal"
-              android:background="?attr/background"
+              android:background="?android:attr/colorBackground"
               android:baselineAligned="false"
               tools:context="com.d24.android.pictogramapp.ui.ToolFragment">
 
@@ -22,10 +22,6 @@
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_add_circle_black_24dp"
             android:contentDescription="@string/content_add"/>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -50,10 +46,6 @@
             android:src="@drawable/ic_image_black_24dp"
             android:contentDescription="@string/content_background"/>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -76,10 +68,6 @@
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_undo_black_24dp"
             android:contentDescription="@string/content_undo"/>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -104,10 +92,6 @@
             android:src="@drawable/ic_redo_black_24dp"
             android:contentDescription="@string/content_redo"/>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -130,10 +114,6 @@
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_info_black_24dp"
             android:contentDescription="@string/content_info"/>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"/>
 
         <TextView
             android:layout_width="wrap_content"

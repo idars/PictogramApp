@@ -30,10 +30,7 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 	}
 
 	public static ToolFragment newInstance() {
-		ToolFragment fragment = new ToolFragment();
-		fragment.setRedoAvailable(false);
-		fragment.setUndoAvailable(false);
-		return fragment;
+		return new ToolFragment();
 	}
 
 	@Override
@@ -47,6 +44,9 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 		contentView.findViewById(R.id.button_undo).setOnClickListener(this);
 		contentView.findViewById(R.id.button_redo).setOnClickListener(this);
 		contentView.findViewById(R.id.button_info).setOnClickListener(this);
+
+		setRedoAvailable(false);
+		setUndoAvailable(false);
 
 		return contentView;
 	}
@@ -77,7 +77,8 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 		}
 	}
 
-	/** Set whether the 'redo' button should be enabled. If the button is disabled,
+	/**
+	 * Set whether the 'redo' button should be enabled. If the button is disabled,
 	 * it will not trigger any callbacks.
 	 *
 	 * @param available true will enable the button, false will disable it
@@ -94,7 +95,8 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 		redoAvailable = available;
 	}
 
-	/** Set whether the 'undo' button should be enabled. If the button is disabled,
+	/**
+	 * Set whether the 'undo' button should be enabled. If the button is disabled,
 	 * it will not trigger any callbacks.
 	 *
 	 * @param available true will enable the button, false will disable it
@@ -139,10 +141,41 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 	 * >Communicating with Other Fragments</a> for more information.
 	 */
 	public interface OnToolSelectedListener {
+		/**
+		 * Callback method for when a user clicks the 'add' button on the toolbar.
+		 *
+		 * @param v the view which is clicked on
+		 */
 		void onAddButtonSelected(View v);
+
+		/**
+		 * Callback method for when a user clicks the 'background' button on the toolbar.
+		 *
+		 * @param v the view which is clicked on
+		 */
 		void onBackgroundButtonSelected(View v);
+
+		/**
+		 * Callback method for when a user clicks the 'undo' button on the toolbar.
+		 * This method will only be called when the button is enabled.
+		 *
+		 * @param v the view which is clicked on
+		 */
 		void onUndoButtonSelected(View v);
+
+		/**
+		 * Callback method for when a user clicks the 'redo' button on the toolbar.
+		 * This method will only be called when the button is enabled.
+		 *
+		 * @param v the view which is clicked on
+		 */
 		void onRedoButtonSelected(View v);
+
+		/**
+		 * Callback method for when a user clicks the 'info' button on the toolbar.
+		 *
+		 * @param v the view which is clicked on
+		 */
 		void onInfoButtonSelected(View v);
 	}
 }

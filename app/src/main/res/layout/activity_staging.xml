@@ -3,7 +3,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:background="#0099cc"
-             android:id="@+id/frameLayout"
+             android:id="@+id/frame_layout"
              tools:context="com.d24.android.pictogramapp.ui.StagingActivity">
 
 
@@ -11,7 +11,7 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
     <FrameLayout
-        android:id="@+id/fragment_editing"
+        android:id="@+id/container_editing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
@@ -20,7 +20,13 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/fragment_selection"
+        android:id="@+id/container_tool"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_gravity="bottom"/>
+
+    <FrameLayout
+        android:id="@+id/container_selection"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_gravity="bottom"
