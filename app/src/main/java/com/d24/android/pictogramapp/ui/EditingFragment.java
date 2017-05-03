@@ -1,5 +1,8 @@
 package com.d24.android.pictogramapp.ui;
 
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.d24.android.pictogramapp.R;
+
+import java.util.ArrayList;
 
 public class EditingFragment extends Fragment {
 
@@ -28,13 +33,14 @@ public class EditingFragment extends Fragment {
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
         imageView.setLayoutParams(layoutParams);
-
         imageView.setOnTouchListener(new ChoiceTouchListener());
 
+        rootLayout.addView(imageView);
         return view;
 
     }
 
+    /* TODO, Nich; Newest edition */
     public void updateImageView(long item_id) {
         if(imageView == null){
             imageView = (ImageView)  view.findViewById(R.id.fullscreen_content);
@@ -43,7 +49,13 @@ public class EditingFragment extends Fragment {
             imageView.setOnTouchListener(new ChoiceTouchListener());
         }
 
+        final ArrayList<Drawable> imageItems = new ArrayList<>();
+        Resources res = getResources();
+        TypedArray image_ids = res.obtainTypedArray(R.array.image_ids);
+        Integer intItemId = (int) item_id;
 
+        Drawable drawable = image_ids.getDrawable(intItemId);
+        imageView.setImageDrawable(drawable);
     }
 
     private final class ChoiceTouchListener implements View.OnTouchListener {
