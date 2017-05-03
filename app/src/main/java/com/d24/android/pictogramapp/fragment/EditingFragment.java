@@ -48,7 +48,6 @@ public class EditingFragment extends Fragment {
     private final class ChoiceTouchListener implements View.OnTouchListener {
 
         public boolean onTouch(View view, MotionEvent event) {
-            Log.i("D-bug", "CHOICETOUCH");
             final int X = (int) event.getRawX();
             final int Y = (int) event.getRawY();
             switch (event.getAction() & MotionEvent.ACTION_MASK) {

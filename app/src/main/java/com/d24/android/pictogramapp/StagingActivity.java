@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -44,14 +45,15 @@ public class StagingActivity extends AppCompatActivity {
 
 		/* TODO, MOVE TO FRAGMENT */
 
-
 		// TODO, Over here nich! Start transaction
+		FrameLayout fr = (FrameLayout) findViewById(R.id.fragment_selection);
+		fr.setVisibility(View.GONE);
+
 		editingFragagment	=new EditingFragment();//create the fragment instance for the top fragment
 		selectingFragagment =new SelectingFragment();//create the fragment instance for the bottom fragment
 		String editingFragmentTag = "Editing_tag";
 		String selectingFragmentTag = "Selecting_tag";
 
-		// TODO, keep FragmentManager as class variable?, it is used in selectClick
 		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
 		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
 		transaction.add(R.id.fragment_editing, editingFragagment).addToBackStack(editingFragmentTag);
@@ -64,13 +66,13 @@ public class StagingActivity extends AppCompatActivity {
 
 
 	public void selectClick(View view){
-		Log.i("D-bug", "BUTTON CLICKED");
-		int idTop = R.id.fragment_editing;
-		int idMid = R.id.fragment_selection;
+
+		FrameLayout fr = (FrameLayout) findViewById(R.id.fragment_selection);
+		fr.setVisibility(View.VISIBLE);
 
 		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
 		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
-		transaction.hide(editingFragagment);
+		//transaction.hide(editingFragagment);
 		transaction.show(selectingFragagment);
 		transaction.commit();
 	}
@@ -85,7 +87,5 @@ public class StagingActivity extends AppCompatActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-
 
 }
