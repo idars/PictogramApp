@@ -24,7 +24,13 @@ public class SelectingFragment extends Fragment {
     View view;
     GridView gridView;
     private GridViewAdapter gridAdapter;
-    OnHeadlineSelectedListener mCallback;
+    PictogramSelectedListener mCallback;
+
+    // Container Activity must implement this interface
+    public interface PictogramSelectedListener {
+        public void onItemSelected(long item_id);
+    }
+
 
 
     @Override
@@ -76,11 +82,6 @@ public class SelectingFragment extends Fragment {
         return imageItems;
     }
 
-    // Container Activity must implement this interface
-    public interface OnHeadlineSelectedListener {
-        public void onItemSelected(long item_id);
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -88,7 +89,7 @@ public class SelectingFragment extends Fragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (OnHeadlineSelectedListener) activity;
+            mCallback = (PictogramSelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");

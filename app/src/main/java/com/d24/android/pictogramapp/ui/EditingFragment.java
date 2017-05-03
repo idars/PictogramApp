@@ -34,6 +34,18 @@ public class EditingFragment extends Fragment {
         return view;
 
     }
+
+    public void updateImageView(long item_id) {
+        if(imageView == null){
+            imageView = (ImageView)  view.findViewById(R.id.fullscreen_content);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
+            imageView.setLayoutParams(layoutParams);
+            imageView.setOnTouchListener(new ChoiceTouchListener());
+        }
+
+
+    }
+
     private final class ChoiceTouchListener implements View.OnTouchListener {
 
         public boolean onTouch(View view, MotionEvent event) {

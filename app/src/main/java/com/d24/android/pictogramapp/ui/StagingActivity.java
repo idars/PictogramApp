@@ -18,12 +18,12 @@ import com.d24.android.pictogramapp.R;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class StagingActivity extends AppCompatActivity implements IntroActivity.SelectingFragment.OnHeadlineSelectedListener{
+public class StagingActivity extends AppCompatActivity implements SelectingFragment.PictogramSelectedListener{
 
 	private ImageView img;
 
-	IntroActivity.EditingFragment editingFragagment;
-	IntroActivity.SelectingFragment selectingFragagment;
+	EditingFragment editingFragagment;
+	SelectingFragment selectingFragagment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +42,8 @@ public class StagingActivity extends AppCompatActivity implements IntroActivity.
 		FrameLayout fr = (FrameLayout) findViewById(R.id.fragment_selection);
 		fr.setVisibility(View.GONE);
 
-		editingFragagment	=new IntroActivity.EditingFragment();//create the fragment instance for the top fragment
-		selectingFragagment =new IntroActivity.SelectingFragment();//create the fragment instance for the bottom fragment
+		editingFragagment	=new EditingFragment();//create the fragment instance for the top fragment
+		selectingFragagment =new SelectingFragment();//create the fragment instance for the bottom fragment
 		String editingFragmentTag = "Editing_tag";
 		String selectingFragmentTag = "Selecting_tag";
 
@@ -81,8 +81,40 @@ public class StagingActivity extends AppCompatActivity implements IntroActivity.
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void onItemSelected(long item_id) {
+	public void onItemSelected(long item_id)
+	{
 		Log.i("D-bug", "IN ACTIVITY, " + item_id);
+		// The user selected the headline of an article from the HeadlinesFragment
+		// Do something here to display that article
+
+		editingFragagment= (EditingFragment)
+				getSupportFragmentManager().findFragmentById(R.id.fragment_editing);
+
+		if (editingFragagment != null) {
+			// If article frag is available, we're in two-pane layout...
+
+			// Call a method in the ArticleFragment to update its content
+			editingFragagment.updateImageView(item_id); // TODO
+		} else {
+			// Otherwise, we're in the one-pane layout and must swap frags...
+
+			// Create fragment and give it an argument for the selected article
+			editingFragagment = new EditingFragment();
+			Bundle args = new Bundle();
+			//args.putInt(EditingFragment.ARG_POSITION, item_id);
+			editingFragagment.setArguments(args);
+
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+			// Replace whatever is in the fragment_container view with this fragment,
+			// and add the transaction to the back stack so the user can navigate back
+			transaction.add(R.id.fragment_editing, editingFragagment);
+			transaction.addToBackStack(null);
+
+			// Commit the transaction
+			transaction.commit();
+		}
+
 	}
 
 
