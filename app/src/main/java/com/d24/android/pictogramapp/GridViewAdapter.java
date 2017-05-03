@@ -1,4 +1,4 @@
-package com.d24.android.pictogramapp.fragment;
+package com.d24.android.pictogramapp;
 
 import android.app.Activity;
 import android.content.Context;

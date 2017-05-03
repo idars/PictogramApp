@@ -2,6 +2,8 @@ package com.d24.android.pictogramapp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.d24.android.pictogramapp.fragment.GridActivity;
+import com.d24.android.pictogramapp.fragment.EditingFragment;
+import com.d24.android.pictogramapp.fragment.SelectingFragment;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -135,13 +138,43 @@ public class StagingActivity extends AppCompatActivity {
 		findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 	}
 
 
 	public void selectClick(View view){
-		Intent intent = new Intent(this, GridActivity.class);
-		startActivity(intent);
-		}
+		EditingFragment editFrag	=new EditingFragment();//create the fragment instance for the top fragment
+		SelectingFragment selectFrag =new SelectingFragment();//create the fragment instance for the bottom fragment
+
+		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
+		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
+
+		int idTop = R.id.fragment_editing;
+		int idMid = R.id.fragment_selection;
+		int idBottom = R.id.fragment_selection2;
+		String tagTop = "Frag_Top_tag";
+		String tagBottom = "Frag_Bottom_tag";
+
+		transaction.add(idMid, selectFrag, tagBottom);
+		//transaction.add(idBottom, editFrag, tagBottom);
+
+		transaction.commit();
+	}
+
+
+
+
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {

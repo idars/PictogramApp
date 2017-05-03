@@ -1,30 +1,37 @@
 package com.d24.android.pictogramapp.fragment;
 
+import android.app.Activity;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.d24.android.pictogramapp.GridViewAdapter;
 import com.d24.android.pictogramapp.R;
 
 import java.util.ArrayList;
 
-public class GridActivity extends ActionBarActivity {
-    private GridView gridView;
+public class SelectingFragment extends Fragment {
+
+    View view;
+    GridView gridView;
     private GridViewAdapter gridAdapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_pictogram_select);
 
-        gridView = (GridView) findViewById(R.id.gridView);
-        gridAdapter = new GridViewAdapter(this, R.layout.grid_item_layout, getData());
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        view=inflater.inflate(R.layout.fragment_pictogram_select, container,false);
+        gridView = (GridView)  view.findViewById(R.id.gridView);
+        gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, getData());
         gridView.setAdapter(gridAdapter);
 
         // Configure what happens when an item in the list is clicked
@@ -43,6 +50,8 @@ public class GridActivity extends ActionBarActivity {
                  */
             }
         });
+
+        return view;
 
     }
 

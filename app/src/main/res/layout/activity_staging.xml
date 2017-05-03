@@ -20,6 +20,7 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
     <FrameLayout
+        android:id="@+id/fragment_editing"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
@@ -44,6 +45,27 @@
 
         </LinearLayout>
     </FrameLayout>
+    <FrameLayout
+        android:id="@+id/fragment_selection"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/fragment_editing"
+        android:background="#FF4081" >
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_selection2"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/fragment_selection"
+        android:background="#FF4081" >
+
+    </FrameLayout>
+
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,6 +75,7 @@
         android:layout_marginTop="78dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
 
 
 
