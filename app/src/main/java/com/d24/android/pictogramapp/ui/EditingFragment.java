@@ -44,12 +44,6 @@ public class EditingFragment extends Fragment {
 
     /* TODO, Nich; Newest edition */
     public void updateImageView(long item_id) {
-        if(imageView == null){
-            imageView = (ImageView)  view.findViewById(R.id.fullscreen_content);
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
-            imageView.setLayoutParams(layoutParams);
-            imageView.setOnTouchListener(new ChoiceTouchListener());
-        }
 
         final ArrayList<Drawable> imageItems = new ArrayList<>();
         Resources res = getResources();
@@ -57,16 +51,13 @@ public class EditingFragment extends Fragment {
         Integer intItemId = (int) item_id;
 
         Drawable drawable = image_ids.getDrawable(intItemId);
-        //imageView.setImageDrawable(drawable);
 
         ImageView newImg = new ImageView(getActivity());
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
         newImg.setLayoutParams(layoutParams);
         newImg.setOnTouchListener(new ChoiceTouchListener());
         newImg.setImageDrawable(drawable);
-        Log.i("D-bug", "mah deck");
         rootLayout.addView(newImg);
-        Log.i("D-bug", "is great");
 
     }
 

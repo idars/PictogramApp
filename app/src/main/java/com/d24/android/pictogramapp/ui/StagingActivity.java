@@ -1,5 +1,6 @@
 package com.d24.android.pictogramapp.ui;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -50,7 +51,7 @@ public class StagingActivity extends AppCompatActivity implements SelectingFragm
 		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
 		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
 		transaction.add(R.id.fragment_editing, editingFragagment).addToBackStack(editingFragmentTag);
-		transaction.add(R.id.fragment_selection, selectingFragagment);//.addToBackStack(selectingFragmentTag);
+		transaction.add(R.id.fragment_selection, selectingFragagment).addToBackStack(selectingFragmentTag);
 		transaction.hide(selectingFragagment);
 
 		transaction.commit();
@@ -78,6 +79,25 @@ public class StagingActivity extends AppCompatActivity implements SelectingFragm
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed() {
+		Log.i("D-bug", "onBackPressed Called");
+		/*Intent setIntent = new Intent(Intent.ACTION_MAIN);
+		setIntent.addCategory(Intent.CATEGORY_HOME);
+		setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(setIntent);*/
+		String text = "sooooooome... BODY once told me the world is gonna roll me. I ain't the sharpest tool...";
+		//String text2 = "You sure you want to exit?";
+
+		FrameLayout frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
+
+		Snackbar.make(frameLayout, text, Snackbar.LENGTH_LONG)
+				.setAction("Action", null).show();
+
+
+
 	}
 
 	public void onItemSelected(long item_id)
