@@ -1,4 +1,4 @@
-package com.d24.android.pictogramapp;
+package com.d24.android.pictogramapp.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.d24.android.pictogramapp.R;
 import com.d24.android.pictogramapp.fragment.EditingFragment;
 import com.d24.android.pictogramapp.fragment.SelectingFragment;
 

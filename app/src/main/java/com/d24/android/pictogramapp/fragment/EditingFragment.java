@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.d24.android.pictogramapp.GridViewAdapter;
 import com.d24.android.pictogramapp.R;
-import com.d24.android.pictogramapp.StagingActivity;
+import com.d24.android.pictogramapp.ui.StagingActivity;
 
 import java.util.ArrayList;
 
