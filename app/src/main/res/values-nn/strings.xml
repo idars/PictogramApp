@@ -4,4 +4,14 @@
     <string name="action_settings">Innstillingar</string>
     <string name="welcome">Velkommen til PiktogramApp!</string>
     <string name="start">Start</string>
+    <string name="button_add">Legg til</string>
+    <string name="button_background">Bakgrunn</string>
+    <string name="button_info">Info</string>
+    <string name="button_redo">Gjør om</string>
+    <string name="button_undo">Angra</string>
+    <string name="content_add">Legg til ein figur på scenen</string>
+    <string name="content_background">Endre bakgrunnsfargar</string>
+    <string name="content_info">Vis informasjon</string>
+    <string name="content_redo">Gjør om den neste endringen</string>
+    <string name="content_undo">Angre den siste endringen</string>
 </resources>

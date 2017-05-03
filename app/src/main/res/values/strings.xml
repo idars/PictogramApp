@@ -14,8 +14,6 @@
     <string name="preference_value_username" translatable="false">Username</string>
     <string name="preference_value_firstrun" translatable="false">First run</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="button_add">Add</string>
     <string name="button_background">Background</string>
     <string name="button_undo">Undo</string>
