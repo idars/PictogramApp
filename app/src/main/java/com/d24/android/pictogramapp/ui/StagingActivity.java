@@ -83,7 +83,6 @@ public class StagingActivity extends AppCompatActivity implements SelectingFragm
 
 	public void onItemSelected(long item_id)
 	{
-		Log.i("D-bug", "IN ACTIVITY, " + item_id);
 		// The user selected the headline of an article from the HeadlinesFragment
 		// Do something here to display that article
 

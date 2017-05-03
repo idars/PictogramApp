@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,7 +36,8 @@ public class EditingFragment extends Fragment {
         imageView.setLayoutParams(layoutParams);
         imageView.setOnTouchListener(new ChoiceTouchListener());
 
-        rootLayout.addView(imageView);
+        //rootLayout.addView(imageView); //TODO, trying to implement several ImageViews
+
         return view;
 
     }
@@ -56,6 +58,10 @@ public class EditingFragment extends Fragment {
 
         Drawable drawable = image_ids.getDrawable(intItemId);
         imageView.setImageDrawable(drawable);
+
+        //ImageView newImg = new ImageView(getActivity());
+        //newImg.setImageDrawable(drawable);
+        //rootLayout.addView(newImg);
     }
 
     private final class ChoiceTouchListener implements View.OnTouchListener {
