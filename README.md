@@ -8,10 +8,10 @@ This project is a part of a Bachelor thesis and will be worked upon in private u
 ## Oppgaver
 
 ### Velkomstskjerm
-- [ ] Opprett skjerm med en velkomstsetning
-- [ ] Legg till knapp for å gå til appen
+- [x] Opprett skjerm med en velkomstsetning
+- [x] Legg til knapp for å gå til appen
 ### Menyskjerm
-- [ ] Ha mulighet til å velge ny scene
+- [x] Ha mulighet til å lage ny scene
 ### Grafikkredigering
 - [x] Laste ned piktogram fra nettside
 - [x] Konvertere piktogram til kompatibelt format
