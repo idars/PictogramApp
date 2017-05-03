@@ -24,8 +24,8 @@ public class IntroActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View view) {
 				// Insert to sharedPreferences
-				SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-				SharedPreferences.Editor editor = sharedPref.edit();
+				SharedPreferences pref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+				SharedPreferences.Editor editor = pref.edit();
 				editor.putBoolean(getString(R.string.preference_value_firstrun), false);
 				editor.apply();
 

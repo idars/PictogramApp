@@ -1,0 +1,147 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="65dp"
+              android:layout_gravity="bottom"
+              android:orientation="horizontal"
+              android:background="?attr/background"
+              android:baselineAligned="false"
+              tools:context="com.d24.android.pictogramapp.ui.ToolFragment">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".5"
+        android:id="@+id/button_add"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_add_circle_black_24dp"
+            android:contentDescription="@string/content_add"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/button_add"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".5"
+        android:id="@+id/button_background"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_image_black_24dp"
+            android:contentDescription="@string/content_background"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/button_background"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".5"
+        android:id="@+id/button_undo"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_undo_black_24dp"
+            android:contentDescription="@string/content_undo"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/button_undo"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".5"
+        android:id="@+id/button_redo"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_redo_black_24dp"
+            android:tint="#888"
+            android:contentDescription="@string/content_redo"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/button_redo"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".5"
+        android:id="@+id/button_info"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_info_black_24dp"
+            android:contentDescription="@string/content_info"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/button_info"/>
+
+    </LinearLayout>
+
+</LinearLayout>
