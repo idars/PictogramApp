@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 
 public class IntroActivity extends AppCompatActivity {
 
@@ -13,10 +14,14 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
+
+		Button start = (Button) findViewById(R.id.start);
+		start.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				finish();
+			}
+		});
     }
-
-
-    // 1. LAGE EN '+' KNAPP FOR PIKTOGRAM
-    // 2. LISTE AV PIKTOGRAM (FRAGMENT, ACTIVITY)
 
 }

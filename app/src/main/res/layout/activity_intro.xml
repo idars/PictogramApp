@@ -7,6 +7,6 @@
     android:layout_height="match_parent"
     tools:context="com.d24.android.pictogramapp.IntroActivity">
 
-    <include layout="@layout/content_main"/>
+    <include layout="@layout/content_intro"/>
 
 </android.support.design.widget.CoordinatorLayout>

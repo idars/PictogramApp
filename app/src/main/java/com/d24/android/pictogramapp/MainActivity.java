@@ -1,6 +1,7 @@
 package com.d24.android.pictogramapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+	private static final int SHOW_INTRODUCTION = 1;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -26,33 +29,48 @@ public class MainActivity extends AppCompatActivity {
 		fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-						.setAction("Action", null).show();
-
-
 				// Starts SceneActivity using Intent
 				gotoStagingActivity();	// eventuelt gotoTutorialActivity();
 			}
 		});
-
-
-
-
 	}
 
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		// Check if the app is started for the first time
+		SharedPreferences pref = getSharedPreferences(
+				getString(R.string.preference_file_key), MODE_PRIVATE
+		);
+
+		if (pref.getString(getString(R.string.preference_value_username), null) == null) {
+			Intent intent = new Intent(this, IntroActivity.class);
+			startActivityForResult(intent, SHOW_INTRODUCTION);
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == SHOW_INTRODUCTION) {
+			if (resultCode != RESULT_OK) {
+				// Welcome screen aborted; close the app
+				finish();
+			}
+		}
+	}
 
 	public void gotoStagingActivity() {
 		Intent intent = new Intent(this, StagingActivity.class);
 		startActivity(intent);
 	}
 
-
 	public void gotoIntroActivity() {
 		Intent intent = new Intent(this, IntroActivity.class);
 		startActivity(intent);
 	}
-
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
