@@ -36,7 +36,7 @@ public class EditingFragment extends Fragment {
         imageView.setLayoutParams(layoutParams);
         imageView.setOnTouchListener(new ChoiceTouchListener());
 
-        //rootLayout.addView(imageView); //TODO, trying to implement several ImageViews
+       // rootLayout.addView(imageView); //TODO, trying to implement several ImageViews
 
         return view;
 
@@ -57,11 +57,17 @@ public class EditingFragment extends Fragment {
         Integer intItemId = (int) item_id;
 
         Drawable drawable = image_ids.getDrawable(intItemId);
-        imageView.setImageDrawable(drawable);
+        //imageView.setImageDrawable(drawable);
 
-        //ImageView newImg = new ImageView(getActivity());
-        //newImg.setImageDrawable(drawable);
-        //rootLayout.addView(newImg);
+        ImageView newImg = new ImageView(getActivity());
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
+        newImg.setLayoutParams(layoutParams);
+        newImg.setOnTouchListener(new ChoiceTouchListener());
+        newImg.setImageDrawable(drawable);
+        Log.i("D-bug", "mah deck");
+        rootLayout.addView(newImg);
+        Log.i("D-bug", "is great");
+
     }
 
     private final class ChoiceTouchListener implements View.OnTouchListener {

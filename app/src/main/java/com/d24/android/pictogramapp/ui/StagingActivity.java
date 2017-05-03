@@ -59,7 +59,6 @@ public class StagingActivity extends AppCompatActivity implements SelectingFragm
 
 
 	public void selectClick(View view){
-
 		FrameLayout fr = (FrameLayout) findViewById(R.id.fragment_selection);
 		fr.setVisibility(View.VISIBLE);
 
@@ -113,9 +112,5 @@ public class StagingActivity extends AppCompatActivity implements SelectingFragm
 			// Commit the transaction
 			transaction.commit();
 		}
-
 	}
-
-
-
 }

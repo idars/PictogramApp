@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer-array name="image_ids">
-        <item>@drawable/ic_add_circle_black_24dp</item>
-        <item>@drawable/ic_close_black_24dp</item>
-        <item>@drawable/ic_image_black_24dp</item>
-        <item>@drawable/ic_info_black_24dp</item>
-        <item>@drawable/ic_redo_black_24dp</item>
-        <item>@drawable/ic_save_black_24dp</item>
-        <item>@drawable/ic_undo_black_24dp</item>
         <item>@drawable/pm_dialogue_001_bubble</item>
         <item>@drawable/pm_dialogue_002_bubble_think</item>
         <item>@drawable/pm_dialogue_003_bubble_shout</item>
@@ -90,6 +83,5 @@
         <item>@drawable/pm_things_022_tableware</item>
         <item>@drawable/pm_things_023_umbrella</item>
         <item>@drawable/pm_things_024_circle</item>
-
     </integer-array>
 </resources>
