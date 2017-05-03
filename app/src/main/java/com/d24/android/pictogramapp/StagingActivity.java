@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.MenuItem;
@@ -29,6 +30,8 @@ public class StagingActivity extends AppCompatActivity {
 	private ViewGroup rootLayout;
 	private int _xDelta;
 	private int _yDelta;
+	EditingFragment editingFragagment;
+	SelectingFragment selectingFragagment;
 
 	/**
 	 * Whether or not the system UI should be auto-hidden after
@@ -112,7 +115,8 @@ public class StagingActivity extends AppCompatActivity {
 			actionBar.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
 		}
 
-		mVisible = true;
+		/* TODO, MOVE TO FRAGMENT */
+		/*mVisible = true;
 		mControlsView = findViewById(R.id.fullscreen_content_controls);
 		mContentView = findViewById(R.id.fullscreen_content);
 
@@ -136,16 +140,22 @@ public class StagingActivity extends AppCompatActivity {
 		// operations to prevent the jarring behavior of controls going away
 		// while interacting with the UI.
 		findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+*/
+		// TODO, Over here nich! Start transaction
+		editingFragagment	=new EditingFragment();//create the fragment instance for the top fragment
+		selectingFragagment =new SelectingFragment();//create the fragment instance for the bottom fragment
+		String editingFragmentTag = "Editing_tag";
+		String selectingFragmentTag = "Selecting_tag";
 
+		// TODO, keep FragmentManager as class variable?, it is used in selectClick
+		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
+		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
 
+		transaction.add(R.id.fragment_editing, editingFragagment).addToBackStack(editingFragmentTag);
+		transaction.add(R.id.fragment_selection, selectingFragagment).addToBackStack(selectingFragmentTag);
 
-
-
-
-
-
-
-
+		transaction.hide(selectingFragagment);
+		transaction.commit();
 
 
 
@@ -154,20 +164,14 @@ public class StagingActivity extends AppCompatActivity {
 
 
 	public void selectClick(View view){
-		EditingFragment editFrag	=new EditingFragment();//create the fragment instance for the top fragment
-		SelectingFragment selectFrag =new SelectingFragment();//create the fragment instance for the bottom fragment
-
-		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
-		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
 
 		int idTop = R.id.fragment_editing;
 		int idMid = R.id.fragment_selection;
-		int idBottom = R.id.fragment_selection2;
-		String tagTop = "Frag_Top_tag";
-		String tagBottom = "Frag_Bottom_tag";
 
-		transaction.add(idMid, selectFrag, tagBottom);
-
+		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
+		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
+		transaction.hide(editingFragagment);
+		transaction.show(selectingFragagment);
 		transaction.commit();
 	}
 
@@ -183,10 +187,13 @@ public class StagingActivity extends AppCompatActivity {
 		// created, to briefly hint to the user that UI controls
 		// are available.
 		delayedHide(100);
-	}
+        Log.i("D-bug", "onPostCreate");
+
+    }
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+        Log.i("D-bug", "onOptionsItemSelected");
 		int id = item.getItemId();
 		if (id == android.R.id.home) {
 			// This ID represents the Home or Up button.
@@ -197,7 +204,9 @@ public class StagingActivity extends AppCompatActivity {
 	}
 
 	private void toggle() {
-		if (mVisible) {
+        Log.i("D-bug", "toggle");
+
+        if (mVisible) {
 			hide();
 		} else {
 			show();
@@ -205,7 +214,10 @@ public class StagingActivity extends AppCompatActivity {
 	}
 
 	private void hide() {
-		// Hide UI first
+        Log.i("D-bug", "hide");
+		//TODO, Hide peeps
+		/*
+        // Hide UI first
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null) {
 			actionBar.hide();
@@ -215,11 +227,13 @@ public class StagingActivity extends AppCompatActivity {
 
 		// Schedule a runnable to remove the status and navigation bar after a delay
 		mHideHandler.removeCallbacks(mShowPart2Runnable);
-		mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
+		mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);*/
 	}
 
 	@SuppressLint("InlinedApi")
 	private void show() {
+		Log.i("D-bug", "show");
+
 		// Show the system bar
 		mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 				| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
@@ -235,11 +249,13 @@ public class StagingActivity extends AppCompatActivity {
 	 * previously scheduled calls.
 	 */
 	private void delayedHide(int delayMillis) {
+		Log.i("D-bug", "delayedHide");
 		mHideHandler.removeCallbacks(mHideRunnable);
 		mHideHandler.postDelayed(mHideRunnable, delayMillis);
 	}
 
 	private final class ChoiceTouchListener implements View.OnTouchListener {
+
 		public boolean onTouch(View view, MotionEvent event) {
 			final int X = (int) event.getRawX();
 			final int Y = (int) event.getRawY();
@@ -265,6 +281,8 @@ public class StagingActivity extends AppCompatActivity {
 					view.setLayoutParams(layoutParams);
 					break;
 			}
+			Log.i("D-bug", "invalidate");
+
 			rootLayout.invalidate();
 			return true;
 		}
