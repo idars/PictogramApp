@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.d24.android.pictogramapp.IntroActivity">
+    tools:context="com.d24.android.pictogramapp.ui.IntroActivity">
 
     <include layout="@layout/content_intro"/>
 

@@ -1,4 +1,4 @@
-package com.d24.android.pictogramapp;
+package com.d24.android.pictogramapp.ui;
 
 import android.annotation.SuppressLint;
 import android.support.v7.app.ActionBar;
@@ -12,6 +12,8 @@ import android.support.v4.app.NavUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.d24.android.pictogramapp.R;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
