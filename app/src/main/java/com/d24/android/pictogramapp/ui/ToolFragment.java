@@ -21,28 +21,34 @@ import com.d24.android.pictogramapp.R;
 public class ToolFragment extends Fragment implements View.OnClickListener {
 
 	private OnToolSelectedListener mListener;
+	private boolean redoAvailable;
+	private boolean undoAvailable;
+	private View contentView;
 
 	public ToolFragment() {
 		// Required empty public constructor
 	}
 
 	public static ToolFragment newInstance() {
-		return new ToolFragment();
+		ToolFragment fragment = new ToolFragment();
+		fragment.setRedoAvailable(false);
+		fragment.setUndoAvailable(false);
+		return fragment;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.fragment_tool, container, false);
+		contentView = inflater.inflate(R.layout.fragment_tool, container, false);
 
-		view.findViewById(R.id.button_add).setOnClickListener(this);
-		view.findViewById(R.id.button_background).setOnClickListener(this);
-		view.findViewById(R.id.button_undo).setOnClickListener(this);
-		view.findViewById(R.id.button_redo).setOnClickListener(this);
-		view.findViewById(R.id.button_info).setOnClickListener(this);
+		contentView.findViewById(R.id.button_add).setOnClickListener(this);
+		contentView.findViewById(R.id.button_background).setOnClickListener(this);
+		contentView.findViewById(R.id.button_undo).setOnClickListener(this);
+		contentView.findViewById(R.id.button_redo).setOnClickListener(this);
+		contentView.findViewById(R.id.button_info).setOnClickListener(this);
 
-		return view;
+		return contentView;
 	}
 
 	@Override
@@ -60,17 +66,49 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 				mListener.onBackgroundButtonSelected(view);
 				break;
 			case R.id.button_undo:
-				mListener.onUndoButtonSelected(view);
+				if (undoAvailable) mListener.onUndoButtonSelected(view);
 				break;
 			case R.id.button_redo:
-				mListener.onRedoButtonSelected(view);
+				if (redoAvailable) mListener.onRedoButtonSelected(view);
 				break;
 			case R.id.button_info:
 				mListener.onInfoButtonSelected(view);
 				break;
-			default:
-				break;
 		}
+	}
+
+	/** Set whether the 'redo' button should be enabled. If the button is disabled,
+	 * it will not trigger any callbacks.
+	 *
+	 * @param available true will enable the button, false will disable it
+	 */
+	public void setRedoAvailable(boolean available) {
+		if (available) {
+			// Enable button and make the color pop
+			contentView.findViewById(R.id.button_redo).setAlpha(1f);
+		} else {
+			// Disable button and grey out button
+			contentView.findViewById(R.id.button_redo).setAlpha(.5f);
+		}
+
+		redoAvailable = available;
+	}
+
+	/** Set whether the 'undo' button should be enabled. If the button is disabled,
+	 * it will not trigger any callbacks.
+	 *
+	 * @param available true will enable the button, false will disable it
+	 */
+	public void setUndoAvailable(boolean available) {
+		if (available) {
+			// Enable button and make the color pop
+			contentView.findViewById(R.id.button_undo).setAlpha(1f);
+		} else {
+			// Disable button and grey out button
+			contentView.findViewById(R.id.button_undo).setAlpha(.5f);
+		}
+
+		undoAvailable = available;
 	}
 
 	@Override

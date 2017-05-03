@@ -102,7 +102,6 @@
             android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_redo_black_24dp"
-            android:tint="#888"
             android:contentDescription="@string/content_redo"/>
 
         <Space
