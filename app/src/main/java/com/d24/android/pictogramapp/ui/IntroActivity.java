@@ -1,5 +1,7 @@
 package com.d24.android.pictogramapp.ui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +23,12 @@ public class IntroActivity extends AppCompatActivity {
 		start.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				// Insert to sharedPreferences
+				SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+				SharedPreferences.Editor editor = sharedPref.edit();
+				editor.putBoolean(getString(R.string.preference_value_firstrun), false);
+				editor.apply();
+
 				setResult(RESULT_OK);
 				finish();
 			}

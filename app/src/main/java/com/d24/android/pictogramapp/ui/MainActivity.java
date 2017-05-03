@@ -40,12 +40,12 @@ public class MainActivity extends AppCompatActivity {
 	protected void onStart() {
 		super.onStart();
 
-		// Check if the app is started for the first time
 		SharedPreferences pref = getSharedPreferences(
 				getString(R.string.preference_file_key), MODE_PRIVATE
 		);
 
-		if (pref.getString(getString(R.string.preference_value_username), null) == null) {
+		// Check if the app is started for the first time
+		if (pref.getBoolean(getString(R.string.preference_value_firstrun), true)) {
 			Intent intent = new Intent(this, IntroActivity.class);
 			startActivityForResult(intent, SHOW_INTRODUCTION);
 		}
@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (requestCode == SHOW_INTRODUCTION) {
+			// Close the app if the user has aborted the introduction sequence
 			if (resultCode != RESULT_OK) {
-				// Welcome screen aborted; close the app
 				finish();
 			}
 		}
