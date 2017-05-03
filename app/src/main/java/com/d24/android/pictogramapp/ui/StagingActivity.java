@@ -1,37 +1,29 @@
 package com.d24.android.pictogramapp.ui;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.d24.android.pictogramapp.R;
-import com.d24.android.pictogramapp.fragment.EditingFragment;
-import com.d24.android.pictogramapp.fragment.SelectingFragment;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class StagingActivity extends AppCompatActivity {
+public class StagingActivity extends AppCompatActivity implements IntroActivity.SelectingFragment.OnHeadlineSelectedListener{
 
 	private ImageView img;
 
-	EditingFragment editingFragagment;
-	SelectingFragment selectingFragagment;
+	IntroActivity.EditingFragment editingFragagment;
+	IntroActivity.SelectingFragment selectingFragagment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +42,8 @@ public class StagingActivity extends AppCompatActivity {
 		FrameLayout fr = (FrameLayout) findViewById(R.id.fragment_selection);
 		fr.setVisibility(View.GONE);
 
-		editingFragagment	=new EditingFragment();//create the fragment instance for the top fragment
-		selectingFragagment =new SelectingFragment();//create the fragment instance for the bottom fragment
+		editingFragagment	=new IntroActivity.EditingFragment();//create the fragment instance for the top fragment
+		selectingFragagment =new IntroActivity.SelectingFragment();//create the fragment instance for the bottom fragment
 		String editingFragmentTag = "Editing_tag";
 		String selectingFragmentTag = "Selecting_tag";
 
@@ -88,5 +80,11 @@ public class StagingActivity extends AppCompatActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	public void onItemSelected(long item_id) {
+		Log.i("D-bug", "IN ACTIVITY, " + item_id);
+	}
+
+
 
 }
