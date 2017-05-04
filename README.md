@@ -15,12 +15,12 @@ This project is a part of a Bachelor thesis and will be worked upon in private u
 ### Grafikkredigering
 - [x] Laste ned piktogram fra nettside
 - [x] Konvertere piktogram til kompatibelt format
-- [ ] Legg til pluss-knapp
-- [ ] Lag liste (helst ikke heldekkende) som inneholder piktogram [Nicho]
-- [ ] Vise frem liste ved klikk på pluss-knapp
-- [ ] Få piktogram til å dukke opp på skjermen ved å klikke på listen
-- [ ] Flytte på piktogram [martin]
-- [ ] Sett inn default bakgrunn
+- [x] Legg til pluss-knapp
+- [x] Lag liste (helst ikke heldekkende) som inneholder piktogram [Nicho]
+- [x] Vise frem liste ved klikk på pluss-knapp
+- [x] Få piktogram til å dukke opp på skjermen ved å klikke på listen
+- [x] Flytte på piktogram
+- [x] Sett inn default bakgrunn
 ### Lagring
 - [ ] Planlegg lagringsformat (xml?)
 - [ ] Gjør klart programmet for å spørre om lagringstillatelse og eventuelt 
