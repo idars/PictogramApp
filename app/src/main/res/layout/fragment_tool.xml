@@ -1,12 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="64dp"
-              android:layout_gravity="bottom"
-              android:orientation="horizontal"
-              android:background="?android:attr/colorBackground"
-              android:baselineAligned="false"
-              tools:context="com.d24.android.pictogramapp.ui.ToolFragment">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:layout_gravity="bottom"
+    android:orientation="horizontal"
+    android:background="?android:attr/colorBackground"
+    android:baselineAligned="false"
+    tools:context="com.d24.android.pictogramapp.ui.ToolFragment">
 
     <LinearLayout
         android:layout_width="wrap_content"

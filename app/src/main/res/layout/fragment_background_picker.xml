@@ -1,0 +1,19 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.d24.android.pictogramapp.ui.BackgroundPickerFragment">
+
+    <GridView
+        android:id="@+id/grid_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnWidth="160dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="1dp"
+        android:horizontalSpacing="1dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"/>
+
+</FrameLayout>
