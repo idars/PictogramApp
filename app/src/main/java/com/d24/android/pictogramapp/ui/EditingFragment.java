@@ -5,14 +5,10 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.d24.android.pictogramapp.R;
 import com.d24.android.pictogramapp.stickerview.StickerImageView;
@@ -23,8 +19,6 @@ public class EditingFragment extends Fragment {
 
     View view;
     FrameLayout canvas;
-    private int _xDelta;
-    private int _yDelta;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +33,7 @@ public class EditingFragment extends Fragment {
     /* TODO, Nich; Newest edition */
     public void updateImageView(long item_id) {
 
-        final ArrayList<Drawable> imageItems = new ArrayList<>();
+        //final ArrayList<Drawable> imageItems = new ArrayList<>();
         Resources res = getResources();
         TypedArray image_ids = res.obtainTypedArray(R.array.image_ids);
         Integer intItemId = (int) item_id;
@@ -47,19 +41,8 @@ public class EditingFragment extends Fragment {
         Drawable drawable = image_ids.getDrawable(intItemId);
 
         StickerImageView newImg = new StickerImageView(getActivity());
-        //RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
-        //newImg.setLayoutParams(layoutParams);
-        //newImg.setOnTouchListener(new ChoiceTouchListener());
         newImg.setImageDrawable(drawable);
         canvas.addView(newImg);
 
     }
-
-    /*private final class ChoiceTouchListener implements View.OnTouchListener {
-
-        public boolean onTouch(View view, MotionEvent event) {
-
-            return true;
-        }
-    }*/
 }
