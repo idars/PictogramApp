@@ -5,19 +5,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#0099cc"
-                tools:context="com.d24.android.pictogramapp.StagingActivity">
-
-
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/button_label_stage"
-                    android:id="@+id/selectButton"
-                    android:onClick="selectClick"
-                    android:layout_marginTop="36dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"/>
+                tools:context="com.d24.android.pictogramapp.ui.StagingActivity">
 
                 <ImageView
                     android:id="@+id/fullscreen_content"

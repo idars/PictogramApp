@@ -62,18 +62,6 @@ public class StagingActivity extends AppCompatActivity
 
 	}
 
-
-	public void selectClick(View view){
-		FrameLayout fr = (FrameLayout) findViewById(R.id.container_selection);
-		fr.setVisibility(View.VISIBLE);
-
-		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
-		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
-		//transaction.hide(editingFragagment);
-		transaction.show(selectingFragagment);
-		transaction.commit();
-	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
@@ -141,6 +129,14 @@ public class StagingActivity extends AppCompatActivity
 	@Override
 	public void onAddButtonClicked(View v) {
 		// TODO Display list of pictograms below toolbar
+		FrameLayout fr = (FrameLayout) findViewById(R.id.container_selection);
+		fr.setVisibility(View.VISIBLE);
+
+		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
+		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
+		//transaction.hide(editingFragagment);
+		transaction.show(selectingFragagment);
+		transaction.commit();
 	}
 
 	@Override
