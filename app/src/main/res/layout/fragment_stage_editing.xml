@@ -7,14 +7,6 @@
                 android:background="#0099cc"
                 tools:context="com.d24.android.pictogramapp.ui.StagingActivity">
 
-                <ImageView
-                    android:id="@+id/fullscreen_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:keepScreenOn="true"
-                    android:src="@drawable/pm_figures_004_halo_head"/>
-
 
 
 
