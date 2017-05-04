@@ -21,7 +21,7 @@ public class EditingFragment extends Fragment {
 
     View view;
     private ViewGroup rootLayout;
-    ImageView imageView;
+    //ImageView imageView;
     private int _xDelta;
     private int _yDelta;
 
@@ -30,11 +30,11 @@ public class EditingFragment extends Fragment {
                              Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_stage_editing, container,false);
         rootLayout = (ViewGroup) view.findViewById(R.id.view_root);
-        imageView = (ImageView)  view.findViewById(R.id.fullscreen_content);
+        //imageView = (ImageView)  view.findViewById(R.id.fullscreen_content);
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
-        imageView.setLayoutParams(layoutParams);
-        imageView.setOnTouchListener(new ChoiceTouchListener());
+        //imageView.setLayoutParams(layoutParams);
+        //imageView.setOnTouchListener(new ChoiceTouchListener());
 
        // rootLayout.addView(imageView); //TODO, trying to implement several ImageViews
 
