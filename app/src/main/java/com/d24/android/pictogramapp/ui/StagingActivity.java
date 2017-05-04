@@ -20,7 +20,7 @@ import com.d24.android.pictogramapp.R;
  * status bar and navigation/system bar) with user interaction.
  */
 public class StagingActivity extends AppCompatActivity
-		implements SelectingFragment.PictogramSelectedListener, ToolFragment.OnToolSelectedListener {
+		implements SelectingFragment.PictogramSelectedListener, ToolFragment.OnToolClickedListener {
 
 	private ImageView img;
 
@@ -139,17 +139,17 @@ public class StagingActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void onAddButtonSelected(View v) {
+	public void onAddButtonClicked(View v) {
 		// TODO Display list of pictograms below toolbar
 	}
 
 	@Override
-	public void onBackgroundButtonSelected(View v) {
+	public void onBackgroundButtonClicked(View v) {
 		// TODO Display list of backgrounds below toolbar
 	}
 
 	@Override
-	public void onUndoButtonSelected(View v) {
+	public void onUndoButtonClicked(View v) {
 		// TODO Undo last change
 
 		// If undo is successful:
@@ -160,7 +160,7 @@ public class StagingActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void onRedoButtonSelected(View v) {
+	public void onRedoButtonClicked(View v) {
 		// TODO Redo previous change
 
 		// If redo is successful:
@@ -171,7 +171,7 @@ public class StagingActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void onInfoButtonSelected(View v) {
+	public void onInfoButtonClicked(View v) {
 		// TODO Display information about the scene/story
 	}
 }

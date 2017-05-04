@@ -14,7 +14,10 @@
         android:layout_gravity="center_vertical"
         android:layout_weight=".5"
         android:id="@+id/button_add"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="32dp"
@@ -37,7 +40,10 @@
         android:layout_gravity="center_vertical"
         android:layout_weight=".5"
         android:id="@+id/button_background"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="32dp"
@@ -60,7 +66,10 @@
         android:layout_gravity="center_vertical"
         android:layout_weight=".5"
         android:id="@+id/button_undo"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="32dp"
@@ -83,7 +92,10 @@
         android:layout_gravity="center_vertical"
         android:layout_weight=".5"
         android:id="@+id/button_redo"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="32dp"
@@ -106,7 +118,10 @@
         android:layout_gravity="center_vertical"
         android:layout_weight=".5"
         android:id="@+id/button_info"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="32dp"

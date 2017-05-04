@@ -1,7 +1,6 @@
 package com.d24.android.pictogramapp.ui;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,14 +12,14 @@ import com.d24.android.pictogramapp.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ToolFragment.OnToolSelectedListener} interface
+ * {@link OnToolClickedListener} interface
  * to handle interaction events.
  * Use the {@link ToolFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class ToolFragment extends Fragment implements View.OnClickListener {
 
-	private OnToolSelectedListener mListener;
+	private OnToolClickedListener mListener;
 	private boolean redoAvailable;
 	private boolean undoAvailable;
 	private View contentView;
@@ -60,19 +59,19 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 		// Use the corresponding callback depending on which button is being pressed
 		switch (view.getId()) {
 			case R.id.button_add:
-				mListener.onAddButtonSelected(view);
+				mListener.onAddButtonClicked(view);
 				break;
 			case R.id.button_background:
-				mListener.onBackgroundButtonSelected(view);
+				mListener.onBackgroundButtonClicked(view);
 				break;
 			case R.id.button_undo:
-				if (undoAvailable) mListener.onUndoButtonSelected(view);
+				if (undoAvailable) mListener.onUndoButtonClicked(view);
 				break;
 			case R.id.button_redo:
-				if (redoAvailable) mListener.onRedoButtonSelected(view);
+				if (redoAvailable) mListener.onRedoButtonClicked(view);
 				break;
 			case R.id.button_info:
-				mListener.onInfoButtonSelected(view);
+				mListener.onInfoButtonClicked(view);
 				break;
 		}
 	}
@@ -87,9 +86,13 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 		if (available) {
 			// Enable button and make the color pop
 			contentView.findViewById(R.id.button_redo).setAlpha(1f);
+			contentView.findViewById(R.id.button_redo).setClickable(true);
+			contentView.findViewById(R.id.button_redo).setFocusable(true);
 		} else {
 			// Disable button and grey out button
 			contentView.findViewById(R.id.button_redo).setAlpha(.5f);
+			contentView.findViewById(R.id.button_redo).setClickable(false);
+			contentView.findViewById(R.id.button_redo).setFocusable(false);
 		}
 
 		redoAvailable = available;
@@ -105,9 +108,13 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 		if (available) {
 			// Enable button and make the color pop
 			contentView.findViewById(R.id.button_undo).setAlpha(1f);
+			contentView.findViewById(R.id.button_undo).setClickable(true);
+			contentView.findViewById(R.id.button_undo).setFocusable(true);
 		} else {
 			// Disable button and grey out button
 			contentView.findViewById(R.id.button_undo).setAlpha(.5f);
+			contentView.findViewById(R.id.button_undo).setClickable(false);
+			contentView.findViewById(R.id.button_undo).setFocusable(false);
 		}
 
 		undoAvailable = available;
@@ -116,11 +123,11 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 	@Override
 	public void onAttach(Context context) {
 		super.onAttach(context);
-		if (context instanceof OnToolSelectedListener) {
-			mListener = (OnToolSelectedListener) context;
+		if (context instanceof OnToolClickedListener) {
+			mListener = (OnToolClickedListener) context;
 		} else {
 			throw new RuntimeException(context.toString()
-					+ " must implement OnToolSelectedListener");
+					+ " must implement OnToolClickedListener");
 		}
 	}
 
@@ -140,20 +147,20 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 	 * "http://developer.android.com/training/basics/fragments/communicating.html"
 	 * >Communicating with Other Fragments</a> for more information.
 	 */
-	public interface OnToolSelectedListener {
+	public interface OnToolClickedListener {
 		/**
 		 * Callback method for when a user clicks the 'add' button on the toolbar.
 		 *
 		 * @param v the view which is clicked on
 		 */
-		void onAddButtonSelected(View v);
+		void onAddButtonClicked(View v);
 
 		/**
 		 * Callback method for when a user clicks the 'background' button on the toolbar.
 		 *
 		 * @param v the view which is clicked on
 		 */
-		void onBackgroundButtonSelected(View v);
+		void onBackgroundButtonClicked(View v);
 
 		/**
 		 * Callback method for when a user clicks the 'undo' button on the toolbar.
@@ -161,7 +168,7 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 		 *
 		 * @param v the view which is clicked on
 		 */
-		void onUndoButtonSelected(View v);
+		void onUndoButtonClicked(View v);
 
 		/**
 		 * Callback method for when a user clicks the 'redo' button on the toolbar.
@@ -169,13 +176,13 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 		 *
 		 * @param v the view which is clicked on
 		 */
-		void onRedoButtonSelected(View v);
+		void onRedoButtonClicked(View v);
 
 		/**
 		 * Callback method for when a user clicks the 'info' button on the toolbar.
 		 *
 		 * @param v the view which is clicked on
 		 */
-		void onInfoButtonSelected(View v);
+		void onInfoButtonClicked(View v);
 	}
 }
