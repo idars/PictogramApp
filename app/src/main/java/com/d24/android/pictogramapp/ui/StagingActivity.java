@@ -1,16 +1,15 @@
 package com.d24.android.pictogramapp.ui;
 
-import android.support.design.widget.Snackbar;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
-import android.widget.FrameLayout;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.d24.android.pictogramapp.R;
@@ -20,12 +19,16 @@ import com.d24.android.pictogramapp.R;
  * status bar and navigation/system bar) with user interaction.
  */
 public class StagingActivity extends AppCompatActivity
-		implements SelectingFragment.PictogramSelectedListener, ToolFragment.OnToolClickedListener {
+		implements SelectingFragment.PictogramSelectedListener,
+		           ToolFragment.OnToolClickedListener,
+		           BackgroundPickerFragment.OnBackgroundSelectedListener {
 
 	private ImageView img;
+	private static final String BACKGROUND_FRAGMENT_TAG = "BACKGROUND_TAG";
+	private static final String SELECTING_FRAGMENT_TAG = "SELECTING_TAG";
+	private static final String EDITING_FRAGMENT_TAG = "EDITING_TAG";
 
-	EditingFragment editingFragagment;
-	SelectingFragment selectingFragagment;
+	EditingFragment editingFragment;
 	ToolFragment toolFragment;
 
 	@Override
@@ -36,28 +39,19 @@ public class StagingActivity extends AppCompatActivity
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null) {
 			actionBar.setDisplayHomeAsUpEnabled(true);
-			actionBar.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
+			// actionBar.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
 		}
 
 		/* TODO, MOVE TO FRAGMENT */
 
 		// TODO, Over here nich! Start transaction
-		FrameLayout fr = (FrameLayout) findViewById(R.id.container_selection);
-		fr.setVisibility(View.GONE);
-
 		toolFragment = ToolFragment.newInstance();
-		editingFragagment	=new EditingFragment();//create the fragment instance for the top fragment
-		selectingFragagment =new SelectingFragment();//create the fragment instance for the bottom fragment
-		String editingFragmentTag = "Editing_tag";
-		String selectingFragmentTag = "Selecting_tag";
+		editingFragment = new EditingFragment(); // TODO use newInstance()
 
 		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
 		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
-		transaction.add(R.id.container_tool, toolFragment);
-		transaction.add(R.id.container_editing, editingFragagment).addToBackStack(editingFragmentTag);
-		transaction.add(R.id.container_selection, selectingFragagment).addToBackStack(selectingFragmentTag);
-		transaction.hide(selectingFragagment);
-
+		transaction.add(R.id.frame_layout, editingFragment, EDITING_FRAGMENT_TAG);
+		transaction.add(R.id.frame_layout, toolFragment);
 		transaction.commit();
 
 	}
@@ -73,52 +67,33 @@ public class StagingActivity extends AppCompatActivity
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onBackPressed() {
-		Log.i("D-bug", "onBackPressed Called");
-		/*Intent setIntent = new Intent(Intent.ACTION_MAIN);
-		setIntent.addCategory(Intent.CATEGORY_HOME);
-		setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(setIntent);*/
-		String text = "sooooooome... BODY once told me the world is gonna roll me. I ain't the sharpest tool...";
-		//String text2 = "You sure you want to exit?";
-
-		FrameLayout frameLayout = (FrameLayout) findViewById(R.id.frame_layout);
-
-		Snackbar.make(frameLayout, text, Snackbar.LENGTH_LONG)
-				.setAction("Action", null).show();
-
-
-
-	}
-
 	public void onItemSelected(long item_id)
 	{
 		// The user selected the headline of an article from the HeadlinesFragment
 		// Do something here to display that article
 
-		editingFragagment= (EditingFragment)
-				getSupportFragmentManager().findFragmentById(R.id.container_editing);
+		editingFragment = (EditingFragment)
+				getSupportFragmentManager().findFragmentByTag(EDITING_FRAGMENT_TAG);
 
-		if (editingFragagment != null) {
+		if (editingFragment != null) {
 			// If article frag is available, we're in two-pane layout...
 
 			// Call a method in the ArticleFragment to update its content
-			editingFragagment.updateImageView(item_id); // TODO
+			editingFragment.updateImageView(item_id); // TODO
 		} else {
 			// Otherwise, we're in the one-pane layout and must swap frags...
 
 			// Create fragment and give it an argument for the selected article
-			editingFragagment = new EditingFragment();
+			editingFragment = new EditingFragment();
 			Bundle args = new Bundle();
 			//args.putInt(EditingFragment.ARG_POSITION, item_id);
-			editingFragagment.setArguments(args);
+			editingFragment.setArguments(args);
 
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
 			// Replace whatever is in the fragment_container view with this fragment,
 			// and add the transaction to the back stack so the user can navigate back
-			transaction.add(R.id.container_editing, editingFragagment);
+			transaction.add(R.id.frame_layout, editingFragment);
 			transaction.addToBackStack(null);
 
 			// Commit the transaction
@@ -129,19 +104,25 @@ public class StagingActivity extends AppCompatActivity
 	@Override
 	public void onAddButtonClicked(View v) {
 		// TODO Display list of pictograms below toolbar
-		FrameLayout fr = (FrameLayout) findViewById(R.id.container_selection);
-		fr.setVisibility(View.VISIBLE);
+		SelectingFragment fragment = new SelectingFragment(); // TODO use newInstance()
 
-		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
-		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
-		//transaction.hide(editingFragagment);
-		transaction.show(selectingFragagment);
+		FragmentManager manager = getSupportFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
+		transaction.add(R.id.frame_layout, fragment, SELECTING_FRAGMENT_TAG);
+		transaction.addToBackStack(null);
 		transaction.commit();
 	}
 
 	@Override
 	public void onBackgroundButtonClicked(View v) {
 		// TODO Display list of backgrounds below toolbar
+		BackgroundPickerFragment fragment = BackgroundPickerFragment.newInstance();
+
+		FragmentManager manager = getSupportFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
+		transaction.add(R.id.frame_layout, fragment, BACKGROUND_FRAGMENT_TAG);
+		transaction.addToBackStack(null);
+		transaction.commit();
 	}
 
 	@Override
@@ -169,5 +150,12 @@ public class StagingActivity extends AppCompatActivity
 	@Override
 	public void onInfoButtonClicked(View v) {
 		// TODO Display information about the scene/story
+	}
+
+	@Override
+	public void onSolidColorSelected(AdapterView<?> adapterView, View view, int i, long l) {
+		ColorDrawable drawable = (ColorDrawable) view.getBackground();
+		int color = drawable.getColor();
+		findViewById(android.R.id.content).setBackgroundColor(color);
 	}
 }

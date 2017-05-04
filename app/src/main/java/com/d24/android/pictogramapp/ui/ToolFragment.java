@@ -20,8 +20,8 @@ import com.d24.android.pictogramapp.R;
 public class ToolFragment extends Fragment implements View.OnClickListener {
 
 	private OnToolClickedListener mListener;
-	private boolean redoIsAvailable;
-	private boolean undoIsAvailable;
+	private boolean redoAvailable;
+	private boolean undoAvailable;
 	private View contentView;
 
 	public ToolFragment() {
@@ -44,8 +44,8 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 		contentView.findViewById(R.id.button_redo).setOnClickListener(this);
 		contentView.findViewById(R.id.button_info).setOnClickListener(this);
 
-		setRedoIsAvailable(false);
-		setUndoIsAvailable(false);
+		setRedoAvailable(false);
+		setUndoAvailable(false);
 
 		return contentView;
 	}
@@ -65,10 +65,10 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 				mListener.onBackgroundButtonClicked(view);
 				break;
 			case R.id.button_undo:
-				if (undoIsAvailable) mListener.onUndoButtonClicked(view);
+				if (undoAvailable) mListener.onUndoButtonClicked(view);
 				break;
 			case R.id.button_redo:
-				if (redoIsAvailable) mListener.onRedoButtonClicked(view);
+				if (redoAvailable) mListener.onRedoButtonClicked(view);
 				break;
 			case R.id.button_info:
 				mListener.onInfoButtonClicked(view);
@@ -82,7 +82,7 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 	 *
 	 * @param available true will enable the button, false will disable it
 	 */
-	public void setRedoIsAvailable(boolean available) {
+	public void setRedoAvailable(boolean available) {
 		if (available) {
 			// Enable button and make the color pop
 			contentView.findViewById(R.id.button_redo).setAlpha(1f);
@@ -95,7 +95,7 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 			contentView.findViewById(R.id.button_redo).setFocusable(false);
 		}
 
-		redoIsAvailable = available;
+		redoAvailable = available;
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 	 *
 	 * @param available true will enable the button, false will disable it
 	 */
-	public void setUndoIsAvailable(boolean available) {
+	public void setUndoAvailable(boolean available) {
 		if (available) {
 			// Enable button and make the color pop
 			contentView.findViewById(R.id.button_undo).setAlpha(1f);
@@ -117,7 +117,15 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 			contentView.findViewById(R.id.button_undo).setFocusable(false);
 		}
 
-		undoIsAvailable = available;
+		undoAvailable = available;
+	}
+
+	public boolean isRedoAvailable() {
+		return redoAvailable;
+	}
+
+	public boolean isUndoAvailable() {
+		return undoAvailable;
 	}
 
 	@Override

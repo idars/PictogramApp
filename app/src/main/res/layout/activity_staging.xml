@@ -14,26 +14,12 @@
         android:id="@+id/container_editing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
-
-
-    </FrameLayout>
+        android:fitsSystemWindows="true"/>
 
     <FrameLayout
         android:id="@+id/container_tool"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_gravity="bottom"/>
-
-    <FrameLayout
-        android:id="@+id/container_selection"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="bottom"
-        android:background="#FF4081"
-        android:clickable="true">
-
-    </FrameLayout>
-
 
 </FrameLayout>
