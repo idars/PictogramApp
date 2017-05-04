@@ -4,11 +4,6 @@
                 android:id="@+id/view_root"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#0099cc"
                 tools:context="com.d24.android.pictogramapp.ui.StagingActivity">
-
-
-
-
 
 </RelativeLayout>

@@ -25,6 +25,7 @@
             android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_add_circle_black_24dp"
+            android:tint="@color/colorButtonForeground"
             android:contentDescription="@string/content_add"/>
 
         <TextView
@@ -51,6 +52,7 @@
             android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_image_black_24dp"
+            android:tint="@color/colorButtonForeground"
             android:contentDescription="@string/content_background"/>
 
         <TextView
@@ -77,6 +79,7 @@
             android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_undo_black_24dp"
+            android:tint="@color/colorButtonForeground"
             android:contentDescription="@string/content_undo"/>
 
         <TextView
@@ -103,6 +106,7 @@
             android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_redo_black_24dp"
+            android:tint="@color/colorButtonForeground"
             android:contentDescription="@string/content_redo"/>
 
         <TextView
@@ -129,6 +133,7 @@
             android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_info_black_24dp"
+            android:tint="@color/colorButtonForeground"
             android:contentDescription="@string/content_info"/>
 
         <TextView

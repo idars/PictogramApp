@@ -70,8 +70,8 @@ public class BackgroundPickerFragment extends Fragment {
 	}
 
 	// Prepare array data for GridView to show
-	private ArrayList<Drawable> getData() {
-		final ArrayList<Drawable> imageItems = new ArrayList<>();
+	private ArrayList<ColorDrawable> getData() {
+		final ArrayList<ColorDrawable> imageItems = new ArrayList<>();
 		Resources res = getResources();
 		TypedArray colors = res.obtainTypedArray(R.array.background_colors);
 

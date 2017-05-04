@@ -83,18 +83,7 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 	 * @param available true will enable the button, false will disable it
 	 */
 	public void setRedoAvailable(boolean available) {
-		if (available) {
-			// Enable button and make the color pop
-			contentView.findViewById(R.id.button_redo).setAlpha(1f);
-			contentView.findViewById(R.id.button_redo).setClickable(true);
-			contentView.findViewById(R.id.button_redo).setFocusable(true);
-		} else {
-			// Disable button and grey out button
-			contentView.findViewById(R.id.button_redo).setAlpha(.5f);
-			contentView.findViewById(R.id.button_redo).setClickable(false);
-			contentView.findViewById(R.id.button_redo).setFocusable(false);
-		}
-
+		setAvailable(contentView.findViewById(R.id.button_redo), available);
 		redoAvailable = available;
 	}
 
@@ -105,19 +94,22 @@ public class ToolFragment extends Fragment implements View.OnClickListener {
 	 * @param available true will enable the button, false will disable it
 	 */
 	public void setUndoAvailable(boolean available) {
+		setAvailable(contentView.findViewById(R.id.button_undo), available);
+		undoAvailable = available;
+	}
+
+	private void setAvailable(View button, boolean available) {
 		if (available) {
 			// Enable button and make the color pop
-			contentView.findViewById(R.id.button_undo).setAlpha(1f);
-			contentView.findViewById(R.id.button_undo).setClickable(true);
-			contentView.findViewById(R.id.button_undo).setFocusable(true);
+			button.setAlpha(1f);
+			button.setClickable(true);
+			button.setFocusable(true);
 		} else {
 			// Disable button and grey out button
-			contentView.findViewById(R.id.button_undo).setAlpha(.5f);
-			contentView.findViewById(R.id.button_undo).setClickable(false);
-			contentView.findViewById(R.id.button_undo).setFocusable(false);
+			button.setAlpha(.5f);
+			button.setClickable(false);
+			button.setFocusable(false);
 		}
-
-		undoAvailable = available;
 	}
 
 	public boolean isRedoAvailable() {
