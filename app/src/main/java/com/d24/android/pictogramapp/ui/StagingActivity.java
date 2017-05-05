@@ -192,6 +192,7 @@ public class StagingActivity extends AppCompatActivity
 	public void onSolidColorSelected(AdapterView<?> adapterView, View view, int i, long l) {
 		ColorDrawable drawable = (ColorDrawable) view.getBackground();
 		int color = drawable.getColor();
+		Log.i("D-bug","CCC: " + color);
 		findViewById(android.R.id.content).setBackgroundColor(color);
 	}
 }

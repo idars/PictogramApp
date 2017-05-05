@@ -55,10 +55,10 @@ public class GridViewAdapter extends ArrayAdapter {
 
         /*Adjusting the size of items */
         if (!(position == getCount())) {
-            ViewGroup.LayoutParams layoutParams = holder.drawable.getLayoutParams();
+            /*ViewGroup.LayoutParams layoutParams = holder.drawable.getLayoutParams();
             layoutParams.height = 200;
             layoutParams.width = 200;
-            holder.drawable.setLayoutParams(layoutParams);
+            holder.drawable.setLayoutParams(layoutParams);*/
         }
 
 
