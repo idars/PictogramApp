@@ -2,6 +2,7 @@ package com.d24.android.pictogramapp.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,16 @@ public class GridViewAdapter extends ArrayAdapter {
         }
 
         Drawable item = (Drawable) data.get(position);
-        holder.drawable.setImageDrawable(item);
+
+		holder.drawable.setImageDrawable(item);
+		/*
+        if (item instanceof ColorDrawable) {
+            holder.drawable.setBackgroundColor(((ColorDrawable) item).getColor());
+        } else {
+            holder.drawable.setImageDrawable(item);
+        }
+		*/
+
         return row;
     }
 

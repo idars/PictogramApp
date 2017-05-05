@@ -49,15 +49,8 @@ public class SelectingFragment extends Fragment {
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapter, View view, int i, long l) {
-
-                        String text = "row id of the item clicked: " + l;
-                        Snackbar.make(view, text, Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                        if(mCallback == null){
-                            Log.i("D-bug", "callback is null");
-                        }
                         mCallback.onItemSelected(l); // TODO, GOOD shit
-                        Log.i("D-bug", "SHIts done, " + l);
+                        Log.d(getActivity().getLocalClassName(), "row id of the item clicked: " + l);
 
                         //Resources res = getResources();
                         //TypedArray imgs = getResources().obtainTypedArray(R.array.image_ids);

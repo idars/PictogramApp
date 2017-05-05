@@ -3,6 +3,28 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorButtonForeground">#808080</color>
 
     <color name="black_overlay">#66000000</color>
+
+    <color name="red_100">#FFCDD2</color>
+    <color name="pink_100">#F8BBD0</color>
+    <color name="purple_100">#E1BEE7</color>
+    <color name="deep_purple_100">#D1C4E9</color>
+    <color name="indigo_100">#C5CAE9</color>
+    <color name="blue_100">#BBDEFB</color>
+    <color name="light_blue_100">#B3E5FC</color>
+    <color name="cyan_100">#B2EBF2</color>
+    <color name="teal_100">#B2DFDB</color>
+    <color name="green_100">#C8E6C9</color>
+    <color name="light_green_100">#DCEDC8</color>
+    <color name="lime_100">#F0F4C3</color>
+    <color name="yellow_100">#FFF9C4</color>
+    <color name="amber_100">#FFECB3</color>
+    <color name="orange_100">#FFE0B2</color>
+    <color name="deep_orange_100">#FFCCBC</color>
+    <color name="brown_100">#D7CCC8</color>
+    <color name="grey_200">#EEEEEE</color>
+    <color name="blue_grey_100">#CFD8DC</color>
+    <color name="white">#FFFFFF</color>
 </resources>
