@@ -1,7 +1,12 @@
 package com.d24.android.pictogramapp.ui;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.ColorFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +22,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.d24.android.pictogramapp.R;
+import com.d24.android.pictogramapp.stickerview.StickerImageView;
+
+import java.util.ArrayList;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -190,9 +198,16 @@ public class StagingActivity extends AppCompatActivity
 
 	@Override
 	public void onSolidColorSelected(AdapterView<?> adapterView, View view, int i, long l) {
-		ColorDrawable drawable = (ColorDrawable) view.getBackground();
-		int color = drawable.getColor();
-		Log.i("D-bug","CCC: " + color);
-		findViewById(android.R.id.content).setBackgroundColor(color);
+
+		Resources res = getResources();
+		TypedArray colors = res.obtainTypedArray(R.array.background_colors);
+
+		// TODO, confirm if functioning correctly
+		int defValue =  -1;
+		int index = (int) l;
+		int color = colors.getColor(index, defValue);
+		ColorDrawable item = new ColorDrawable(color);
+
+		findViewById(R.id.frame_layout).setBackgroundColor(((ColorDrawable) item).getColor());
 	}
 }

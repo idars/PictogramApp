@@ -81,6 +81,7 @@ public class BackgroundPickerFragment extends Fragment {
 			int color = colors.getColor(i, defValue);
 			ColorDrawable drawable = new ColorDrawable(color);
 			imageItems.add(drawable);
+
 		}
 
 		return imageItems;
