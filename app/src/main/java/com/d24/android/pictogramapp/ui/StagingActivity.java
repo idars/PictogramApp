@@ -73,12 +73,9 @@ public class StagingActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        Log.i("D-bug", "onBackPressed Called");
-
 		if (!selectingFragment.isVisible() && !backgroundPickerFragment.isVisible()) {
 
 			String text = "Press the top-left button to complete scene";
-			//String text2 = "You sure you want to exit?";
 
 			View view = findViewById(R.id.frame_layout);
 			Snackbar.make(view, text, Snackbar.LENGTH_LONG)
@@ -94,7 +91,6 @@ public class StagingActivity extends AppCompatActivity
 			transaction.hide(backgroundPickerFragment);
 			transaction.commit();
 		}
-
 
 
     }

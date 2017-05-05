@@ -76,7 +76,10 @@ public class BackgroundPickerFragment extends Fragment {
 		TypedArray colors = res.obtainTypedArray(R.array.background_colors);
 
 		for (int i = 0; i < colors.length(); i++) {
-			ColorDrawable drawable = new ColorDrawable(i);
+			// TODO, confirm if functioning correctly
+			int defValue =  -1;
+			int color = colors.getColor(i, defValue);
+			ColorDrawable drawable = new ColorDrawable(color);
 			imageItems.add(drawable);
 		}
 
@@ -111,6 +114,7 @@ public class BackgroundPickerFragment extends Fragment {
 	 * >Communicating with Other Fragments</a> for more information.
 	 */
 	public interface OnBackgroundSelectedListener {
+
 		void onSolidColorSelected(AdapterView<?> adapterView, View view, int i, long l);
 		// void onTwinColourSelected(AdapterView<?> adapterView, View view, int i, long l);
 		// void onBackgroundSelected(AdapterView<?> adapterView, View view, int i, long l);

@@ -36,7 +36,6 @@ public class SelectingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         view=inflater.inflate(R.layout.fragment_pictogram_select, container,false);
         gridView = (GridView)  view.findViewById(R.id.gridView);
         gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, getData());
@@ -49,9 +48,7 @@ public class SelectingFragment extends Fragment {
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapter, View view, int i, long l) {
-                        mCallback.onItemSelected(l); // TODO, GOOD shit
-                        Log.d(getActivity().getLocalClassName(), "row id of the item clicked: " + l);
-
+                        mCallback.onItemSelected(l);
                         //Resources res = getResources();
                         //TypedArray imgs = getResources().obtainTypedArray(R.array.image_ids);
                         //Drawable drawable = image_ids.getDrawable(l);
@@ -71,6 +68,8 @@ public class SelectingFragment extends Fragment {
         for (int i = 0; i < image_ids.length(); i++) {
             Drawable drawable = image_ids.getDrawable(i);
             imageItems.add(drawable);
+
+
         }
         return imageItems;
     }

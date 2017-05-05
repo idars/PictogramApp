@@ -3,19 +3,20 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
                 android:layout_gravity="bottom"
-                android:background="#FF4081"
+                android:background="@color/blue_grey_100"
                 android:clickable="true">
 
     <GridView
         android:id="@+id/gridView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:paddingTop="10dp"
         android:columnWidth="60dp"
         android:numColumns="auto_fit"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
+        android:verticalSpacing="2dp"
+        android:horizontalSpacing="2dp"
         android:stretchMode="columnWidth"
         android:gravity="center"/>
 
