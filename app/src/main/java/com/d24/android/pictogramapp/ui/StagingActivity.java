@@ -1,15 +1,19 @@
 package com.d24.android.pictogramapp.ui;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.d24.android.pictogramapp.R;
@@ -29,7 +33,10 @@ public class StagingActivity extends AppCompatActivity
 	private static final String EDITING_FRAGMENT_TAG = "EDITING_TAG";
 
 	EditingFragment editingFragment;
+	SelectingFragment selectingFragment;
 	ToolFragment toolFragment;
+	BackgroundPickerFragment backgroundPickerFragment;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +54,52 @@ public class StagingActivity extends AppCompatActivity
 		// TODO, Over here nich! Start transaction
 		toolFragment = ToolFragment.newInstance();
 		editingFragment = new EditingFragment(); // TODO use newInstance()
+		selectingFragment = new SelectingFragment();
+		backgroundPickerFragment = new BackgroundPickerFragment();
 
 		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
 		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
 		transaction.add(R.id.frame_layout, editingFragment, EDITING_FRAGMENT_TAG);
 		transaction.add(R.id.frame_layout, toolFragment);
+		transaction.add(R.id.frame_layout, selectingFragment, SELECTING_FRAGMENT_TAG).addToBackStack(null);
+		transaction.add(R.id.frame_layout, backgroundPickerFragment, BACKGROUND_FRAGMENT_TAG).addToBackStack(null);
+
+		transaction.hide(selectingFragment);
+		transaction.hide(backgroundPickerFragment);
+
 		transaction.commit();
 
 	}
 
-	@Override
+    @Override
+    public void onBackPressed() {
+        Log.i("D-bug", "onBackPressed Called");
+
+		if (!selectingFragment.isVisible() && !backgroundPickerFragment.isVisible()) {
+
+			String text = "Press the top-left button to complete scene";
+			//String text2 = "You sure you want to exit?";
+
+			View view = findViewById(R.id.frame_layout);
+			Snackbar.make(view, text, Snackbar.LENGTH_LONG)
+					.setAction("Action", null).show();
+		}
+
+		else {
+			FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
+			FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
+			transaction.show(editingFragment);
+			transaction.show(toolFragment);
+			transaction.hide(selectingFragment);
+			transaction.hide(backgroundPickerFragment);
+			transaction.commit();
+		}
+
+
+
+    }
+
+    @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (id == android.R.id.home) {
@@ -103,13 +146,9 @@ public class StagingActivity extends AppCompatActivity
 
 	@Override
 	public void onAddButtonClicked(View v) {
-		// TODO Display list of pictograms below toolbar
-		SelectingFragment fragment = new SelectingFragment(); // TODO use newInstance()
-
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
-		transaction.add(R.id.frame_layout, fragment, SELECTING_FRAGMENT_TAG);
-		transaction.addToBackStack(null);
+		transaction.show(selectingFragment);
 		transaction.commit();
 	}
 
@@ -120,8 +159,9 @@ public class StagingActivity extends AppCompatActivity
 
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
-		transaction.add(R.id.frame_layout, fragment, BACKGROUND_FRAGMENT_TAG);
-		transaction.addToBackStack(null);
+		transaction.show(backgroundPickerFragment);
+		//transaction.add(R.id.frame_layout, fragment, BACKGROUND_FRAGMENT_TAG);
+		//transaction.addToBackStack(null);
 		transaction.commit();
 	}
 
