@@ -5,7 +5,6 @@
     android:layout_height="250dp"
     android:layout_gravity="bottom"
     android:background="@color/blue_grey_100"
-    android:clickable="true"
     tools:context="com.d24.android.pictogramapp.ui.BackgroundPickerFragment">
 
     <GridView

@@ -198,16 +198,8 @@ public class StagingActivity extends AppCompatActivity
 
 	@Override
 	public void onSolidColorSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-		Resources res = getResources();
-		TypedArray colors = res.obtainTypedArray(R.array.background_colors);
-
-		// TODO, confirm if functioning correctly
-		int defValue =  -1;
-		int index = (int) l;
-		int color = colors.getColor(index, defValue);
-		ColorDrawable item = new ColorDrawable(color);
-
-		findViewById(R.id.frame_layout).setBackgroundColor(((ColorDrawable) item).getColor());
+		TypedArray colors = getResources().obtainTypedArray(R.array.background_colors);
+		int color = colors.getColor(i + 1, -1);
+		findViewById(R.id.frame_layout).setBackgroundColor(color);
 	}
 }
