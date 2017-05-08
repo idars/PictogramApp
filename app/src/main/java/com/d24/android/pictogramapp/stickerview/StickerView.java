@@ -161,6 +161,8 @@ public abstract class StickerView extends FrameLayout {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
 
+            setControlItemsHidden(false);
+
             if(view.getTag().equals("DraggableViewGroup")) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
