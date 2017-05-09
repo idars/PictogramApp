@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.d24.android.pictogramapp.R;
+import com.d24.android.pictogramapp.ui.StagingActivity;
 
 
 public abstract class StickerView extends FrameLayout {
@@ -162,6 +163,12 @@ public abstract class StickerView extends FrameLayout {
         public boolean onTouch(View view, MotionEvent event) {
 
             setControlItemsHidden(false);
+            Context m_context = getContext();
+            if(m_context instanceof StagingActivity)
+            {
+                StagingActivity activity = (StagingActivity) m_context;
+                activity.focusEditingFragment();
+            }
 
             if(view.getTag().equals("DraggableViewGroup")) {
                 switch (event.getAction()) {
