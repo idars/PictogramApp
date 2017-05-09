@@ -28,6 +28,7 @@ public abstract class StickerView extends FrameLayout {
     private ImageView iv_scale;
     private ImageView iv_delete;
     private ImageView iv_flip;
+    private ImageView iv_rotate;
 
     // For scalling
     private float this_orgX = -1, this_orgY = -1;
@@ -65,16 +66,19 @@ public abstract class StickerView extends FrameLayout {
         this.iv_scale = new ImageView(context);
         this.iv_delete = new ImageView(context);
         this.iv_flip = new ImageView(context);
+        this.iv_rotate = new ImageView(context);
 
         this.iv_scale.setImageResource(R.drawable.zoominout);
         this.iv_delete.setImageResource(R.drawable.remove);
         this.iv_flip.setImageResource(R.drawable.flip);
+        this.iv_rotate.setImageResource(R.drawable.rotate);
 
         this.setTag("DraggableViewGroup");
         this.iv_border.setTag("iv_border");
         this.iv_scale.setTag("iv_scale");
         this.iv_delete.setTag("iv_delete");
         this.iv_flip.setTag("iv_flip");
+        this.iv_rotate.setTag("iv_rotate");
 
         int margin = convertDpToPixel(BUTTON_SIZE_DP, getContext())/2;
         int size = convertDpToPixel(SELF_SIZE_DP, getContext());
@@ -121,12 +125,20 @@ public abstract class StickerView extends FrameLayout {
                 );
         iv_flip_params.gravity = Gravity.TOP | Gravity.LEFT;
 
+        LayoutParams iv_rotate_params =
+                new LayoutParams(
+                        convertDpToPixel(BUTTON_SIZE_DP, getContext()),
+                        convertDpToPixel(BUTTON_SIZE_DP, getContext())
+                );
+        iv_rotate_params.gravity = Gravity.BOTTOM | Gravity.LEFT;
+
         this.setLayoutParams(this_params);
         this.addView(getMainView(), iv_main_params);
         this.addView(iv_border, iv_border_params);
         this.addView(iv_scale, iv_scale_params);
         this.addView(iv_delete, iv_delete_params);
         this.addView(iv_flip, iv_flip_params);
+        this.addView(iv_rotate, iv_rotate_params);
         this.setOnTouchListener(mTouchListener);
         this.iv_scale.setOnTouchListener(mTouchListener);
         this.iv_delete.setOnClickListener(new OnClickListener() {
@@ -323,11 +335,13 @@ public abstract class StickerView extends FrameLayout {
             iv_scale.setVisibility(View.INVISIBLE);
             iv_delete.setVisibility(View.INVISIBLE);
             iv_flip.setVisibility(View.INVISIBLE);
+            iv_rotate.setVisibility(View.INVISIBLE);
         }else{
             iv_border.setVisibility(View.VISIBLE);
             iv_scale.setVisibility(View.VISIBLE);
             iv_delete.setVisibility(View.VISIBLE);
             iv_flip.setVisibility(View.VISIBLE);
+            iv_rotate.setVisibility(View.VISIBLE);
         }
     }
 
