@@ -34,7 +34,7 @@ public class StagingActivity extends AppCompatActivity
 		implements SelectingFragment.PictogramSelectedListener,
 		           ToolFragment.OnToolClickedListener,
 		           BackgroundPickerFragment.OnBackgroundSelectedListener,
-					EditingFragment.OnCanvasTouched{
+					EditingFragment.OnCanvasTouchedListener{
 
 	private ImageView img;
 	private static final String BACKGROUND_FRAGMENT_TAG = "BACKGROUND_TAG";

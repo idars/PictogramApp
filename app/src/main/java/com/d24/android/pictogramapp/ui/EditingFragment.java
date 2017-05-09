@@ -23,7 +23,7 @@ public class EditingFragment extends Fragment {
 
     View view;
     FrameLayout canvas;
-    private OnCanvasTouched mListener;
+    private OnCanvasTouchedListener mListener;
 
 
     @Override
@@ -46,7 +46,6 @@ public class EditingFragment extends Fragment {
                         currSticker.setControlItemsHidden(true);
                     }
                 }
-                // TODO
                 mListener.onCanvasPressed();
 
                 Log.d(TAG, "clicked on framelayout");
@@ -60,8 +59,8 @@ public class EditingFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnCanvasTouched) {
-            mListener = (OnCanvasTouched) context;
+        if (context instanceof OnCanvasTouchedListener) {
+            mListener = (OnCanvasTouchedListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnBackgroundSelectedListener");
@@ -74,7 +73,6 @@ public class EditingFragment extends Fragment {
         mListener = null;
     }
 
-    /* TODO, Nich; Newest edition */
     public void updateImageView(long item_id) {
 
         //final ArrayList<Drawable> imageItems = new ArrayList<>();
@@ -90,7 +88,7 @@ public class EditingFragment extends Fragment {
 
     }
 
-    public interface OnCanvasTouched {
+    public interface OnCanvasTouchedListener {
 
         void onCanvasPressed();
     }
