@@ -1,5 +1,6 @@
 package com.d24.android.pictogramapp.ui;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -22,6 +23,8 @@ public class EditingFragment extends Fragment {
 
     View view;
     FrameLayout canvas;
+    private OnCanvasTouched mListener;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +46,8 @@ public class EditingFragment extends Fragment {
                         currSticker.setControlItemsHidden(true);
                     }
                 }
+                // TODO
+                mListener.onCanvasPressed();
 
                 Log.d(TAG, "clicked on framelayout");
             }
@@ -50,6 +55,23 @@ public class EditingFragment extends Fragment {
 
         return view;
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnCanvasTouched) {
+            mListener = (OnCanvasTouched) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnBackgroundSelectedListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     /* TODO, Nich; Newest edition */
@@ -66,5 +88,10 @@ public class EditingFragment extends Fragment {
         newImg.setImageDrawable(drawable);
         canvas.addView(newImg);
 
+    }
+
+    public interface OnCanvasTouched {
+
+        void onCanvasPressed();
     }
 }

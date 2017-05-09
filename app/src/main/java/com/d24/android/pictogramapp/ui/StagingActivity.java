@@ -33,7 +33,8 @@ import java.util.ArrayList;
 public class StagingActivity extends AppCompatActivity
 		implements SelectingFragment.PictogramSelectedListener,
 		           ToolFragment.OnToolClickedListener,
-		           BackgroundPickerFragment.OnBackgroundSelectedListener {
+		           BackgroundPickerFragment.OnBackgroundSelectedListener,
+					EditingFragment.OnCanvasTouched{
 
 	private ImageView img;
 	private static final String BACKGROUND_FRAGMENT_TAG = "BACKGROUND_TAG";
@@ -102,6 +103,19 @@ public class StagingActivity extends AppCompatActivity
 
 
     }
+
+    public void focusEditingFragment(){
+		if (selectingFragment.isVisible() || backgroundPickerFragment.isVisible()) {
+			FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
+			FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
+			transaction.show(editingFragment);
+			transaction.show(toolFragment);
+			transaction.hide(selectingFragment);
+			transaction.hide(backgroundPickerFragment);
+			transaction.commit();
+		}
+
+	}
 
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -201,5 +215,10 @@ public class StagingActivity extends AppCompatActivity
 		TypedArray colors = getResources().obtainTypedArray(R.array.background_colors);
 		int color = colors.getColor(i + 1, -1);
 		findViewById(R.id.frame_layout).setBackgroundColor(color);
+	}
+
+	@Override
+	public void onCanvasPressed() {
+		focusEditingFragment();
 	}
 }
