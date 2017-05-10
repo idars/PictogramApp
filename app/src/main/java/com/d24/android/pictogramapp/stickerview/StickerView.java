@@ -141,6 +141,7 @@ public abstract class StickerView extends FrameLayout {
         this.addView(iv_rotate, iv_rotate_params);
         this.setOnTouchListener(mTouchListener);
         this.iv_scale.setOnTouchListener(mTouchListener);
+        this.iv_rotate.setOnTouchListener(mTouchListener);
         this.iv_delete.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -279,6 +280,68 @@ public abstract class StickerView extends FrameLayout {
                             onScaling(false);
                         }
 
+
+                        rotate_orgX = rotate_newX;
+                        rotate_orgY = rotate_newY;
+
+                        scale_orgX = event.getRawX();
+                        scale_orgY = event.getRawY();
+
+                        postInvalidate();
+                        requestLayout();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        Log.v(TAG, "iv_scale action up");
+                        break;
+                }
+            }
+            else if(view.getTag().equals("iv_rotate")){
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        Log.v(TAG, "iv_rotate action down");
+
+                        this_orgX = StickerView.this.getX();
+                        this_orgY = StickerView.this.getY();
+
+                        scale_orgX = event.getRawX();
+                        scale_orgY = event.getRawY();
+                        scale_orgWidth = StickerView.this.getLayoutParams().width;
+                        scale_orgHeight = StickerView.this.getLayoutParams().height;
+
+                        rotate_orgX = event.getRawX();
+                        rotate_orgY = event.getRawY();
+
+                        centerX = StickerView.this.getX()+
+                                ((View)StickerView.this.getParent()).getX()+
+                                (float)StickerView.this.getWidth()/2;
+
+
+                        //double statusBarHeight = Math.ceil(25 * getContext().getResources().getDisplayMetrics().density);
+                        int result = 0;
+                        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+                        if (resourceId > 0) {
+                            result = getResources().getDimensionPixelSize(resourceId);
+                        }
+                        double statusBarHeight = result;
+                        centerY = StickerView.this.getY()+
+                                ((View)StickerView.this.getParent()).getY()+
+                                statusBarHeight+
+                                (float)StickerView.this.getHeight()/2;
+
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        Log.v(TAG, "iv_scale action move");
+
+                        rotate_newX = event.getRawX();
+                        rotate_newY = event.getRawY();
+
+                        double angle_diff = Math.abs(
+                                Math.atan2(event.getRawY() - scale_orgY , event.getRawX() - scale_orgX)
+                                        - Math.atan2(scale_orgY - centerY, scale_orgX - centerX))*180/ Math.PI;
+
+                        Log.v(TAG, "angle_diff: "+angle_diff);
+
+
                         //rotate
 
                         double angle = Math.atan2(event.getRawY() - centerY, event.getRawX() - centerX) * 180 / Math.PI;
@@ -300,7 +363,7 @@ public abstract class StickerView extends FrameLayout {
                         requestLayout();
                         break;
                     case MotionEvent.ACTION_UP:
-                        Log.v(TAG, "iv_scale action up");
+                        Log.v(TAG, "iv_rotate action up");
                         break;
                 }
             }
