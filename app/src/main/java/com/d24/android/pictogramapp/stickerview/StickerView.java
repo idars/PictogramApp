@@ -348,7 +348,7 @@ public abstract class StickerView extends FrameLayout {
                         Log.v(TAG, "log angle: " + angle);
 
                         //setRotation((float) angle - 45);
-                        setRotation((float) angle - 45);
+                        setRotation((float) angle - 120);
                         Log.v(TAG, "getRotation(): " + getRotation());
 
                         onRotating();
