@@ -9,6 +9,7 @@
     <string name="button_info">Info</string>
     <string name="button_redo">Gjør om</string>
     <string name="button_undo">Angra</string>
+    <string name="button_save">Lagre</string>
     <string name="content_add">Legg til ein figur på scenen</string>
     <string name="content_background">Endre bakgrunnsfargar</string>
     <string name="content_info">Vis informasjon</string>

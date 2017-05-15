@@ -1,30 +1,34 @@
 package com.d24.android.pictogramapp.ui;
 
-import android.content.Intent;
+import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
+import android.graphics.PorterDuff;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.d24.android.pictogramapp.R;
-import com.d24.android.pictogramapp.stickerview.StickerImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -32,19 +36,26 @@ import java.util.ArrayList;
  */
 public class StagingActivity extends AppCompatActivity
 		implements SelectingFragment.PictogramSelectedListener,
-		           ToolFragment.OnToolClickedListener,
-		           BackgroundPickerFragment.OnBackgroundSelectedListener,
-					EditingFragment.OnCanvasTouchedListener{
+		BackgroundPickerFragment.OnBackgroundSelectedListener,
+		EditingFragment.OnCanvasTouchedListener{
 
 	private ImageView img;
 	private static final String BACKGROUND_FRAGMENT_TAG = "BACKGROUND_TAG";
 	private static final String SELECTING_FRAGMENT_TAG = "SELECTING_TAG";
 	private static final String EDITING_FRAGMENT_TAG = "EDITING_TAG";
+	private static final String PREVIEW_FRAGMENT_TAG = "PREVIEW_TAG";
 
-	EditingFragment editingFragment;
+	private List<EditingFragment> fragmentList;
 	SelectingFragment selectingFragment;
-	ToolFragment toolFragment;
 	BackgroundPickerFragment backgroundPickerFragment;
+	PreviewFragment previewFragment;
+
+	Menu menu;
+
+
+	private ViewPager mPager;
+	private static final int NUM_SCENES = 2;
+	private PagerAdapter mPagerAdapter;
 
 
 	@Override
@@ -54,34 +65,60 @@ public class StagingActivity extends AppCompatActivity
 		setContentView(R.layout.activity_staging);
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null) {
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			// actionBar.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
+			actionBar.setDisplayHomeAsUpEnabled(true);		// Option to navigate back
+			actionBar.setDisplayShowTitleEnabled(false);	// Remove title from bar
+			actionBar.getNavigationMode();
 		}
-
-		/* TODO, MOVE TO FRAGMENT */
-
-		// TODO, Over here nich! Start transaction
-		toolFragment = ToolFragment.newInstance();
-		editingFragment = new EditingFragment(); // TODO use newInstance()
-		selectingFragment = new SelectingFragment();
-		backgroundPickerFragment = new BackgroundPickerFragment();
 
 		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
 		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
-		transaction.add(R.id.frame_layout, editingFragment, EDITING_FRAGMENT_TAG);
-		transaction.add(R.id.frame_layout, toolFragment);
-		transaction.add(R.id.frame_layout, selectingFragment, SELECTING_FRAGMENT_TAG).addToBackStack(null);
-		transaction.add(R.id.frame_layout, backgroundPickerFragment, BACKGROUND_FRAGMENT_TAG).addToBackStack(null);
+
+
+		//TODO, new shit
+		// Instantiate a ViewPager and a PagerAdapter.
+		fragmentList = new ArrayList<EditingFragment>();
+
+		//fragmentList.add(EditingFragment.newInstance());
+		//fragmentList.add(EditingFragment.newInstance());
+		fragmentList.add(new EditingFragment());
+		fragmentList.add(new EditingFragment());
+
+		mPager = (ViewPager) findViewById(R.id.viewPager);
+		mPagerAdapter = new ViewPagerAdapter(manager);
+		mPager.setAdapter(mPagerAdapter);
+//		mViewPager.setOnPageChangeListener((ViewPager.OnPageChangeListener) this);
+
+		selectingFragment = SelectingFragment.newInstance();
+		backgroundPickerFragment = BackgroundPickerFragment.newInstance();
+		previewFragment = PreviewFragment.newInstance();
+
+		transaction.add(R.id.frame_layout, selectingFragment, SELECTING_FRAGMENT_TAG);
+		transaction.add(R.id.frame_layout, backgroundPickerFragment, BACKGROUND_FRAGMENT_TAG);
+		transaction.add(R.id.frame_layout, previewFragment);
 
 		transaction.hide(selectingFragment);
 		transaction.hide(backgroundPickerFragment);
 
 		transaction.commit();
-
 	}
 
-    @Override
-    public void onBackPressed() {
+
+	@Override
+	public void onResume(){
+		super.onResume();
+		EditingFragment f = fragmentList.get(1);
+		if(f == null) {
+		} else {
+			//Context c = this;
+			//Resources r = getResources();
+			//f.updateImageView(2, r, c);
+		}
+	}
+
+
+
+	@Override
+	public void onBackPressed() {
 		if (!selectingFragment.isVisible() && !backgroundPickerFragment.isVisible()) {
 
 			String text = "Press the top-left button to complete scene";
@@ -94,22 +131,27 @@ public class StagingActivity extends AppCompatActivity
 		else {
 			FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
 			FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
-			transaction.show(editingFragment);
-			transaction.show(toolFragment);
+
 			transaction.hide(selectingFragment);
 			transaction.hide(backgroundPickerFragment);
 			transaction.commit();
 		}
 
+		// TODO, new shit
+		if (mPager.getCurrentItem() == 0) {
+			// If the user is currently looking at the first step, allow the system to handle the
+			// Back button. This calls finish() on this activity and pops the back stack.
+			super.onBackPressed();
+		} else {
+			// Otherwise, select the previous step.
+			mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+		}
+	}
 
-    }
-
-    public void focusEditingFragment(){
+	public void focusEditingFragment(){
 		if (selectingFragment.isVisible() || backgroundPickerFragment.isVisible()) {
 			FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
 			FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
-			transaction.show(editingFragment);
-			transaction.show(toolFragment);
 			transaction.hide(selectingFragment);
 			transaction.hide(backgroundPickerFragment);
 			transaction.commit();
@@ -117,7 +159,10 @@ public class StagingActivity extends AppCompatActivity
 
 	}
 
-    @Override
+
+	/*TODO, DENNE VIL BLI ET PROBLEM SENERE */
+	/*TODO, verdien på oppdateres når scener slettes */
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (id == android.R.id.home) {
@@ -125,53 +170,46 @@ public class StagingActivity extends AppCompatActivity
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
+		if (id == R.id.action_pictogram) {
+			// This ID represents the Add Pictogram button.
+
+			onAddButtonClicked();
+			return true;
+		}
+		if (id == R.id.action_background) {
+			// This ID represents the Home or Up button.
+			onBackgroundButtonClicked();
+			return true;
+		}
+		if (id == R.id.action_undo) {
+			// This ID represents the Undo button.
+			onUndoButtonClicked();
+			return true;
+		}
+		if (id == R.id.action_redo) {
+			// This ID represents the Redo button.
+			onRedoButtonClicked();
+			return true;
+		}
+		if (id == R.id.action_save) {
+			// This ID represents the Redo button.
+			onSaveButtonClicked();
+			return true;
+		}
+
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void onItemSelected(long item_id)
-	{
-		// The user selected the headline of an article from the HeadlinesFragment
-		// Do something here to display that article
 
-		editingFragment = (EditingFragment)
-				getSupportFragmentManager().findFragmentByTag(EDITING_FRAGMENT_TAG);
 
-		if (editingFragment != null) {
-			// If article frag is available, we're in two-pane layout...
-
-			// Call a method in the ArticleFragment to update its content
-			editingFragment.updateImageView(item_id); // TODO
-		} else {
-			// Otherwise, we're in the one-pane layout and must swap frags...
-
-			// Create fragment and give it an argument for the selected article
-			editingFragment = new EditingFragment();
-			Bundle args = new Bundle();
-			//args.putInt(EditingFragment.ARG_POSITION, item_id);
-			editingFragment.setArguments(args);
-
-			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-			// Replace whatever is in the fragment_container view with this fragment,
-			// and add the transaction to the back stack so the user can navigate back
-			transaction.add(R.id.frame_layout, editingFragment);
-			transaction.addToBackStack(null);
-
-			// Commit the transaction
-			transaction.commit();
-		}
-	}
-
-	@Override
-	public void onAddButtonClicked(View v) {
+	public void onAddButtonClicked() {
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.show(selectingFragment);
 		transaction.commit();
 	}
 
-	@Override
-	public void onBackgroundButtonClicked(View v) {
+	public void onBackgroundButtonClicked() {
 		// TODO Display list of backgrounds below toolbar
 		BackgroundPickerFragment fragment = BackgroundPickerFragment.newInstance();
 
@@ -183,9 +221,16 @@ public class StagingActivity extends AppCompatActivity
 		transaction.commit();
 	}
 
-	@Override
-	public void onUndoButtonClicked(View v) {
-		// TODO Undo last change
+	public void onUndoButtonClicked() {
+		boolean buttonIsActive = true;
+		if (buttonIsActive) {
+			int color_white = getResources().getColor(R.color.white);
+			menu.findItem(R.id.action_undo).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
+		} else {
+			int color_grey = getResources().getColor(R.color.white);
+			menu.findItem(R.id.action_undo).getIcon().setColorFilter(color_grey, PorterDuff.Mode.SRC_IN);
+		}
+
 
 		// If undo is successful:
 		// toolFragment.setRedoAvailable(true);
@@ -194,10 +239,16 @@ public class StagingActivity extends AppCompatActivity
 		// toolFragment.setUndoAvailable(false);
 	}
 
-	@Override
-	public void onRedoButtonClicked(View v) {
-		// TODO Redo previous change
+	public void onRedoButtonClicked() {
 
+		boolean buttonIsActive = true;
+		if (buttonIsActive) {
+			int color_white = getResources().getColor(R.color.white);
+			menu.findItem(R.id.action_redo).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
+		} else {
+			int color_grey = getResources().getColor(R.color.white);
+			menu.findItem(R.id.action_redo).getIcon().setColorFilter(color_grey, PorterDuff.Mode.SRC_IN);
+		}
 		// If redo is successful:
 		// toolFragment.setUndoAvailable(true);
 
@@ -205,20 +256,268 @@ public class StagingActivity extends AppCompatActivity
 		// toolFragment.setRedoAvailable(false);
 	}
 
-	@Override
-	public void onInfoButtonClicked(View v) {
-		// TODO Display information about the scene/story
+
+	// Not implemented, Created for PreviewFragment. Navigation & Management of Scenes
+	private void navigateScene(boolean positiveIndexChange) {
+		// TODO <Get visible index>
+		// TODO <Get wanted new direction (or index)>
+		int index = 0;
+		if (positiveIndexChange){
+			index = 1;
+		}
+	}
+
+	// Not implemented, Created for PreviewFragment. Navigation & Management of Scenes
+	private void createNewScene() {
+		Log.i("Testing_15", "UndoButtonPressed");
+		EditingFragment frag = EditingFragment.newInstance();
+		fragmentList.add(frag);
+		mPagerAdapter.notifyDataSetChanged();
+	}
+
+
+	// Not implemented, Created for PreviewFragment. Navigation & Management of Scenes
+	public void onSaveButtonClicked() {
+		// TODO Save information of the scene/story
+		createNewScene(); // Temporary use for testing: Adding new Scenes
 	}
 
 	@Override
 	public void onSolidColorSelected(AdapterView<?> adapterView, View view, int i, long l) {
 		TypedArray colors = getResources().obtainTypedArray(R.array.background_colors);
 		int color = colors.getColor(i + 1, -1);
-		findViewById(R.id.frame_layout).setBackgroundColor(color);
+
+		int index = 0;
+		index = mPager.getCurrentItem();
+		EditingFragment frag = fragmentList.get(index);
+
+		if(frag != null) {
+			frag.getView().setBackgroundColor(color);
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu_staging, menu);
+		this.menu = menu;
+
+		int color_white = getResources().getColor(R.color.white);
+		int color_grey = getResources().getColor(R.color.grey_500);
+
+		menu.findItem(R.id.action_pictogram).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
+		menu.findItem(R.id.action_background).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
+		menu.findItem(R.id.action_undo).getIcon().setColorFilter(color_grey, PorterDuff.Mode.SRC_IN);
+		menu.findItem(R.id.action_redo).getIcon().setColorFilter(color_grey, PorterDuff.Mode.SRC_IN);
+		menu.findItem(R.id.action_save).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
+		return true;
+	}
+
+	// TODO, item select.
+	public void onItemSelected(long item_id)
+	{
+		int index;
+		index = mPager.getCurrentItem();
+		Log.i("Testing_15", "Selected Item\tPre-getFragment");
+		EditingFragment frag = fragmentList.get(index);
+
+		// TODO, alternative implementation
+		//EditingFragment page = (EditingFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewPager + ":" + mPager.getCurrentItem());
+		/*if (mPager.getCurrentItem() == 0 && page != null) {
+			((EditingFragment)page).updateImageView(item_id);
+		}*/
+
+		if(frag != null){
+			Log.i("Testing_15", "Selected Item\tPre-updateView");
+			frag.updateImageView(item_id);
+
+		}
+		else {
+			Log.d("StagingActivity","EditingFragment from fragmentList.get(" + item_id + ") is null");
+		}
 	}
 
 	@Override
 	public void onCanvasPressed() {
 		focusEditingFragment();
 	}
+
+	public class ViewPagerAdapter extends FragmentPagerAdapter {
+
+		public ViewPagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+		public int getCount() {
+			return fragmentList.size();
+		}
+
+
+
+
+
+
+
+		/* METODE blir kalt fra mPagerAdapter.notifyDataSetChanged()
+		 Dette er når fragmentList får nye elementer eller det fjernes et element
+		 POSITION_NONE, om objekt er fjernet fra listen
+		 */
+		@Override
+		public int getItemPosition(Object object)
+		{
+//			Log.i("Testing_15", "1.0\tgetItemPosition(), return " + 			super.getItemPosition(object));
+			Log.i("Testing_15", "Checking, how much have this object moved?, Position (" + 			super.getItemPosition(object) + ")*?");
+
+			if (object instanceof  EditingFragment){
+				EditingFragment f = (EditingFragment) object;
+				return POSITION_NONE;
+			} else {
+				Log.i("Testing_15", "UNEXPECTED, Object.class: " + object.getClass());
+				return super.getItemPosition(object);
+			}
+		}
+
+
+
+
+
+
+
+		/*TODO, Called when a change in the shown pages is going to start being made.*/
+		@Override
+		public void 	startUpdate(ViewGroup container){
+			//Log.i("Testing_15", "1.\tstartUpdate()");
+			Log.i("Testing_15", "Starting Transaction");
+			//Log.i("Testing_15", "\t\t end");
+			super.startUpdate(container);
+		}
+
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			//super.destroyItem(container, position, object);
+			//Log.i("Testing_15", "\t2.0\tdestroyItem(" + position + ")");
+			Log.i("Testing_15", "\tDestroying Item at (" + position + ") [disabled]");
+
+			/*EditingFragment f = fragmentList.get(0);
+			if((f == null)){
+				Log.i("Testing_15", "destroy is null");
+			}
+			Log.i("Testing_15", "IF-IF of DESTROY");
+			if(f != null){
+				Log.i("Testing_15", "destroying");
+				fragmentList.remove(0);
+				Log.i("Testing_15", "destroyingSuper");
+				Log.i("Testing_15", "destroy end");
+			}
+*/
+		}
+
+		/*TODO, Return a unique identifier for the item at the given position.*/
+		@Override
+		public long 	getItemId(int position){
+			// Basically returning position back as long-variable... nothing extra implemented
+			Log.i("Testing_15", "\tFinding ID for item at (" + position + ")");
+			return super.getItemId(position);
+		}
+
+		/*Return the Fragment associated with a specified position.*/
+		@Override
+		public Fragment getItem(int position) {
+			EditingFragment fragment = null;
+			fragment = fragmentList.get(position);
+			Log.i("Testing_15", "\t\tReturning fragment-object at (" + position + ")");
+			Log.i("Testing_15", "\t\t---");
+
+			/*TODO, consider deleting
+			if(fragmentList.size() > 2){
+				fragment = EditingFragment.newInstance();
+				//Log.i("Testing_15", "\t2.2.\tgetItem(" + position + "), \t return (new) Fragment");
+				Log.i("Testing_15", "\tCreating fragment at (" + position + "), (new) Fragment-instnace");
+			}
+			else{
+				//Log.i("Testing_15", "\t2.2\tgetItem(" + position + "), \t return fragment");
+				Log.i("Testing_15", "\tCreating fragment(" + position + "), fragmentList(pos)");
+
+				fragment = fragmentList.get(position);
+			}*/
+
+			return fragment;
+		}
+
+		/*Create the page for the given position.*/
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) {
+			// TODO, might be uncessary to override
+			Log.i("Testing_15", "\tInstansiate at (" + position + ")");
+			return super.instantiateItem(container, position);
+
+
+			/*TODO, consider deleting
+			EditingFragment fragment = (EditingFragment) super.instantiateItem(container, position);
+			//alt,1 fragmentList.add(position, fragment)
+			//Log.i("Testing_15", "\t2.2.2 instansiate(" + position + ")");
+
+			if(fragmentList.get(position) == null){
+				Log.i("Testing_15", "INSTANSIATING, UNEXPECTED CALL, FRAGMENT WAS NULL");
+				fragmentList.add(position, fragment);
+			} else {
+				fragmentList.remove(position);
+				fragmentList.add(position, fragment);
+			}
+			return fragment;
+			*/
+		}
+
+
+
+
+		/*TODO, Called to inform the adapter of which item is currently considered to be the "primary", that is the one show to the user as the current page.*/
+		@Override
+		public void 	setPrimaryItem(ViewGroup container, int position, Object object){
+			//Log.i("Testing_15", "\t2.3\tsetPrimaryItem(" + position + ")");
+			Log.i("Testing_15", "\tSetting new primary fragment at(" + position + ")");
+			super.setPrimaryItem(container, position, object);
+		}
+
+		/*TODO, Called when the a change in the shown pages has been completed.*/
+		@Override
+		public void finishUpdate(ViewGroup container){
+			super.finishUpdate(container);
+			//Log.i("Testing_15", "\t\t3. \tfinishUpdate()\n");
+			Log.i("Testing_15", "Transaction completed\n");
+			Log.i("Testing_15", "\t");
+		}
+
+
+
+
+
+
+
+		/*TODO, Determines whether a page View is associated with a specific key object as returned by instantiateItem(ViewGroup, int).*/
+		@Override
+		public boolean 	isViewFromObject(View view, Object object){
+			//Log.i("Testing_15", "\t\t\t4.\tisViewFromObject(), return" + super.isViewFromObject(view, object));
+			return super.isViewFromObject(view,object);
+		}
+
+		/*TODO, Restore any instance state associated with this adapter and its pages that was previously saved by saveState().*/
+		@Override
+		public void 	restoreState(Parcelable state, ClassLoader loader){
+			Log.i("Testing_15", "UNEXPECTED METHOD 3 - PageAdapter.restoreState()");
+			super.restoreState(state,loader);
+		}
+
+		/*TODO, Save any instance state associated with this adapter and its pages that should be restored if the current UI state needs to be reconstructed.*/
+		@Override
+		public Parcelable saveState(){
+			Log.i("Testing_15", "UNEXPECTED METHOD, 4 - PageAdapter.saveState()");
+			//Log.i("Testing_15", "\t\t end");
+			return super.saveState();
+		}
+	}
+
+
 }
+

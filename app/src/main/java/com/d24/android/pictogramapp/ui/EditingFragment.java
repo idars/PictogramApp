@@ -33,6 +33,7 @@ public class EditingFragment extends Fragment {
 
         canvas = (FrameLayout) view.findViewById(R.id.canvasView);
         canvas.setClickable(true);
+
         canvas.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -76,16 +77,30 @@ public class EditingFragment extends Fragment {
     public void updateImageView(long item_id) {
 
         //final ArrayList<Drawable> imageItems = new ArrayList<>();
+
+        Log.i("Testing_15", "updateImageView\t-1");
         Resources res = getResources();
+        Log.i("Testing_15", "updateImageView\t0");
+
         TypedArray image_ids = res.obtainTypedArray(R.array.image_ids);
+
         Integer intItemId = (int) item_id;
+        Log.i("Testing_15", "updateImageView\t1");
 
         Drawable drawable = image_ids.getDrawable(intItemId);
-
         StickerImageView newImg = new StickerImageView(getActivity());
         newImg.setImageDrawable(drawable);
-        canvas.addView(newImg);
+        Log.i("Testing_15", "updateImageView\t2");
 
+        canvas.addView(newImg);
+    }
+
+    public View getView(){
+        return view;
+    }
+
+    public static EditingFragment newInstance() {
+        return new EditingFragment();
     }
 
     public interface OnCanvasTouchedListener {

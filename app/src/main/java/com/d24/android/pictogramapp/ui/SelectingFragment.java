@@ -26,6 +26,10 @@ public class SelectingFragment extends Fragment {
     private GridViewAdapter gridAdapter;
     PictogramSelectedListener mCallback;
 
+    public static SelectingFragment newInstance() {
+        return new SelectingFragment();
+    }
+
     // Container Activity must implement this interface
     public interface PictogramSelectedListener {
         public void onItemSelected(long item_id);

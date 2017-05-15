@@ -1,0 +1,35 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.d24.android.pictogramapp.ui.StagingActivity">
+
+    <item
+        android:id="@+id/action_pictogram"
+        android:icon="@drawable/ic_add_circle_black_24dp"
+        android:title="@string/button_add"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_background"
+        android:icon="@drawable/ic_image_black_24dp"
+        android:title="@string/button_background"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_undo"
+        android:icon="@drawable/ic_undo_black_24dp"
+        android:title="@string/button_undo"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_redo"
+        android:icon="@drawable/ic_redo_black_24dp"
+        android:title="@string/button_redo"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_save"
+        android:icon="@drawable/ic_save_black_24dp"
+        android:title="@string/button_save"
+        app:showAsAction="always"/>
+
+</menu>

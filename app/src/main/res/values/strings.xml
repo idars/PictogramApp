@@ -19,6 +19,7 @@
     <string name="button_undo">Undo</string>
     <string name="button_redo">Redo</string>
     <string name="button_info">Info</string>
+    <string name="button_save">Save</string>
     <string name="content_add">Add a figure to the scene</string>
     <string name="content_background">Change the background colors</string>
     <string name="content_undo">Undo the last change</string>
