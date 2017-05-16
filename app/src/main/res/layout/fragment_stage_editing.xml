@@ -6,15 +6,6 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
 
-             tools:context="com.d24.android.pictogramapp.ui.StagingActivity">
+                tools:context="com.d24.android.pictogramapp.ui.StagingActivity">
 
-
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        tools:text="test"/>
 </FrameLayout>

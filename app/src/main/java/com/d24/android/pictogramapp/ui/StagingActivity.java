@@ -1,11 +1,8 @@
 package com.d24.android.pictogramapp.ui;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -43,18 +40,18 @@ public class StagingActivity extends AppCompatActivity
 	private static final String BACKGROUND_FRAGMENT_TAG = "BACKGROUND_TAG";
 	private static final String SELECTING_FRAGMENT_TAG = "SELECTING_TAG";
 	private static final String EDITING_FRAGMENT_TAG = "EDITING_TAG";
-	private static final String PREVIEW_FRAGMENT_TAG = "PREVIEW_TAG";
+	//TODO, private static final String PREVIEW_FRAGMENT_TAG = "PREVIEW_TAG";
 
 	private List<EditingFragment> fragmentList;
 	SelectingFragment selectingFragment;
 	BackgroundPickerFragment backgroundPickerFragment;
-	PreviewFragment previewFragment;
+	//TODO, PreviewFragment previewFragment;
 
 	Menu menu;
 
 
 	private ViewPager mPager;
-	private static final int NUM_SCENES = 2;
+	private static final int NUM_OF_SCENES = 5; // Initial nr of scenes to start with
 	private PagerAdapter mPagerAdapter;
 
 
@@ -74,14 +71,13 @@ public class StagingActivity extends AppCompatActivity
 		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
 
 
-		//TODO, new shit
+		// TODO, Scene Initalization
 		// Instantiate a ViewPager and a PagerAdapter.
 		fragmentList = new ArrayList<EditingFragment>();
+		for(int i = 0; i < NUM_OF_SCENES; i++) {
+			createNewScene(false);
+		}
 
-		//fragmentList.add(EditingFragment.newInstance());
-		//fragmentList.add(EditingFragment.newInstance());
-		fragmentList.add(new EditingFragment());
-		fragmentList.add(new EditingFragment());
 
 		mPager = (ViewPager) findViewById(R.id.viewPager);
 		mPagerAdapter = new ViewPagerAdapter(manager);
@@ -90,11 +86,11 @@ public class StagingActivity extends AppCompatActivity
 
 		selectingFragment = SelectingFragment.newInstance();
 		backgroundPickerFragment = BackgroundPickerFragment.newInstance();
-		previewFragment = PreviewFragment.newInstance();
+		// TODO, previewFragment = PreviewFragment.newInstance();
 
 		transaction.add(R.id.frame_layout, selectingFragment, SELECTING_FRAGMENT_TAG);
 		transaction.add(R.id.frame_layout, backgroundPickerFragment, BACKGROUND_FRAGMENT_TAG);
-		transaction.add(R.id.frame_layout, previewFragment);
+		// TODO, transaction.add(R.id.frame_layout, previewFragment);
 
 		transaction.hide(selectingFragment);
 		transaction.hide(backgroundPickerFragment);
@@ -223,6 +219,7 @@ public class StagingActivity extends AppCompatActivity
 
 	public void onUndoButtonClicked() {
 		boolean buttonIsActive = true;
+		createNewScene(true); //Todo, remove
 		if (buttonIsActive) {
 			int color_white = getResources().getColor(R.color.white);
 			menu.findItem(R.id.action_undo).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
@@ -240,8 +237,8 @@ public class StagingActivity extends AppCompatActivity
 	}
 
 	public void onRedoButtonClicked() {
-
 		boolean buttonIsActive = true;
+		deleteCurrentScene(); //Todo, remove
 		if (buttonIsActive) {
 			int color_white = getResources().getColor(R.color.white);
 			menu.findItem(R.id.action_redo).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
@@ -267,19 +264,38 @@ public class StagingActivity extends AppCompatActivity
 		}
 	}
 
-	// Not implemented, Created for PreviewFragment. Navigation & Management of Scenes
-	private void createNewScene() {
-		Log.i("Testing_15", "UndoButtonPressed");
+	// Not fully implemented, Created for PreviewFragment. Navigation & Management of Scenes
+	private void createNewScene(boolean notifyChange) {
+		Log.i("Testing_15", "ADDING NEW FRAGMENT");
 		EditingFragment frag = EditingFragment.newInstance();
 		fragmentList.add(frag);
+		if(notifyChange) {
+			mPagerAdapter.notifyDataSetChanged();
+		}
+	}
+
+
+	// Not fully implemented, Created for PreviewFragment. Navigation & Management of Scenes
+	private void deleteCurrentScene() {
+
+		int currentIndex = mPager.getCurrentItem();
+		Log.i("Testing_15", "DELETING FRAGMENT at " + currentIndex);
+
+		// TODO, NAVIGATION, mPager.setCurrentItem(2);
+		mPager.removeView((View) fragmentList.get(currentIndex).getView());
+		//mPager.setCurrentItem(currentIndex+1);
+		//alternative, mPager.removeViewAt(2);
+		fragmentList.remove(currentIndex);
 		mPagerAdapter.notifyDataSetChanged();
+		//mPager.setAdapter(mPagerAdapter);
 	}
 
 
 	// Not implemented, Created for PreviewFragment. Navigation & Management of Scenes
 	public void onSaveButtonClicked() {
 		// TODO Save information of the scene/story
-		createNewScene(); // Temporary use for testing: Adding new Scenes
+		//createNewScene(true); // TODO, Temporary use for testing: Adding new Scene
+		//deleteCurrentScene(); // TODO, Temporary use for testing: Deleting Scene
 	}
 
 	@Override
@@ -318,7 +334,6 @@ public class StagingActivity extends AppCompatActivity
 	{
 		int index;
 		index = mPager.getCurrentItem();
-		Log.i("Testing_15", "Selected Item\tPre-getFragment");
 		EditingFragment frag = fragmentList.get(index);
 
 		// TODO, alternative implementation
@@ -328,7 +343,6 @@ public class StagingActivity extends AppCompatActivity
 		}*/
 
 		if(frag != null){
-			Log.i("Testing_15", "Selected Item\tPre-updateView");
 			frag.updateImageView(item_id);
 
 		}
@@ -342,6 +356,7 @@ public class StagingActivity extends AppCompatActivity
 		focusEditingFragment();
 	}
 
+
 	public class ViewPagerAdapter extends FragmentPagerAdapter {
 
 		public ViewPagerAdapter(FragmentManager fm) {
@@ -353,12 +368,6 @@ public class StagingActivity extends AppCompatActivity
 			return fragmentList.size();
 		}
 
-
-
-
-
-
-
 		/* METODE blir kalt fra mPagerAdapter.notifyDataSetChanged()
 		 Dette er når fragmentList får nye elementer eller det fjernes et element
 		 POSITION_NONE, om objekt er fjernet fra listen
@@ -367,20 +376,65 @@ public class StagingActivity extends AppCompatActivity
 		public int getItemPosition(Object object)
 		{
 //			Log.i("Testing_15", "1.0\tgetItemPosition(), return " + 			super.getItemPosition(object));
-			Log.i("Testing_15", "Checking, how much have this object moved?, Position (" + 			super.getItemPosition(object) + ")*?");
+			//Log.i("Testing_15", "Checking, how much have this object moved?, Position (" + 			super.getItemPosition(object) + ")*?");
+			//Log.i("Testing_15", "(Check visible fragment) (" + index + "/" + (getCount()-1) + ")");
+			Log.i("Testing_15", "(-/" + (getCount()-1) + ") Check visible fragments");
 
-			if (object instanceof  EditingFragment){
-				EditingFragment f = (EditingFragment) object;
-				return POSITION_NONE;
-			} else {
-				Log.i("Testing_15", "UNEXPECTED, Object.class: " + object.getClass());
-				return super.getItemPosition(object);
+			EditingFragment fr = (EditingFragment) object;
+			int index = -1;
+
+			for(int i = 0; i < getCount(); i++) {
+				EditingFragment item = (EditingFragment) fragmentList.get(i);
+				if(item.equals(fr)) {
+					// item still exists in dataset; return position
+					index = i;
+					break;
+				}
 			}
+			//Log.i("Testing_15", "" + object.);
+
+			// TODO, could test a boolean variable if fragment found
+			if ((object instanceof  EditingFragment) && (index != -1)) {
+				Log.i("Testing_15", "(" + index + "/(" + (getCount()-1) + ") Fragment found");
+				EditingFragment f = (EditingFragment) object;
+
+				Log.i("Testing_15", "\t return "+ POSITION_UNCHANGED);
+
+				return POSITION_UNCHANGED;
+			} else {
+//				Log.i("Testing_15", "UNEXPECTED, Object.class: " + object.getClass());
+				Log.i("Testing_15", "(-/(" + (getCount()-1) + ") Fragment NOT found, delete()");
+				Log.i("Testing_15", "\t return "+ POSITION_NONE);
+				return POSITION_NONE;
+			}
+
+			/*TODO, New implementation
+			 EditingFragment f = (EditingFragment) object;
+
+			for(int i = 0; i < getCount(); i++) {
+
+				Fragment item = (Fragment) getItem(i);
+				if(item.equals(f)) {
+					// item still exists in dataset; return position
+					return i;
+				}
+			}
+
+			// if we arrive here, the data-item for which the Fragment was created
+			// does not exist anymore.
+
+			// Also, cleanup: remove reference to Fragment from mItems
+			for(Map.Entry<Long, MainListFragment> entry : mItems.entrySet()) {
+				if(entry.getValue().equals(f)) {
+					mItems.remove(entry.getKey());
+					break;
+				}
+			}
+
+			// Let ViewPager remove the Fragment by returning POSITION_NONE.
+			return POSITION_NONE;
+			 */
 		}
-
-
-
-
 
 
 
@@ -388,7 +442,8 @@ public class StagingActivity extends AppCompatActivity
 		@Override
 		public void 	startUpdate(ViewGroup container){
 			//Log.i("Testing_15", "1.\tstartUpdate()");
-			Log.i("Testing_15", "Starting Transaction");
+			//Log.i("Testing_15", "Starting Transaction");
+			Log.i("Testing_15", "(-/" + (getCount()-1) + ") Start");
 			//Log.i("Testing_15", "\t\t end");
 			super.startUpdate(container);
 		}
@@ -397,9 +452,32 @@ public class StagingActivity extends AppCompatActivity
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			//super.destroyItem(container, position, object);
 			//Log.i("Testing_15", "\t2.0\tdestroyItem(" + position + ")");
-			Log.i("Testing_15", "\tDestroying Item at (" + position + ") [disabled]");
+			//Log.i("Testing_15", "\tDestroying Item at (" + position + "/" + getCount() + ") [disabled]");
+			Log.i("Testing_15", "\t(" + position + "/" + (getCount()-1) + ") [attempt] [Destroying Frag.]");
 
-			/*EditingFragment f = fragmentList.get(0);
+			// TODO, possibility to NOT have to go through for-loop
+			if (object instanceof EditingFragment) {
+				EditingFragment fr = (EditingFragment) object;
+				int index = -1;
+
+				for(int i = 0; i < getCount(); i++) {
+					EditingFragment item = (EditingFragment) fragmentList.get(i);
+					if(item.equals(fr)) {
+						// item still exists in dataset; return position
+						index = i;
+						break;
+					}
+				}
+				if(index == -1) {
+					Log.i("Testing_15", "\t(" + position + "/" + (getCount()-1) + ") [super] [Destroying Frag.]");
+
+					//instantiateItem(container, (position-1));
+
+				}
+			}
+
+			/*TODO, consider deleting
+			EditingFragment f = fragmentList.get(0);
 			if((f == null)){
 				Log.i("Testing_15", "destroy is null");
 			}
@@ -417,7 +495,7 @@ public class StagingActivity extends AppCompatActivity
 		@Override
 		public long 	getItemId(int position){
 			// Basically returning position back as long-variable... nothing extra implemented
-			Log.i("Testing_15", "\tFinding ID for item at (" + position + ")");
+			Log.i("Testing_15", "\t(" + position + "/" + (getCount()-1) + ") [Find ID]");
 			return super.getItemId(position);
 		}
 
@@ -426,8 +504,8 @@ public class StagingActivity extends AppCompatActivity
 		public Fragment getItem(int position) {
 			EditingFragment fragment = null;
 			fragment = fragmentList.get(position);
-			Log.i("Testing_15", "\t\tReturning fragment-object at (" + position + ")");
-			Log.i("Testing_15", "\t\t---");
+			//Log.i("Testing_15", "\t(" + position + "/" + (getCount()-1) + ") [getFragment]");
+			//Log.i("Testing_15", "\t\tReturning fragment-object at (" + position + ")");
 
 			/*TODO, consider deleting
 			if(fragmentList.size() > 2){
@@ -449,7 +527,8 @@ public class StagingActivity extends AppCompatActivity
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
 			// TODO, might be uncessary to override
-			Log.i("Testing_15", "\tInstansiate at (" + position + ")");
+			//Log.i("Testing_15", "\tInstansiate at (" + position + ")");
+			Log.i("Testing_15", "\t(" + position + "/" + (getCount()-1) + ") [Load fragment]");
 			return super.instantiateItem(container, position);
 
 
@@ -476,7 +555,8 @@ public class StagingActivity extends AppCompatActivity
 		@Override
 		public void 	setPrimaryItem(ViewGroup container, int position, Object object){
 			//Log.i("Testing_15", "\t2.3\tsetPrimaryItem(" + position + ")");
-			Log.i("Testing_15", "\tSetting new primary fragment at(" + position + ")");
+			//Log.i("Testing_15", "\tSetting new primary fragment at(" + position + ")");
+			Log.i("Testing_15", "\t(" + position + "/" + (getCount()-1) + ") ** New primary");
 			super.setPrimaryItem(container, position, object);
 		}
 
@@ -485,13 +565,9 @@ public class StagingActivity extends AppCompatActivity
 		public void finishUpdate(ViewGroup container){
 			super.finishUpdate(container);
 			//Log.i("Testing_15", "\t\t3. \tfinishUpdate()\n");
-			Log.i("Testing_15", "Transaction completed\n");
+			//Log.i("Testing_15", "Transaction completed\n");
 			Log.i("Testing_15", "\t");
 		}
-
-
-
-
 
 
 

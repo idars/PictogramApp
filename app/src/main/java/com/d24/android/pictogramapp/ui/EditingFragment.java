@@ -78,19 +78,15 @@ public class EditingFragment extends Fragment {
 
         //final ArrayList<Drawable> imageItems = new ArrayList<>();
 
-        Log.i("Testing_15", "updateImageView\t-1");
         Resources res = getResources();
-        Log.i("Testing_15", "updateImageView\t0");
 
         TypedArray image_ids = res.obtainTypedArray(R.array.image_ids);
 
         Integer intItemId = (int) item_id;
-        Log.i("Testing_15", "updateImageView\t1");
 
         Drawable drawable = image_ids.getDrawable(intItemId);
         StickerImageView newImg = new StickerImageView(getActivity());
         newImg.setImageDrawable(drawable);
-        Log.i("Testing_15", "updateImageView\t2");
 
         canvas.addView(newImg);
     }
