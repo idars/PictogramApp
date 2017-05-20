@@ -1,7 +1,5 @@
 package com.d24.android.pictogramapp.ui;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
@@ -27,17 +25,13 @@ import android.widget.ImageView;
 
 import com.d24.android.pictogramapp.R;
 import com.d24.android.pictogramapp.util.StoryXmlSerializer;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -308,14 +302,7 @@ public class StagingActivity extends AppCompatActivity
 
 	// Not implemented, Created for PreviewFragment. Navigation & Management of Scenes
 	public void onSaveButtonClicked() {
-		// TODO Save information of the scene/story
 		// TODO Create new thread
-		Log.d(getLocalClassName(), mPager.toString());
-		int count = mPager.getChildCount();
-		for (int i = 0; i < count; ++i) {
-			Log.d(getLocalClassName(), mPager.getChildAt(i).toString());
-		}
-
 		SaveDialogFragment dialog = new SaveDialogFragment();
 		dialog.show(getFragmentManager(), "save");
 

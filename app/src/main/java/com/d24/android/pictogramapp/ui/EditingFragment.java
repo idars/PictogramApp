@@ -87,6 +87,7 @@ public class EditingFragment extends Fragment {
         Drawable drawable = image_ids.getDrawable(intItemId);
         StickerImageView newImg = new StickerImageView(getActivity());
         newImg.setImageDrawable(drawable);
+		newImg.setTag(R.integer.tag_resource, intItemId);
 
         canvas.addView(newImg);
     }

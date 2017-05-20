@@ -7,6 +7,7 @@ import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.d24.android.pictogramapp.R;
 import com.d24.android.pictogramapp.stickerview.StickerImageView;
 
 import org.xmlpull.v1.XmlSerializer;
@@ -29,9 +30,9 @@ public class StoryXmlSerializer {
 	 * <pre>{@code
 	 * <?xml version='1.0' encoding='utf-8' ?>
 	 * <story name="My very own story">
-	 *   <scene background="#00FFFFFF">
-	 *     <figure source="@drawable/pm_figures_029_cycle" position="100.61575 356.74945" size="300 300" rotation="0.0" mirrored="false" />
-	 *     <figure source="@drawable/pm_figures_001_rolling_head" position="330.33588 363.47583" size="300 300" rotation="0.0" mirrored="false" />
+	 *   <scene background="#fffff9c4">
+	 *     <figure id="29" position="100.61575 356.74945" size="300 300" rotation="0.0" mirrored="false" />
+	 *     <figure id="1" position="330.33588 363.47583" size="300 300" rotation="0.0" mirrored="false" />
 	 *   </scene>
 	 *   <scene>
 	 *       ...
@@ -81,7 +82,7 @@ public class StoryXmlSerializer {
 
 			// To convert back to integer: Color.parseColor(hexFormat)
 		} else {
-			// TODO Obtain drawable resource
+			// TODO Determine drawable resource
 		}
 
 		if (scene instanceof ViewGroup) {
@@ -90,7 +91,7 @@ public class StoryXmlSerializer {
 			for (int i = 0; i < group.getChildCount(); ++i) {
 				StickerImageView view = (StickerImageView) group.getChildAt(i);
 				serializer.startTag(null, "figure");
-				serializer.attribute(null, "source", "@drawable/pm_figures_001_rolling_head"); // TODO add resource as tag at view creation
+				serializer.attribute(null, "id", String.valueOf((int) view.getTag(R.integer.tag_resource)));
 				serializer.attribute(null, "position", view.getX() + " " + view.getY());
 				serializer.attribute(null, "size", view.getWidth() + " " + view.getHeight());
 				serializer.attribute(null, "rotation", String.valueOf(view.getRotation()));
