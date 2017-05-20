@@ -25,4 +25,11 @@
     <string name="content_undo">Undo the last change</string>
     <string name="content_redo">Redo the previous change</string>
     <string name="content_info">Display information</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="error_file_save">Failed to save file to storage</string>
+    <string name="success_file_save">File saved successfully</string>
+    <string name="button_retry">Try again</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="dialog_save">Name your story</string>
 </resources>

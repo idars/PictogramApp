@@ -15,4 +15,9 @@
     <string name="content_info">Vis informasjon</string>
     <string name="content_redo">Gjør om den neste endringen</string>
     <string name="content_undo">Angre den siste endringen</string>
+    <string name="button_cancel">Avbryt</string>
+    <string name="button_retry">Prøv igjen</string>
+    <string name="error_file_save">Kunne ikkje lagre fil</string>
+    <string name="success_file_save">Fil lagra</string>
+    <string name="dialog_save">Gjev historia eit namn</string>
 </resources>

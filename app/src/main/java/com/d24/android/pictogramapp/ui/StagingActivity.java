@@ -1,5 +1,8 @@
 package com.d24.android.pictogramapp.ui;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.os.Parcelable;
@@ -23,7 +26,18 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.d24.android.pictogramapp.R;
+import com.d24.android.pictogramapp.util.StoryXmlSerializer;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +48,8 @@ import java.util.List;
 public class StagingActivity extends AppCompatActivity
 		implements SelectingFragment.PictogramSelectedListener,
 		BackgroundPickerFragment.OnBackgroundSelectedListener,
-		EditingFragment.OnCanvasTouchedListener{
+		EditingFragment.OnCanvasTouchedListener,
+		SaveDialogFragment.SaveDialogListener {
 
 	private ImageView img;
 	private static final String BACKGROUND_FRAGMENT_TAG = "BACKGROUND_TAG";
@@ -294,14 +309,59 @@ public class StagingActivity extends AppCompatActivity
 	// Not implemented, Created for PreviewFragment. Navigation & Management of Scenes
 	public void onSaveButtonClicked() {
 		// TODO Save information of the scene/story
+		// TODO Create new thread
+		Log.d(getLocalClassName(), mPager.toString());
+		int count = mPager.getChildCount();
+		for (int i = 0; i < count; ++i) {
+			Log.d(getLocalClassName(), mPager.getChildAt(i).toString());
+		}
+
+		SaveDialogFragment dialog = new SaveDialogFragment();
+		dialog.show(getFragmentManager(), "save");
+
 		//createNewScene(true); // TODO, Temporary use for testing: Adding new Scene
 		//deleteCurrentScene(); // TODO, Temporary use for testing: Deleting Scene
 	}
 
 	@Override
+	public void onDialogPositiveClick(DialogFragment dialog, String filename) {
+		try {
+			File file = new File(getFilesDir(), filename);
+			FileOutputStream outputStream = new FileOutputStream(file);
+			StoryXmlSerializer serializer = new StoryXmlSerializer();
+			serializer.write(outputStream, (ViewPager) findViewById(R.id.viewPager), filename);
+
+			// Debug code; to display output code
+			FileInputStream inputStream = new FileInputStream(file);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+			StringBuilder sb = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line).append("\n");
+			}
+			reader.close();
+
+			Log.d(getLocalClassName(), "File output: " + filename + "\n" + sb.toString());
+
+			Snackbar.make(findViewById(R.id.frame_layout),
+					R.string.success_file_save, Snackbar.LENGTH_SHORT).show();
+		} catch (IOException e) {
+			// Display error message
+			Snackbar.make(findViewById(R.id.frame_layout),
+					R.string.error_file_save, Snackbar.LENGTH_LONG)
+					.setAction(R.string.button_retry, new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							onSaveButtonClicked();
+						}
+					}).show();
+		}
+	}
+
+	@Override
 	public void onSolidColorSelected(AdapterView<?> adapterView, View view, int i, long l) {
 		TypedArray colors = getResources().obtainTypedArray(R.array.background_colors);
-		int color = colors.getColor(i + 1, -1);
+		int color = colors.getColor(i, -1);
 
 		int index = 0;
 		index = mPager.getCurrentItem();
