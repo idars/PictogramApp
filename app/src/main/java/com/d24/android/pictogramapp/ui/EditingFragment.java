@@ -77,19 +77,22 @@ public class EditingFragment extends Fragment {
     public void updateImageView(long item_id) {
 
         //final ArrayList<Drawable> imageItems = new ArrayList<>();
+        if(isAdded()) {
+            Resources res = getResources();
 
-        Resources res = getResources();
+            TypedArray image_ids = res.obtainTypedArray(R.array.image_ids);
 
-        TypedArray image_ids = res.obtainTypedArray(R.array.image_ids);
+            Integer intItemId = (int) item_id;
 
-        Integer intItemId = (int) item_id;
+            Drawable drawable = image_ids.getDrawable(intItemId);
+            StickerImageView newImg = new StickerImageView(getActivity());
+            newImg.setImageDrawable(drawable);
+            newImg.setTag(R.integer.tag_resource, intItemId);
 
-        Drawable drawable = image_ids.getDrawable(intItemId);
-        StickerImageView newImg = new StickerImageView(getActivity());
-        newImg.setImageDrawable(drawable);
-		newImg.setTag(R.integer.tag_resource, intItemId);
-
-        canvas.addView(newImg);
+            canvas.addView(newImg);
+        } else {
+            Log.i("Test_22.3", "Fragment not attached");
+        }
     }
 
     public View getView(){
@@ -98,6 +101,10 @@ public class EditingFragment extends Fragment {
 
     public static EditingFragment newInstance() {
         return new EditingFragment();
+    }
+
+    public void copyObject(EditingFragment editingFragment) {
+        canvas = editingFragment.canvas;
     }
 
     public interface OnCanvasTouchedListener {

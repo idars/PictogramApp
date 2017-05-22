@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -52,6 +53,7 @@ public class StagingActivity extends AppCompatActivity
 	//TODO, private static final String PREVIEW_FRAGMENT_TAG = "PREVIEW_TAG";
 
 	private List<EditingFragment> fragmentList;
+	private List<EditingFragment> fragmentList2;
 	SelectingFragment selectingFragment;
 	BackgroundPickerFragment backgroundPickerFragment;
 	//TODO, PreviewFragment previewFragment;
@@ -75,6 +77,44 @@ public class StagingActivity extends AppCompatActivity
 			actionBar.setDisplayShowTitleEnabled(false);	// Remove title from bar
 			actionBar.getNavigationMode();
 		}
+
+		// TEST, Get size
+		Log.i("Test_22.1", "FragList2");
+		int testVal = 5;
+		fragmentList2 = new ArrayList<EditingFragment>();
+		EditingFragment[] frags = new EditingFragment[5];
+		for(int i = 0; i< testVal; i++)
+			frags[i] = EditingFragment.newInstance();
+
+		for(int i = 0; i < testVal; i++) {
+			fragmentList2.add(frags[i]);
+			int size = fragmentList2.size();
+			Log.i("Test_22.1", "Frag count, " + size);
+		}
+
+		// TEST, Get index
+		for(int i = 0; i < 5; i++) {
+			int index = fragmentList2.indexOf(frags[i]);
+			Log.i("Test_22.1", "Frag index, " + index);
+		}
+
+		// Remove one index
+		fragmentList2.remove(3);
+
+		// TEST, Get index
+		for(int i = 0; i < 5; i++) {
+			int index = fragmentList2.indexOf(frags[i]);
+			Log.i("Test_22.1", "\tFrag index2, " + index);
+		}
+
+
+
+
+
+
+
+
+
 
 		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
 		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
@@ -228,7 +268,7 @@ public class StagingActivity extends AppCompatActivity
 
 	public void onUndoButtonClicked() {
 		boolean buttonIsActive = true;
-		createNewScene(true); //Todo, remove
+		//createNewScene(true); //Todo, remove
 		if (buttonIsActive) {
 			int color_white = getResources().getColor(R.color.white);
 			menu.findItem(R.id.action_undo).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
@@ -237,8 +277,11 @@ public class StagingActivity extends AppCompatActivity
 			menu.findItem(R.id.action_undo).getIcon().setColorFilter(color_grey, PorterDuff.Mode.SRC_IN);
 		}
 
+        //createNewScene(true); // TODO, Temporary use for testing: Adding new Scene
+        deleteCurrentScene(); // TODO, Temporary use for testing: Deleting Scene
 
-		// If undo is successful:
+
+        // If undo is successful:
 		// toolFragment.setRedoAvailable(true);
 
 		// If there are no more changes to undo:
@@ -276,7 +319,8 @@ public class StagingActivity extends AppCompatActivity
 	// Not fully implemented, Created for PreviewFragment. Navigation & Management of Scenes
 	private void createNewScene(boolean notifyChange) {
 		Log.i("Testing_15", "ADDING NEW FRAGMENT");
-		EditingFragment frag = EditingFragment.newInstance();
+		//TEST_22.3EditingFragment frag = EditingFragment.newInstance();
+		EditingFragment frag = new EditingFragment();
 		fragmentList.add(frag);
 		if(notifyChange) {
 			mPagerAdapter.notifyDataSetChanged();
@@ -291,10 +335,13 @@ public class StagingActivity extends AppCompatActivity
 		Log.i("Testing_15", "DELETING FRAGMENT at " + currentIndex);
 
 		// TODO, NAVIGATION, mPager.setCurrentItem(2);
-		mPager.removeView((View) fragmentList.get(currentIndex).getView());
+		//mPager.removeView((View) fragmentList.get(currentIndex).getView());
 		//mPager.setCurrentItem(currentIndex+1);
 		//alternative, mPager.removeViewAt(2);
+
 		fragmentList.remove(currentIndex);
+		Log.i("Test_22.size", "Size after " + fragmentList.size());
+
 		mPagerAdapter.notifyDataSetChanged();
 		//mPager.setAdapter(mPagerAdapter);
 	}
@@ -305,10 +352,7 @@ public class StagingActivity extends AppCompatActivity
 		// TODO Create new thread
 		SaveDialogFragment dialog = new SaveDialogFragment();
 		dialog.show(getFragmentManager(), "save");
-
-		//createNewScene(true); // TODO, Temporary use for testing: Adding new Scene
-		//deleteCurrentScene(); // TODO, Temporary use for testing: Deleting Scene
-	}
+    }
 
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog, String filename) {
@@ -390,7 +434,11 @@ public class StagingActivity extends AppCompatActivity
 		}*/
 
 		if(frag != null){
-			frag.updateImageView(item_id);
+			try {
+					frag.updateImageView(item_id);
+			} catch (Exception e) {
+				Log.i("Test_22.3", "Error at updateImg: " + e.toString());
+			}
 
 		}
 		else {
@@ -404,8 +452,34 @@ public class StagingActivity extends AppCompatActivity
 	}
 
 
-	public class ViewPagerAdapter extends FragmentPagerAdapter {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+
+		public boolean newlyDestroyed = false;
 		public ViewPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
@@ -415,98 +489,14 @@ public class StagingActivity extends AppCompatActivity
 			return fragmentList.size();
 		}
 
-		/* METODE blir kalt fra mPagerAdapter.notifyDataSetChanged()
-		 Dette er når fragmentList får nye elementer eller det fjernes et element
-		 POSITION_NONE, om objekt er fjernet fra listen
-		 */
-		@Override
-		public int getItemPosition(Object object)
-		{
-//			Log.i("Testing_15", "1.0\tgetItemPosition(), return " + 			super.getItemPosition(object));
-			//Log.i("Testing_15", "Checking, how much have this object moved?, Position (" + 			super.getItemPosition(object) + ")*?");
-			//Log.i("Testing_15", "(Check visible fragment) (" + index + "/" + (getCount()-1) + ")");
-			Log.i("Testing_15", "(-/" + (getCount()-1) + ") Check visible fragments");
 
-			EditingFragment fr = (EditingFragment) object;
-			int index = -1;
-
-			for(int i = 0; i < getCount(); i++) {
-				EditingFragment item = (EditingFragment) fragmentList.get(i);
-				if(item.equals(fr)) {
-					// item still exists in dataset; return position
-					index = i;
-					break;
-				}
-			}
-			//Log.i("Testing_15", "" + object.);
-
-			// TODO, could test a boolean variable if fragment found
-			if ((object instanceof  EditingFragment) && (index != -1)) {
-				Log.i("Testing_15", "(" + index + "/(" + (getCount()-1) + ") Fragment found");
-				EditingFragment f = (EditingFragment) object;
-
-				Log.i("Testing_15", "\t return "+ POSITION_UNCHANGED);
-
-				return POSITION_UNCHANGED;
-			} else {
-//				Log.i("Testing_15", "UNEXPECTED, Object.class: " + object.getClass());
-				Log.i("Testing_15", "(-/(" + (getCount()-1) + ") Fragment NOT found, delete()");
-				Log.i("Testing_15", "\t return "+ POSITION_NONE);
-				return POSITION_NONE;
-			}
-
-			/*TODO, New implementation
-			 EditingFragment f = (EditingFragment) object;
-
-			for(int i = 0; i < getCount(); i++) {
-
-				Fragment item = (Fragment) getItem(i);
-				if(item.equals(f)) {
-					// item still exists in dataset; return position
-					return i;
-				}
-			}
-
-			// if we arrive here, the data-item for which the Fragment was created
-			// does not exist anymore.
-
-			// Also, cleanup: remove reference to Fragment from mItems
-			for(Map.Entry<Long, MainListFragment> entry : mItems.entrySet()) {
-				if(entry.getValue().equals(f)) {
-					mItems.remove(entry.getKey());
-					break;
-				}
-			}
-
-			// Let ViewPager remove the Fragment by returning POSITION_NONE.
-			return POSITION_NONE;
-			 */
-		}
-
-
-
-		/*TODO, Called when a change in the shown pages is going to start being made.*/
-		@Override
-		public void 	startUpdate(ViewGroup container){
-			//Log.i("Testing_15", "1.\tstartUpdate()");
-			//Log.i("Testing_15", "Starting Transaction");
-			Log.i("Testing_15", "(-/" + (getCount()-1) + ") Start");
-			//Log.i("Testing_15", "\t\t end");
-			super.startUpdate(container);
-		}
-
+		//Destroying Item at (position / getCount())
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
-			//super.destroyItem(container, position, object);
-			//Log.i("Testing_15", "\t2.0\tdestroyItem(" + position + ")");
-			//Log.i("Testing_15", "\tDestroying Item at (" + position + "/" + getCount() + ") [disabled]");
-			Log.i("Testing_15", "\t(" + position + "/" + (getCount()-1) + ") [attempt] [Destroying Frag.]");
-
-			// TODO, possibility to NOT have to go through for-loop
 			if (object instanceof EditingFragment) {
 				EditingFragment fr = (EditingFragment) object;
 				int index = -1;
-
+				int index1 = fragmentList.indexOf(fr);
 				for(int i = 0; i < getCount(); i++) {
 					EditingFragment item = (EditingFragment) fragmentList.get(i);
 					if(item.equals(fr)) {
@@ -515,130 +505,138 @@ public class StagingActivity extends AppCompatActivity
 						break;
 					}
 				}
+				Log.i("Test_22.3", "Hiding Frag:\t" + (index1 + 1));
+
+
 				if(index == -1) {
-					Log.i("Testing_15", "\t(" + position + "/" + (getCount()-1) + ") [super] [Destroying Frag.]");
-
-					//instantiateItem(container, (position-1));
-
+					Log.i("Test_22.3", "\tDestroying fragment at:\t" + (position+1));
+					super.destroyItem(container, position, object);
+					newlyDestroyed = true;
 				}
 			}
-
-			/*TODO, consider deleting
-			EditingFragment f = fragmentList.get(0);
-			if((f == null)){
-				Log.i("Testing_15", "destroy is null");
-			}
-			Log.i("Testing_15", "IF-IF of DESTROY");
-			if(f != null){
-				Log.i("Testing_15", "destroying");
-				fragmentList.remove(0);
-				Log.i("Testing_15", "destroyingSuper");
-				Log.i("Testing_15", "destroy end");
-			}
-*/
 		}
 
-		/*TODO, Return a unique identifier for the item at the given position.*/
+
+		/* METODE blir kalt fra mPagerAdapter.notifyDataSetChanged()
+		 Dette er når fragmentList får nye elementer eller det fjernes et element
+		 POSITION_NONE, om objekt er fjernet fra listen
+		 */
 		@Override
-		public long 	getItemId(int position){
-			// Basically returning position back as long-variable... nothing extra implemented
-			Log.i("Testing_15", "\t(" + position + "/" + (getCount()-1) + ") [Find ID]");
-			return super.getItemId(position);
+		public int getItemPosition(Object object)
+		{
+			//			Log.i("Testing_15", "1.0\tgetItemPosition(), return " + 			super.getItemPosition(object));
+			//Log.i("Testing_15", "Checking, how much have this object moved?, Position (" + 			super.getItemPosition(object) + ")*?");
+			//Log.i("Testing_15", "(Check visible fragment) (" + index + "/" + (getCount()-1) + ")");
+			//Log.i("Test_22.2", "(-/" + (getCount()-1) + ") Check visible fragments");
+			EditingFragment fr = (EditingFragment) object;
+			int index = fragmentList.indexOf(fr);
+
+			Log.i("Test_22.3", "gtItemPos. frag.index,\t" + index);
+
+			//Log.i("Testing_15", "" + object.);
+
+			// TODO, could test a boolean variable if fragment found
+			if ((object instanceof  EditingFragment) && (index != -1)) {
+				Log.i("Test_22.3", "\t\tFragment found");
+				EditingFragment f = (EditingFragment) object;
+				return index;
+			} else {
+				((EditingFragment) object).copyObject(fragmentList.get(0));
+				Log.i("Test_22.3", "\t\tFragment NOT found, delete");
+				return POSITION_NONE;
+			}
 		}
+
+
+		/*Create the page for the given position.*/
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) {
+
+			Fragment fragment = getItem(position);
+			if(fragment.getId() == 0){
+				Log.i("Test_22.3", "GOOD, GOOD at " + position);
+				return super.instantiateItem(container, position);
+			} else {
+				Log.i("Test_22.3", "BAD, BAD at " + position);
+				return fragment;
+
+				/*Log.i("Test_22.3", "BAD, BAD at " + position);
+				try{
+					return super.instantiateItem(container, position);
+				} catch (Exception e) {
+					Log.i("Test_22.3", "Error at instantiate: " + e.toString());
+					return fragment;
+				}*/
+			}
+
+
+			/* Trying out some new things
+			Log.i("Test_22.3", "Showing fragment at:\t" + (position+1));
+			if(newlyDestroyed){
+				Log.i("Test_22.3", "Trixy:\t" + (position+1));
+				newlyDestroyed = false;
+				//return getItem(position);
+			}
+
+			// Test_22 Problem here??
+			Object obj = null;
+			try{
+				obj = super.instantiateItem(container, position);
+			} catch (Exception e){
+				Log.i("Test_22.3", "\t Error at instansiate: " + e.toString());
+				EditingFragment f = (EditingFragment) getItem(position);
+				return getItem(position);
+			}
+			return obj;*/
+
+
+		}
+
+
+
+
+
+
+
+
+
+
 
 		/*Return the Fragment associated with a specified position.*/
 		@Override
 		public Fragment getItem(int position) {
 			EditingFragment fragment = null;
 			fragment = fragmentList.get(position);
-			//Log.i("Testing_15", "\t(" + position + "/" + (getCount()-1) + ") [getFragment]");
-			//Log.i("Testing_15", "\t\tReturning fragment-object at (" + position + ")");
-
-			/*TODO, consider deleting
-			if(fragmentList.size() > 2){
-				fragment = EditingFragment.newInstance();
-				//Log.i("Testing_15", "\t2.2.\tgetItem(" + position + "), \t return (new) Fragment");
-				Log.i("Testing_15", "\tCreating fragment at (" + position + "), (new) Fragment-instnace");
+			if(fragment.getId() == 0) {
+				return fragment;
 			}
-			else{
-				//Log.i("Testing_15", "\t2.2\tgetItem(" + position + "), \t return fragment");
-				Log.i("Testing_15", "\tCreating fragment(" + position + "), fragmentList(pos)");
-
-				fragment = fragmentList.get(position);
-			}*/
-
+			Log.i("Test_22.3", "BAD");
 			return fragment;
 		}
 
-		/*Create the page for the given position.*/
-		@Override
-		public Object instantiateItem(ViewGroup container, int position) {
-			// TODO, might be uncessary to override
-			//Log.i("Testing_15", "\tInstansiate at (" + position + ")");
-			Log.i("Testing_15", "\t(" + position + "/" + (getCount()-1) + ") [Load fragment]");
-			return super.instantiateItem(container, position);
-
-
-			/*TODO, consider deleting
-			EditingFragment fragment = (EditingFragment) super.instantiateItem(container, position);
-			//alt,1 fragmentList.add(position, fragment)
-			//Log.i("Testing_15", "\t2.2.2 instansiate(" + position + ")");
-
-			if(fragmentList.get(position) == null){
-				Log.i("Testing_15", "INSTANSIATING, UNEXPECTED CALL, FRAGMENT WAS NULL");
-				fragmentList.add(position, fragment);
-			} else {
-				fragmentList.remove(position);
-				fragmentList.add(position, fragment);
-			}
-			return fragment;
-			*/
-		}
-
-
-
-
-		/*TODO, Called to inform the adapter of which item is currently considered to be the "primary", that is the one show to the user as the current page.*/
+		// Setting new primary fragment at(" + position + ")
 		@Override
 		public void 	setPrimaryItem(ViewGroup container, int position, Object object){
-			//Log.i("Testing_15", "\t2.3\tsetPrimaryItem(" + position + ")");
-			//Log.i("Testing_15", "\tSetting new primary fragment at(" + position + ")");
-			Log.i("Testing_15", "\t(" + position + "/" + (getCount()-1) + ") ** New primary");
 			super.setPrimaryItem(container, position, object);
+			//Log.i("Test_22.3", (position+1) + " ID: "+((EditingFragment) object).getId());
+
 		}
 
-		/*TODO, Called when the a change in the shown pages has been completed.*/
+
+		//Called when the a change in the shown pages has been completed.
+		//Transaction completed
 		@Override
 		public void finishUpdate(ViewGroup container){
-			super.finishUpdate(container);
-			//Log.i("Testing_15", "\t\t3. \tfinishUpdate()\n");
-			//Log.i("Testing_15", "Transaction completed\n");
-			Log.i("Testing_15", "\t");
+			try {
+				super.finishUpdate(container);
+			} catch (Exception e){
+				Log.i("Test_22.3", "Error at finish: " + e.toString());
+			}
+			int start = mPager.getCurrentItem();
+			//Log.i("Test_22.3", "Now viewing fragment: " + ++start);
 		}
 
 
-
-		/*TODO, Determines whether a page View is associated with a specific key object as returned by instantiateItem(ViewGroup, int).*/
-		@Override
-		public boolean 	isViewFromObject(View view, Object object){
-			//Log.i("Testing_15", "\t\t\t4.\tisViewFromObject(), return" + super.isViewFromObject(view, object));
-			return super.isViewFromObject(view,object);
-		}
-
-		/*TODO, Restore any instance state associated with this adapter and its pages that was previously saved by saveState().*/
-		@Override
-		public void 	restoreState(Parcelable state, ClassLoader loader){
-			Log.i("Testing_15", "UNEXPECTED METHOD 3 - PageAdapter.restoreState()");
-			super.restoreState(state,loader);
-		}
-
-		/*TODO, Save any instance state associated with this adapter and its pages that should be restored if the current UI state needs to be reconstructed.*/
-		@Override
-		public Parcelable saveState(){
-			Log.i("Testing_15", "UNEXPECTED METHOD, 4 - PageAdapter.saveState()");
-			//Log.i("Testing_15", "\t\t end");
-			return super.saveState();
-		}
 	}
 
 
