@@ -3,15 +3,25 @@ package com.d24.android.pictogramapp.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.d24.android.pictogramapp.R;
 import com.d24.android.pictogramapp.ui.MainActivity;
+
+import java.io.File;
+import java.text.DateFormat;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +36,42 @@ public class MainActivity extends AppCompatActivity {
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
+		File internalStorage = getFilesDir();
+		final File[] files = internalStorage.listFiles();
+
+		ArrayAdapter<File> adapter = new ArrayAdapter<File>(this, android.R.layout.simple_list_item_2, android.R.id.text1, files) {
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				View view = super.getView(position, convertView, parent);
+				TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+				TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+
+				DateFormat formatter = DateFormat.getDateInstance();
+				text1.setText(files[position].getName());
+				text2.setText(formatter.format(new Date(files[position].lastModified())));
+				return view;
+			}
+		};
+
+		ListView listView = (ListView) findViewById(R.id.list_files);
+		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+				Intent intent = new Intent(MainActivity.this, StagingActivity.class);
+				intent.putExtra("filename", ((TextView) view).getText().toString());
+				startActivity(intent);
+			}
+		});
+
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(MainActivity.this, StagingActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 
 	@Override
@@ -54,13 +100,6 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 	}
-
-	public void stageClick(View view) {
-		Log.i("D-bug", "stageClick");
-		Intent intent = new Intent(this, StagingActivity.class);
-		startActivity(intent);
-	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

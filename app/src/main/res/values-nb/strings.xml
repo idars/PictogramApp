@@ -20,4 +20,5 @@
     <string name="error_file_save">Kunne ikke lagre fil</string>
     <string name="success_file_save">Fil lagret</string>
     <string name="dialog_save">Gi historien et navn</string>
+    <string name="error_file_load">Kunne ikke åpne fil</string>
 </resources>

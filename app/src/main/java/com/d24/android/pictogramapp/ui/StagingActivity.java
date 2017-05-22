@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.d24.android.pictogramapp.R;
+import com.d24.android.pictogramapp.model.Story;
 import com.d24.android.pictogramapp.util.StoryXmlSerializer;
 
 import java.io.BufferedReader;
@@ -106,7 +107,6 @@ public class StagingActivity extends AppCompatActivity
 
 		transaction.commit();
 	}
-
 
 	@Override
 	public void onResume(){
@@ -316,7 +316,7 @@ public class StagingActivity extends AppCompatActivity
 			File file = new File(getFilesDir(), filename);
 			FileOutputStream outputStream = new FileOutputStream(file);
 			StoryXmlSerializer serializer = new StoryXmlSerializer();
-			serializer.write(outputStream, (ViewPager) findViewById(R.id.viewPager), filename);
+			serializer.write(outputStream, new Story(filename, (ViewPager) findViewById(R.id.viewPager)));
 
 			// Debug code; to display output code
 			FileInputStream inputStream = new FileInputStream(file);

@@ -27,9 +27,10 @@
     <string name="content_info">Display information</string>
 
 <!-- TODO: Remove or change this placeholder text -->
-    <string name="error_file_save">Failed to save file to storage</string>
+    <string name="error_file_save">Could not save file to storage</string>
     <string name="success_file_save">File saved successfully</string>
     <string name="button_retry">Try again</string>
     <string name="button_cancel">Cancel</string>
     <string name="dialog_save">Name your story</string>
+    <string name="error_file_load">Could not load file</string>
 </resources>

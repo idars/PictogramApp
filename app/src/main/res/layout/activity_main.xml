@@ -24,17 +24,14 @@
     <include layout="@layout/content_main"
         android:id="@+id/include" />
 
-    <Button
-        android:id="@+id/stageButton"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginTop="78dp"
-        android:onClick="stageClick"
-        android:text="@string/button_label_stage"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="center_vertical|center_horizontal" />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:backgroundTint="?attr/colorButtonNormal"
+        android:tint="@color/colorPrimary"/>
 
 </android.support.design.widget.CoordinatorLayout>

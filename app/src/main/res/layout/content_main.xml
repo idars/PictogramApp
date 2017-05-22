@@ -9,4 +9,27 @@
     tools:context="com.d24.android.pictogramapp.ui.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/list_files"
+        android:elevation="10dp"
+        android:layout_margin="5dp">
+
+    </ListView>
+    <!--
+    <Button
+        android:id="@+id/stageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="78dp"
+        android:onClick="stageClick"
+        android:text="@string/button_label_stage"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="center_vertical|center_horizontal" />
+     -->
+
 </android.support.constraint.ConstraintLayout>

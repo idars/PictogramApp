@@ -39,7 +39,8 @@ public class StoryXmlParser {
 	 *
 	 * @param in the stream of which the XML will be read from
 	 * @return the previously saved story
-	 * @throws IOException if the stream is unable to output the XML, or if the given story is not serializable
+	 * @throws XmlPullParserException if the XML is badly formatted
+	 * @throws IOException if the given story is not parsable
 	 */
 	public Story parse(InputStream in) throws XmlPullParserException, IOException {
 		try {
