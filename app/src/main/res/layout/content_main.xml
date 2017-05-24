@@ -14,22 +14,42 @@
         android:layout_height="match_parent"
         android:id="@+id/list_files"
         android:elevation="10dp"
-        android:layout_margin="5dp">
-
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
     </ListView>
-    <!--
-    <Button
-        android:id="@+id/stageButton"
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginTop="78dp"
-        android:onClick="stageClick"
-        android:text="@string/button_label_stage"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="center_vertical|center_horizontal" />
-     -->
+        android:orientation="vertical"
+        android:id="@+id/empty"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/empty"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_margin"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:src="@drawable/pm_figures_020_invisible"
+            android:contentDescription="@string/empty_figure"/>
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

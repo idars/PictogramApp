@@ -31,8 +31,6 @@ public class Scene {
 		if (drawable instanceof ColorDrawable) {
 			int colorValue = ((ColorDrawable) drawable).getColor();
 			background = "#" + Integer.toHexString(colorValue);
-
-			// To convert back to integer: Color.parseColor(hexFormat)
 		} else {
 			// TODO Determine drawable resource
 		}

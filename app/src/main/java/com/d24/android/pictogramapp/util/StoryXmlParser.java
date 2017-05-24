@@ -30,6 +30,7 @@ public class StoryXmlParser {
 	 *   <scene background="#fffff9c4">
 	 *     <figure id="29" x="100.61575", y="356.74945" size="300" rotation="0.0" mirrored="false" />
 	 *     <figure id="1" x="330.33588", y="363.47583" size="300" rotation="0.0" mirrored="false" />
+	 *     ...
 	 *   </scene>
 	 *   <scene>
 	 *       ...
@@ -73,7 +74,6 @@ public class StoryXmlParser {
 			}
 		}
 
-		parser.require(XmlPullParser.END_TAG, ns, "story");
 		return new Story(title, scenes);
 	}
 
@@ -95,7 +95,6 @@ public class StoryXmlParser {
 			}
 		}
 
-		parser.require(XmlPullParser.END_TAG, ns, "scene");
 		return new Scene(background, figures);
 	}
 
@@ -105,11 +104,10 @@ public class StoryXmlParser {
 		int id = Integer.valueOf(parser.getAttributeValue(ns, "id"));
 		float x = Float.valueOf(parser.getAttributeValue(ns, "x"));
 		float y = Float.valueOf(parser.getAttributeValue(ns, "y"));
-		float size = Float.valueOf(parser.getAttributeValue(ns, "size"));
+		int size = Integer.valueOf(parser.getAttributeValue(ns, "size"));
 		float rotation = Float.valueOf(parser.getAttributeValue(ns, "rotation"));
 		boolean mirrored = Boolean.valueOf(parser.getAttributeValue(ns, "mirrored"));
 
-		parser.require(XmlPullParser.END_TAG, ns, "figure");
 		return new Figure(id, x, y, size, rotation, mirrored);
 	}
 

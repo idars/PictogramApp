@@ -8,11 +8,11 @@ public class Figure {
 	public int id;
 	public float x;
 	public float y;
-	public float size;
+	public int size;
 	public float rotation;
 	public boolean mirrored;
 
-	public Figure(int id, float x, float y, float size, float rotation, boolean mirrored) {
+	public Figure(int id, float x, float y, int size, float rotation, boolean mirrored) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -35,4 +35,5 @@ public class Figure {
 		this.rotation = view.getRotation();
 		this.mirrored = view.isFlip();
 	}
+
 }

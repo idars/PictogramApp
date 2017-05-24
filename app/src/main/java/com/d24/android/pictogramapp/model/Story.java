@@ -1,7 +1,6 @@
 package com.d24.android.pictogramapp.model;
 
 import android.support.v4.view.ViewPager;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;

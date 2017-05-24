@@ -29,7 +29,8 @@ public class StoryXmlSerializer {
 	 * <story name="My very own story">
 	 *   <scene background="#fffff9c4">
 	 *     <figure id="29" x="100.61575", y="356.74945" size="300" rotation="0.0" mirrored="false" />
-	 *     <figure id="1" x="330.33588", y="363.47583" size="300" rotation="0.0" mirrored="false" />
+	 *     <figure id="33" x="330.33588", y="363.47583" size="300" rotation="0.0" mirrored="false" />
+	 *     ...
 	 *   </scene>
 	 *   <scene>
 	 *       ...

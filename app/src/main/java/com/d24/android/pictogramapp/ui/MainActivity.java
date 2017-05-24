@@ -59,10 +59,14 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 				Intent intent = new Intent(MainActivity.this, StagingActivity.class);
-				intent.putExtra("filename", ((TextView) view).getText().toString());
+				TextView text = (TextView) view.findViewById(android.R.id.text1);
+				intent.putExtra("filename", (text.getText().toString()));
 				startActivity(intent);
 			}
 		});
+
+		View empty = findViewById(R.id.empty);
+		listView.setEmptyView(empty);
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener() {
