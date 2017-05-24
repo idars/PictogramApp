@@ -180,7 +180,7 @@ public abstract class StickerView extends FrameLayout {
             if(m_context instanceof StagingActivity)
             {
                 StagingActivity activity = (StagingActivity) m_context;
-                //activity.focusEditingFragment();
+                activity.focusEditingFragment();
             }
 
             if(view.getTag().equals("DraggableViewGroup")) {
