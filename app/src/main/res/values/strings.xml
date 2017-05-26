@@ -33,6 +33,6 @@
     <string name="button_cancel">Cancel</string>
     <string name="dialog_save">Name your story</string>
     <string name="error_file_load">Could not load file</string>
-    <string name="empty">Nothing to show here</string>
+    <string name="empty">No stories created yet</string>
     <string name="empty_figure">A figure illustrating an invisible person</string>
 </resources>

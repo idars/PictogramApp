@@ -1,0 +1,17 @@
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/canvas"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/canvas_margin"
+    card_view:cardElevation="8dp">
+
+    <com.d24.android.pictogramapp.ui.LayerLayout
+        android:id="@+id/layer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.LayerLayout"/>
+
+</android.support.v7.widget.CardView>

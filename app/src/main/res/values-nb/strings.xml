@@ -22,5 +22,5 @@
     <string name="dialog_save">Gi historien et navn</string>
     <string name="error_file_load">Kunne ikke åpne fil</string>
     <string name="empty_figure">Et bilde av en usynlig person</string>
-    <string name="empty">Ikke noe å vise her</string>
+    <string name="empty">Ingen historier opprettet ennå</string>
 </resources>

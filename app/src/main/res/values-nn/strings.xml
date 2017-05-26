@@ -22,5 +22,5 @@
     <string name="dialog_save">Gje historia eit namn</string>
     <string name="error_file_load">Kunne ikkje opne fil</string>
     <string name="empty_figure">Eit bilde av ein usynleg person</string>
-    <string name="empty">Intet å vise her</string>
+    <string name="empty">Ingen historiar oppretta enda</string>
 </resources>
