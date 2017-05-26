@@ -2,6 +2,7 @@ package com.d24.android.pictogramapp.ui;
 
 import android.app.DialogFragment;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
@@ -15,17 +16,27 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.d24.android.pictogramapp.R;
+import com.d24.android.pictogramapp.model.Figure;
+import com.d24.android.pictogramapp.model.Scene;
 import com.d24.android.pictogramapp.model.Story;
+import com.d24.android.pictogramapp.stickerview.StickerImageView;
+import com.d24.android.pictogramapp.util.MyViewPagerAdapter;
+import com.d24.android.pictogramapp.util.StoryXmlParser;
 import com.d24.android.pictogramapp.util.StoryXmlSerializer;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -62,7 +73,7 @@ public class StagingActivity extends AppCompatActivity
 
 	private ViewPager mPager;
 	private static final int NUM_OF_SCENES = 5; // Initial nr of scenes to start with
-	private PagerAdapter mPagerAdapter;
+	private MyViewPagerAdapter mPagerAdapter;
 
 
 	@Override
@@ -83,16 +94,24 @@ public class StagingActivity extends AppCompatActivity
 
 		// TODO, Scene Initalization
 		// Instantiate a ViewPager and a PagerAdapter.
-		fragmentList = new ArrayList<EditingFragment>();
-		for(int i = 0; i < NUM_OF_SCENES; i++) {
-			createNewScene(false);
-		}
+		// fragmentList = new ArrayList<EditingFragment>();
+		// for(int i = 0; i < NUM_OF_SCENES; i++) {
+			// createNewScene(false);
+		// }
 
 
 		mPager = (ViewPager) findViewById(R.id.viewPager);
-		mPagerAdapter = new ViewPagerAdapter(manager);
+		mPagerAdapter = new MyViewPagerAdapter(manager);
 		mPager.setAdapter(mPagerAdapter);
 //		mViewPager.setOnPageChangeListener((ViewPager.OnPageChangeListener) this);
+
+		// Instantiate ViewPager with a blank fragment
+
+		// LayoutInflater inflater = getLayoutInflater();
+		// FrameLayout v0 = (FrameLayout) inflater.inflate(R.layout.fragment_stage_editing, null);
+		// mPagerAdapter.addView(v0, 0);
+		EditingFragment fragment = EditingFragment.newInstance();
+		addPage(fragment);
 
 		selectingFragment = SelectingFragment.newInstance();
 		backgroundPickerFragment = BackgroundPickerFragment.newInstance();
@@ -109,6 +128,84 @@ public class StagingActivity extends AppCompatActivity
 	}
 
 	@Override
+	protected void onStart() {
+		super.onStart();
+
+		// Check if this activity has been initiated with a pre-made story
+		String filename = getIntent().getStringExtra("filename");
+		if (filename != null) {
+			// Read from the provided file
+			try {
+				File file = new File(getFilesDir(), filename);
+				FileInputStream inputStream = new FileInputStream(file);
+				StoryXmlParser parser = new StoryXmlParser();
+				populateFrom(parser.parse(inputStream));
+			} catch (XmlPullParserException | IOException e) {
+				e.printStackTrace();
+				Snackbar.make(findViewById(R.id.frame_layout),
+						R.string.error_file_load, Snackbar.LENGTH_LONG).show();
+			}
+		}
+	}
+
+	private void populateFrom(Story story) {
+		for (Scene scene : story.scenes) {
+			EditingFragment fragment = EditingFragment.newInstance();
+			mPagerAdapter.addFragment(fragment);
+
+			View fragmentView = fragment.getView();
+			if (fragmentView != null) {
+				fragmentView.setBackgroundColor(Color.parseColor(scene.background));
+			}
+
+			for (Figure figure : scene.figures) {
+				StickerImageView sticker = fragment.updateImageView(figure.id);
+
+				sticker.setX(figure.x);
+				sticker.setY(figure.y);
+				sticker.getLayoutParams().height = figure.size;
+				sticker.getLayoutParams().width = figure.size;
+				sticker.setRotation(figure.rotation);
+				if (figure.mirrored) sticker.setRotationY(-180f);
+
+				sticker.requestLayout();
+			}
+		}
+
+		// Remove initial fragment created in onCreate
+		mPagerAdapter.removeFragment(mPager, 0);
+	}
+
+	// Methods for altering the pages (scenes) shown through the ViewPager
+
+	public void addPage(EditingFragment e) {
+		int position = mPagerAdapter.addFragment(e);
+		mPager.setCurrentItem(position);
+	}
+
+	public void addPage(EditingFragment e, int position) {
+		mPagerAdapter.addFragment(e, position);
+		mPager.setCurrentItem(position);
+	}
+
+	public void removePage(EditingFragment e) {
+		int position = mPagerAdapter.removeFragment(mPager, e);
+		if (position == mPagerAdapter.getCount()) position--;
+		mPager.setCurrentItem(position);
+	}
+
+	public EditingFragment getCurrentPage() {
+		int position = mPager.getCurrentItem();
+		return (EditingFragment) mPagerAdapter.getItem(position);
+	}
+
+	public void setCurrentPage(EditingFragment e) {
+		int position = mPagerAdapter.getItemPosition(e);
+		mPager.setCurrentItem(position, true);
+	}
+
+	/*
+	@Override
 	public void onResume(){
 		super.onResume();
 		EditingFragment f = fragmentList.get(1);
@@ -119,7 +216,7 @@ public class StagingActivity extends AppCompatActivity
 			//f.updateImageView(2, r, c);
 		}
 	}
-
+	*/
 
 
 	@Override
@@ -228,7 +325,10 @@ public class StagingActivity extends AppCompatActivity
 
 	public void onUndoButtonClicked() {
 		boolean buttonIsActive = true;
-		createNewScene(true); //Todo, remove
+		// createNewScene(true); //Todo, remove
+		int page = mPager.getCurrentItem();
+		EditingFragment frag = EditingFragment.newInstance();
+		addPage(frag, page + 1);
 		if (buttonIsActive) {
 			int color_white = getResources().getColor(R.color.white);
 			menu.findItem(R.id.action_undo).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
@@ -247,7 +347,9 @@ public class StagingActivity extends AppCompatActivity
 
 	public void onRedoButtonClicked() {
 		boolean buttonIsActive = true;
-		deleteCurrentScene(); //Todo, remove
+		// deleteCurrentScene(); //Todo, remove
+		EditingFragment frag = getCurrentPage();
+		removePage(frag);
 		if (buttonIsActive) {
 			int color_white = getResources().getColor(R.color.white);
 			menu.findItem(R.id.action_redo).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
@@ -274,13 +376,14 @@ public class StagingActivity extends AppCompatActivity
 	}
 
 	// Not fully implemented, Created for PreviewFragment. Navigation & Management of Scenes
-	private void createNewScene(boolean notifyChange) {
+	private EditingFragment createNewScene(boolean notifyChange) {
 		Log.i("Testing_15", "ADDING NEW FRAGMENT");
 		EditingFragment frag = EditingFragment.newInstance();
 		fragmentList.add(frag);
 		if(notifyChange) {
 			mPagerAdapter.notifyDataSetChanged();
 		}
+		return frag;
 	}
 
 
@@ -327,7 +430,6 @@ public class StagingActivity extends AppCompatActivity
 				sb.append(line).append("\n");
 			}
 			reader.close();
-
 			Log.d(getLocalClassName(), "File output: " + filename + "\n" + sb.toString());
 
 			Snackbar.make(findViewById(R.id.frame_layout),
@@ -350,9 +452,10 @@ public class StagingActivity extends AppCompatActivity
 		TypedArray colors = getResources().obtainTypedArray(R.array.background_colors);
 		int color = colors.getColor(i, -1);
 
-		int index = 0;
-		index = mPager.getCurrentItem();
-		EditingFragment frag = fragmentList.get(index);
+		// int index = 0;
+		// index = mPager.getCurrentItem();
+		// EditingFragment frag = fragmentList.get(index);
+		EditingFragment frag = getCurrentPage();
 
 		if(frag != null) {
 			frag.getView().setBackgroundColor(color);
@@ -379,9 +482,10 @@ public class StagingActivity extends AppCompatActivity
 	// TODO, item select.
 	public void onItemSelected(long item_id)
 	{
-		int index;
-		index = mPager.getCurrentItem();
-		EditingFragment frag = fragmentList.get(index);
+		// int index;
+		// index = mPager.getCurrentItem();
+		// EditingFragment frag = fragmentList.get(index);
+		EditingFragment frag = getCurrentPage();
 
 		// TODO, alternative implementation
 		//EditingFragment page = (EditingFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewPager + ":" + mPager.getCurrentItem());

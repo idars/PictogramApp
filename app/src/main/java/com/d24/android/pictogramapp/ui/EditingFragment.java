@@ -74,7 +74,7 @@ public class EditingFragment extends Fragment {
         mListener = null;
     }
 
-    public void updateImageView(long item_id) {
+    public StickerImageView updateImageView(long item_id) {
 
         //final ArrayList<Drawable> imageItems = new ArrayList<>();
 
@@ -90,6 +90,7 @@ public class EditingFragment extends Fragment {
 		newImg.setTag(R.integer.tag_resource, intItemId);
 
         canvas.addView(newImg);
+		return newImg;
     }
 
     public View getView(){
