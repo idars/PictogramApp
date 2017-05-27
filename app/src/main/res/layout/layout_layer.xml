@@ -1,19 +1,26 @@
-<android.support.v7.widget.CardView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/canvas"
+    android:id="@+id/page"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="@dimen/canvas_margin"
-    card_view:cardElevation="@dimen/canvas_elevation">
+    android:layout_height="match_parent">
 
-    <com.d24.android.pictogramapp.ui.LayerLayout
-        android:id="@+id/layer_layout"
+    <android.support.v7.widget.CardView
+        android:id="@+id/canvas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true"
-        android:onClick="onCanvasPressed"
-        tools:context=".ui.LayerLayout"/>
+        android:layout_margin="@dimen/canvas_margin"
+        card_view:cardElevation="@dimen/canvas_elevation">
 
-</android.support.v7.widget.CardView>
+        <com.d24.android.pictogramapp.ui.LayerLayout
+            android:id="@+id/layer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:onClick="onCanvasPressed"
+            tools:context=".ui.LayerLayout"/>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>
