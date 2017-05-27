@@ -125,5 +125,6 @@
         <item>@color/grey_500</item>
         <item>@color/blue_grey_500</item>
         <item>@color/white</item>
+        <item>@color/black</item>
     </integer-array>
 </resources>

@@ -23,4 +23,6 @@
     <string name="error_file_load">Kunne ikke åpne fil</string>
     <string name="empty_figure">Et bilde av en usynlig person</string>
     <string name="empty">Ingen historier opprettet ennå</string>
+    <string name="action_add_page">Legg til ny scene</string>
+    <string name="action_remove_page">Fjern scene</string>
 </resources>

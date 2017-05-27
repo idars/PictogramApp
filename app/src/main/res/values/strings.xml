@@ -35,4 +35,6 @@
     <string name="error_file_load">Could not load file</string>
     <string name="empty">No stories created yet</string>
     <string name="empty_figure">A figure illustrating an invisible person</string>
+    <string name="action_add_page">Add new scene</string>
+    <string name="action_remove_page">Remove current scene</string>
 </resources>

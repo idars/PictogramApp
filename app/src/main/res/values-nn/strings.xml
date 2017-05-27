@@ -23,4 +23,6 @@
     <string name="error_file_load">Kunne ikkje opne fil</string>
     <string name="empty_figure">Eit bilde av ein usynleg person</string>
     <string name="empty">Ingen historiar oppretta enda</string>
+    <string name="action_add_page">Legg til ny scene</string>
+    <string name="action_remove_page">Fjern scene</string>
 </resources>

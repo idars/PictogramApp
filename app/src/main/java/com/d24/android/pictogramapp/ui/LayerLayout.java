@@ -100,7 +100,7 @@ public class LayerLayout extends FrameLayout {
 
 		int position = indexOfChild(v);
 		removeViewAt(position);
-		addView(v, getChildCount());
+		addView(v);
 	}
 
 	/**
