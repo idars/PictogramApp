@@ -174,7 +174,7 @@ public class StagingActivity extends AppCompatActivity
 		Drawable drawable = image_ids.getDrawable(intItemId);
 		StickerImageView newImg = new StickerImageView(this);
 		newImg.setImageDrawable(drawable);
-		newImg.setTag(R.integer.tag_resource, intItemId);
+		newImg.setTag(R.integer.tag_id, intItemId);
 		return newImg;
 	}
 
@@ -363,6 +363,7 @@ public class StagingActivity extends AppCompatActivity
 				if (!sticker.areControlItemsHidden()) {
 					ImageView figure = (ImageView) sticker.getMainView();
 					figure.setColorFilter(color);
+					sticker.setTag(R.integer.tag_color, color);
 					stickerPainted = true;
 				}
 			}
