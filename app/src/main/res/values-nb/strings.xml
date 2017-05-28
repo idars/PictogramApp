@@ -25,4 +25,7 @@
     <string name="empty">Ingen historier opprettet ennå</string>
     <string name="action_add_page">Legg til ny scene</string>
     <string name="action_remove_page">Fjern scene</string>
+    <string name="content_edit">Endre navn på historien</string>
+    <string name="content_delete">Slett denne historien</string>
+    <string name="title_stories">Dine historier</string>
 </resources>

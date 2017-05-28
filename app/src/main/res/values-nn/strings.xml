@@ -25,4 +25,7 @@
     <string name="empty">Ingen historiar oppretta enda</string>
     <string name="action_add_page">Legg til ny scene</string>
     <string name="action_remove_page">Fjern scene</string>
+    <string name="content_edit">Endra namn på historia</string>
+    <string name="content_delete">Slett denne historia</string>
+    <string name="title_stories">Dine historiar</string>
 </resources>

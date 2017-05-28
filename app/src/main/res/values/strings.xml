@@ -37,4 +37,7 @@
     <string name="empty_figure">A figure illustrating an invisible person</string>
     <string name="action_add_page">Add new scene</string>
     <string name="action_remove_page">Remove current scene</string>
+    <string name="content_edit">Change the name of this story</string>
+    <string name="content_delete">Delete this story</string>
+    <string name="title_stories">Your stories</string>
 </resources>
