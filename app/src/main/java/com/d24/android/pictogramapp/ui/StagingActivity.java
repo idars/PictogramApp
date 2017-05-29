@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -104,27 +103,6 @@ public class StagingActivity extends AppCompatActivity
 		mPager.setAdapter(mPagerAdapter);
 //		mViewPager.setOnPageChangeListener((ViewPager.OnPageChangeListener) this);
 
-		// Instantiate ViewPager with an initial blank view
-		LayoutInflater inflater = getLayoutInflater();
-		FrameLayout v0 = (FrameLayout) inflater.inflate(R.layout.layout_layer, null);
-		mPagerAdapter.addView(v0, 0);
-
-		selectingFragment = SelectingFragment.newInstance();
-		backgroundPickerFragment = BackgroundPickerFragment.newInstance();
-		// TODO, previewFragment = PreviewFragment.newInstance();
-
-		transaction.add(R.id.frame_layout, selectingFragment, SELECTING_FRAGMENT_TAG);
-		transaction.add(R.id.frame_layout, backgroundPickerFragment, BACKGROUND_FRAGMENT_TAG);
-		transaction.hide(selectingFragment);
-		transaction.hide(backgroundPickerFragment);
-
-		transaction.commit();
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-
 		// Check if this activity has been initiated with a pre-made story
 		String filename = getIntent().getStringExtra("filename");
 		if (filename != null) {
@@ -139,7 +117,23 @@ public class StagingActivity extends AppCompatActivity
 				Snackbar.make(findViewById(R.id.frame_layout),
 						R.string.error_file_load, Snackbar.LENGTH_LONG).show();
 			}
+		} else {
+			// Instantiate ViewPager with an initial blank view
+			LayoutInflater inflater = getLayoutInflater();
+			FrameLayout v0 = (FrameLayout) inflater.inflate(R.layout.layout_layer, null);
+			mPagerAdapter.addView(v0, 0);
 		}
+
+		selectingFragment = SelectingFragment.newInstance();
+		backgroundPickerFragment = BackgroundPickerFragment.newInstance();
+		// TODO, previewFragment = PreviewFragment.newInstance();
+
+		transaction.add(R.id.frame_layout, selectingFragment, SELECTING_FRAGMENT_TAG);
+		transaction.add(R.id.frame_layout, backgroundPickerFragment, BACKGROUND_FRAGMENT_TAG);
+		transaction.hide(selectingFragment);
+		transaction.hide(backgroundPickerFragment);
+
+		transaction.commit();
 	}
 
 	private void populateFrom(Story story) {
@@ -167,8 +161,6 @@ public class StagingActivity extends AppCompatActivity
 			}
 		}
 
-		// Remove initial fragment created in onCreate
-		mPagerAdapter.removeView(mPager, 0);
 		mPager.setCurrentItem(0);
 	}
 
@@ -280,9 +272,20 @@ public class StagingActivity extends AppCompatActivity
 		menu.findItem(R.id.action_add_figure).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
 		menu.findItem(R.id.action_color).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
 		menu.findItem(R.id.action_save).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
+
 		return true;
 	}
 
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (mPagerAdapter.getCount() > 1) {
+			menu.findItem(R.id.action_remove_page).setEnabled(true);
+		} else {
+			menu.findItem(R.id.action_remove_page).setEnabled(false);
+		}
+
+		return super.onPrepareOptionsMenu(menu);
+	}
 
 	/*TODO, DENNE VIL BLI ET PROBLEM SENERE */
 	/*TODO, verdien på oppdateres når scener slettes */
@@ -301,8 +304,7 @@ public class StagingActivity extends AppCompatActivity
 			// This ID represents the color button.
 			onColorButtonClicked();
 			return true;
-		}
-		else if (id == R.id.action_save) {
+		} else if (id == R.id.action_save) {
 			// This ID represents the Redo button.
 			onSaveButtonClicked();
 			return true;

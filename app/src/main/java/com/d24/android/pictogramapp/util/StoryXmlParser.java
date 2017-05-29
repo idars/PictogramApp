@@ -1,5 +1,6 @@
 package com.d24.android.pictogramapp.util;
 
+import android.util.Log;
 import android.util.Xml;
 
 import com.d24.android.pictogramapp.model.Figure;
@@ -112,6 +113,7 @@ public class StoryXmlParser {
 			return new Figure(id, color, x, y, size, rotation, mirrored);
 		} catch (NumberFormatException e) {
 			// Abort reading the figure
+			Log.i("StoryXmlParser", "Found badly written argument, skipping figure");
 			return null;
 		}
 	}
