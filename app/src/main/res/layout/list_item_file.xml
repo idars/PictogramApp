@@ -22,7 +22,8 @@
         <TextView android:id="@+id/text2"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:textAppearance="?attr/textAppearanceListItemSmall" />
+                  android:textAppearance="?attr/textAppearanceListItemSmall"
+                  android:alpha="0.5" />
 
     </LinearLayout>
 
@@ -33,7 +34,7 @@
                android:layout_marginStart="8dp"
                android:layout_marginEnd="8dp"
                android:src="@drawable/ic_edit_black_24dp"
-               android:contentDescription="@string/content_edit"/>
+               android:contentDescription="@string/content_edit" />
 
     <ImageView android:id="@+id/delete"
                android:layout_width="wrap_content"
@@ -41,7 +42,7 @@
                android:layout_gravity="center_vertical"
                android:layout_marginStart="8dp"
                android:src="@drawable/ic_close_black_24dp"
-               android:contentDescription="@string/content_delete"/>
+               android:contentDescription="@string/content_delete" />
 
 </LinearLayout>
 

@@ -149,6 +149,7 @@ public class StagingActivity extends AppCompatActivity
 			layer.setBackgroundColor(Color.parseColor(scene.background));
 
 			for (Figure figure : scene.figures) {
+				if (figure == null) continue;
 				StickerImageView sticker = createSticker(figure.id);
 
 				sticker.setX(figure.x);

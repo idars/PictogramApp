@@ -45,8 +45,9 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 		final File[] files = internalStorage.listFiles();
 
 		mAdapter = new ArrayAdapter<File>(this, R.layout.list_item_file, R.id.text1, files) {
+			@NonNull
 			@Override
-			public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+			public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
 				View view = super.getView(position, convertView, parent);
 				TextView text1 = (TextView) view.findViewById(R.id.text1);
 				TextView text2 = (TextView) view.findViewById(R.id.text2);
@@ -68,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 					@Override
 					public void onClick(View view) {
 						// TODO show confirmation
+						remove(getItem(position));
+						notifyDataSetChanged();
 					}
 				});
 
