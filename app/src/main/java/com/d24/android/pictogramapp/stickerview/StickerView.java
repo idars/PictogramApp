@@ -180,7 +180,7 @@ public abstract class StickerView extends FrameLayout {
             if(m_context instanceof StagingActivity)
             {
                 StagingActivity activity = (StagingActivity) m_context;
-                activity.focusEditingFragment();
+                activity.focusEditingFragment(false);
             }
 
             if(view.getTag().equals("DraggableViewGroup")) {
@@ -219,10 +219,10 @@ public abstract class StickerView extends FrameLayout {
                         rotate_orgX = event.getRawX();
                         rotate_orgY = event.getRawY();
 
-                        centerX = StickerView.this.getX()+
+                        /*centerX = StickerView.this.getX()+
                                 ((View)StickerView.this.getParent()).getX()+
-                                (float)StickerView.this.getWidth()/2;
-
+                                (float)StickerView.this.getWidth()/2;*/
+                        centerX = StickerView.this.getX() + (float)StickerView.this.getWidth()/2;
 
                         //double statusBarHeight = Math.ceil(25 * getContext().getResources().getDisplayMetrics().density);
                         int result = 0;
@@ -231,11 +231,11 @@ public abstract class StickerView extends FrameLayout {
                             result = getResources().getDimensionPixelSize(resourceId);
                         }
                         double statusBarHeight = result;
-                        centerY = StickerView.this.getY()+
+                        /*centerY = StickerView.this.getY()+
                                 ((View)StickerView.this.getParent()).getY()+
                                 statusBarHeight+
-                                (float)StickerView.this.getHeight()/2;
-
+                                (float)StickerView.this.getHeight()/2;*/
+                        centerY = StickerView.this.getY() +(float)StickerView.this.getHeight()/2;
                         break;
                     case MotionEvent.ACTION_MOVE:
                         Log.v(TAG, "iv_scale action move");
@@ -311,10 +311,10 @@ public abstract class StickerView extends FrameLayout {
                         rotate_orgX = event.getRawX();
                         rotate_orgY = event.getRawY();
 
-                        centerX = StickerView.this.getX()+
+                        /*centerX = StickerView.this.getX()+
                                 ((View)StickerView.this.getParent()).getX()+
-                                (float)StickerView.this.getWidth()/2;
-
+                                (float)StickerView.this.getWidth()/2;*/
+                        centerX = StickerView.this.getX() + (float)StickerView.this.getWidth()/2;
 
                         //double statusBarHeight = Math.ceil(25 * getContext().getResources().getDisplayMetrics().density);
                         int result = 0;

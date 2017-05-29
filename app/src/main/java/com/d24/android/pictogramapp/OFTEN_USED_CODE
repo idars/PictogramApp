@@ -1,0 +1,47 @@
+PreviewFragment:
+
+ONCLICK LISTENER
+
+    img.setOnClickListener(new View.OnClickListener(){
+
+        @Override
+        public void onClick(View view) {
+            if (mListener == null) {
+                return;
+            }
+            int i = horizontalScrollView.indexOfChild(view);
+            Log.i("D-bug", "Index of child is: " + i);
+
+            int index = 0; // TODO, dynamic, get from View view
+            mListener.onSceneClicked(index);
+        }
+    });
+
+
+SNACKBAR
+
+    String text = "Press the top-left button to complete scene";
+
+    View view = findViewById(R.id.frame_layout);
+    Snackbar.make(view, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+
+TRANSACTION
+
+    FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
+    FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
+
+    transaction.add(R.id.frame_layout, backgroundPickerFragment, BACKGROUND_FRAGMENT_TAG);
+    transaction.hide(backgroundPickerFragment);
+
+    transaction.commit();
+
+TRY-CATCH
+
+    try{
+        //<code>
+    } catch (Exception e){
+        Log.i("patch_xx", "Error at xx(): " + e.toString());
+        //<code>
+        //return null;
+    }

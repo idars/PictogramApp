@@ -1,0 +1,67 @@
+package com.d24.android.pictogramapp.ui;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ViewPagerAdapter extends FragmentPagerAdapter {
+
+    private final Context mContext;
+    private final ViewPager mViewPager;
+    public List<EditingFragment> fragmentList;
+
+
+
+    public ViewPagerAdapter(AppCompatActivity activity, ViewPager pager) {
+        super(activity.getSupportFragmentManager());
+        fragmentList = new ArrayList<EditingFragment>();
+        mContext = activity;
+        mViewPager = pager;
+        mViewPager.setAdapter(this);
+        mViewPager.setOnPageChangeListener((ViewPager.OnPageChangeListener) this);
+    }
+
+
+    @Override
+    public Fragment getItem(int position) {
+        EditingFragment fragment = fragmentList.get(position);
+        return fragment;
+    }
+
+    public void addFragment(EditingFragment frag) {
+        EditingFragment fragment = new EditingFragment();
+        fragmentList.add(fragment);
+
+        notifyDataSetChanged();
+
+    }
+
+    @Override
+    public Object instantiateItem(View collection, int position) {
+        EditingFragment view;
+        view = fragmentList.get(position);
+        View v = view.getView(); // TODO, need this or just new view?
+        ((ViewPager)collection).addView(v);
+        return view;
+    }
+
+    @Override
+    public int getCount() {
+        return fragmentList.size();
+    }
+
+    @Override
+    public int getItemPosition(Object object)
+    {
+        return POSITION_NONE;
+    }
+
+}

@@ -34,13 +34,16 @@ import com.d24.android.pictogramapp.stickerview.StickerImageView;
 import com.d24.android.pictogramapp.util.MyViewPagerAdapter;
 import com.d24.android.pictogramapp.util.StoryXmlParser;
 import com.d24.android.pictogramapp.util.StoryXmlSerializer;
+import com.d24.android.pictogramapp.util.ViewPagerToggleSwipe;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
@@ -66,8 +69,10 @@ public class StagingActivity extends AppCompatActivity
 	//TODO, PreviewFragment previewFragment;
 
 	Menu menu;
-	private ViewPager mPager;
-	private MyViewPagerAdapter mPagerAdapter;
+
+
+    private ViewPagerToggleSwipe mPager;
+    private MyViewPagerAdapter mPagerAdapter;
 
 
 	@Override
@@ -94,8 +99,8 @@ public class StagingActivity extends AppCompatActivity
 		// }
 
 
-		mPager = (ViewPager) findViewById(R.id.viewPager);
-		mPagerAdapter = new MyViewPagerAdapter();
+        mPager = (ViewPagerToggleSwipe) findViewById(R.id.viewPager);
+        mPagerAdapter = new MyViewPagerAdapter();
 		mPager.setAdapter(mPagerAdapter);
 //		mViewPager.setOnPageChangeListener((ViewPager.OnPageChangeListener) this);
 
@@ -110,8 +115,6 @@ public class StagingActivity extends AppCompatActivity
 
 		transaction.add(R.id.frame_layout, selectingFragment, SELECTING_FRAGMENT_TAG);
 		transaction.add(R.id.frame_layout, backgroundPickerFragment, BACKGROUND_FRAGMENT_TAG);
-		// TODO, transaction.add(R.id.frame_layout, previewFragment);
-
 		transaction.hide(selectingFragment);
 		transaction.hide(backgroundPickerFragment);
 
@@ -221,6 +224,7 @@ public class StagingActivity extends AppCompatActivity
 			transaction.hide(selectingFragment);
 			transaction.hide(backgroundPickerFragment);
 			transaction.commit();
+			mPager.setPagingEnabled(true);
 		}
 
 		// TODO, new shit
@@ -234,7 +238,7 @@ public class StagingActivity extends AppCompatActivity
 		}
 	}
 
-	public void focusEditingFragment(){
+	public void focusEditingFragment(boolean swipeEnable){
 		if (selectingFragment.isVisible() || backgroundPickerFragment.isVisible()) {
 			FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
 			FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
@@ -242,7 +246,7 @@ public class StagingActivity extends AppCompatActivity
 			transaction.hide(backgroundPickerFragment);
 			transaction.commit();
 		}
-
+		mPager.setPagingEnabled(swipeEnable);
 	}
 
 	public void onCanvasPressed(View v) {
@@ -259,7 +263,7 @@ public class StagingActivity extends AppCompatActivity
 			}
 		}
 
-		focusEditingFragment();
+		focusEditingFragment(true);
 
 		Log.d(TAG, "clicked on layerlayout");
 	}
@@ -275,11 +279,10 @@ public class StagingActivity extends AppCompatActivity
 
 		menu.findItem(R.id.action_add_figure).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
 		menu.findItem(R.id.action_color).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
-		menu.findItem(R.id.action_undo).getIcon().setColorFilter(color_grey, PorterDuff.Mode.SRC_IN);
-		menu.findItem(R.id.action_redo).getIcon().setColorFilter(color_grey, PorterDuff.Mode.SRC_IN);
 		menu.findItem(R.id.action_save).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
 		return true;
 	}
+
 
 	/*TODO, DENNE VIL BLI ET PROBLEM SENERE */
 	/*TODO, verdien på oppdateres når scener slettes */
@@ -298,16 +301,9 @@ public class StagingActivity extends AppCompatActivity
 			// This ID represents the color button.
 			onColorButtonClicked();
 			return true;
-		} else if (id == R.id.action_undo) {
-			// This ID represents the undo button.
-			onUndoButtonClicked();
-			return true;
-		} else if (id == R.id.action_redo) {
-			// This ID represents the redo button.
-			onRedoButtonClicked();
-			return true;
-		} else if (id == R.id.action_save) {
-			// This ID represents the save button.
+		}
+		else if (id == R.id.action_save) {
+			// This ID represents the Redo button.
 			onSaveButtonClicked();
 			return true;
 		} else if (id == R.id.action_add_page) {
@@ -323,20 +319,17 @@ public class StagingActivity extends AppCompatActivity
 		return super.onOptionsItemSelected(item);
 	}
 
+
+
+
 	public void onAddButtonClicked() {
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.show(selectingFragment);
+		transaction.hide(backgroundPickerFragment);
 		transaction.commit();
 	}
 
-	// When a pictogram has been selected
-	public void onItemSelected(long item_id)
-	{
-		LayerLayout focusedView = (LayerLayout) getCurrentPage().findViewById(R.id.layer_layout);
-		StickerImageView sticker = createSticker(item_id);
-		focusedView.addView(sticker);
-	}
 
 	public void onColorButtonClicked() {
 		BackgroundPickerFragment fragment = BackgroundPickerFragment.newInstance();
@@ -344,9 +337,78 @@ public class StagingActivity extends AppCompatActivity
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.show(backgroundPickerFragment);
-		//transaction.add(R.id.frame_layout, fragment, BACKGROUND_FRAGMENT_TAG);
-		//transaction.addToBackStack(null);
+		transaction.hide(selectingFragment);
 		transaction.commit();
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog, String filename) {
+		try {
+			File file = new File(getFilesDir(), filename);
+			FileOutputStream outputStream = new FileOutputStream(file);
+			StoryXmlSerializer serializer = new StoryXmlSerializer();
+			serializer.write(outputStream, new Story(filename, (ViewPagerToggleSwipe) findViewById(R.id.viewPager)));
+
+			// Debug code; to display output code
+			FileInputStream inputStream = new FileInputStream(file);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+			StringBuilder sb = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line).append("\n");
+			}
+			reader.close();
+
+			Log.d(getLocalClassName(), "File output: " + filename + "\n" + sb.toString());
+
+			Snackbar.make(findViewById(R.id.frame_layout),
+					R.string.success_file_save, Snackbar.LENGTH_SHORT).show();
+		} catch (IOException e) {
+			// Display error message
+			Snackbar.make(findViewById(R.id.frame_layout),
+					R.string.error_file_save, Snackbar.LENGTH_LONG)
+					.setAction(R.string.button_retry, new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							onSaveButtonClicked();
+						}
+					}).show();
+		}
+	}
+
+
+    // Not implemented, Created for PreviewFragment. Navigation & Management of Scenes
+	private void navigateScene(boolean positiveIndexChange) {
+		// TODO <Get visible index>
+		// TODO <Get wanted new direction (or index)>
+		int index = 0;
+		if (positiveIndexChange){
+			index = 1;
+		}
+	}
+
+	/*// Not fully implemented, Created for PreviewFragment. Navigation & Management of Scenes
+	private EditingFragment createNewScene(boolean notifyChange) {
+		Log.i("Testing_15", "ADDING NEW FRAGMENT");
+		EditingFragment frag = EditingFragment.newInstance();
+		fragmentList.add(frag);
+		if(notifyChange) {
+			mPagerAdapter.notifyDataSetChanged();
+		}
+		return frag;
+	}*/
+
+	/*// Not fully implemented, Created for PreviewFragment. Navigation & Management of Scenes
+	private void deleteCurrentScene() {
+		int currentIndex = mPager.getCurrentItem();
+		mPager.removeView((View) fragmentList.get(currentIndex).getView());
+		fragmentList.remove(currentIndex);
+		mPagerAdapter.notifyDataSetChanged();
+	}*/
+
+	public void onSaveButtonClicked() {
+		SaveDialogFragment dialog = new SaveDialogFragment();
+		dialog.show(getFragmentManager(), "save");
 	}
 
 	@Override
@@ -376,131 +438,39 @@ public class StagingActivity extends AppCompatActivity
 		}
 	}
 
-	// TODO to be implemented
-	public void onUndoButtonClicked() {
-		boolean buttonIsActive = true;
+	/*public void onItemSelected(long item_id)
+	{
+		int index;
+		index = mPager.getCurrentItem();
+		EditingFragment frag = fragmentList.get(index);
 
-		if (buttonIsActive) {
-			int color_white = getResources().getColor(R.color.white);
-			menu.findItem(R.id.action_undo).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
-		} else {
-			int color_grey = getResources().getColor(R.color.white);
-			menu.findItem(R.id.action_undo).getIcon().setColorFilter(color_grey, PorterDuff.Mode.SRC_IN);
+		// TODO, alternative implementation
+		//EditingFragment page = (EditingFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewPager + ":" + mPager.getCurrentItem());
+		//if (mPager.getCurrentItem() == 0 && page != null) {
+		//	((EditingFragment)page).updateImageView(item_id);
+		//}
+
+		if(frag != null){
+			frag.updateImageView(item_id);
+
 		}
-
-
-		// If undo is successful:
-		// toolFragment.setRedoAvailable(true);
-
-		// If there are no more changes to undo:
-		// toolFragment.setUndoAvailable(false);
-	}
-
-	// TODO to be implemented
-	public void onRedoButtonClicked() {
-		boolean buttonIsActive = true;
-
-		if (buttonIsActive) {
-			int color_white = getResources().getColor(R.color.white);
-			menu.findItem(R.id.action_redo).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
-		} else {
-			int color_grey = getResources().getColor(R.color.white);
-			menu.findItem(R.id.action_redo).getIcon().setColorFilter(color_grey, PorterDuff.Mode.SRC_IN);
+		else {
+			Log.d("StagingActivity","EditingFragment from fragmentList.get(" + item_id + ") is null");
 		}
-		// If redo is successful:
-		// toolFragment.setUndoAvailable(true);
+	}*/
 
-		// If there are no more changes to redo:
-		// toolFragment.setRedoAvailable(false);
+	// When a pictogram has been selected
+	public void onItemSelected(long item_id)
+	{
+		LayerLayout focusedView = (LayerLayout) getCurrentPage().findViewById(R.id.layer_layout);
+		StickerImageView sticker = createSticker(item_id);
+		focusedView.addView(sticker);
 	}
 
-	public void onSaveButtonClicked() {
-		SaveDialogFragment dialog = new SaveDialogFragment();
-		dialog.show(getFragmentManager(), "save");
-	}
 
-	@Override
-	public void onDialogPositiveClick(DialogFragment dialog, String filename) {
-		// TODO move work outside main thread
-		try {
-			File file = new File(getFilesDir(), filename);
-			FileOutputStream outputStream = new FileOutputStream(file);
-			StoryXmlSerializer serializer = new StoryXmlSerializer();
-			serializer.write(outputStream, new Story(filename, (ViewPager) findViewById(R.id.viewPager)));
 
-			Snackbar.make(findViewById(R.id.frame_layout),
-					R.string.success_file_save, Snackbar.LENGTH_SHORT).show();
-		} catch (IOException e) {
-			// Display error message
-			Snackbar.make(findViewById(R.id.frame_layout),
-					R.string.error_file_save, Snackbar.LENGTH_LONG)
-					.setAction(R.string.button_retry, new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							onSaveButtonClicked();
-						}
-					}).show();
-		}
-	}
 
-	// Obsolete methods and classes
 
-	/*
-	@Override
-	public void onResume(){
-		super.onResume();
-		EditingFragment f = fragmentList.get(1);
-		if(f == null) {
-		} else {
-			//Context c = this;
-			//Resources r = getResources();
-			//f.updateImageView(2, r, c);
-		}
-	}
-	*/
-
-	// Not implemented, Created for PreviewFragment. Navigation & Management of Scenes
-	private void navigateScene(boolean positiveIndexChange) {
-		// TODO <Get visible index>
-		// TODO <Get wanted new direction (or index)>
-		int index = 0;
-		if (positiveIndexChange){
-			index = 1;
-		}
-	}
-
-	// Not fully implemented, Created for PreviewFragment. Navigation & Management of Scenes
-	private EditingFragment createNewScene(boolean notifyChange) {
-		Log.i("Testing_15", "ADDING NEW FRAGMENT");
-		EditingFragment frag = EditingFragment.newInstance();
-		fragmentList.add(frag);
-		if(notifyChange) {
-			mPagerAdapter.notifyDataSetChanged();
-		}
-		return frag;
-	}
-
-	// Not fully implemented, Created for PreviewFragment. Navigation & Management of Scenes
-	private void deleteCurrentScene() {
-
-		int currentIndex = mPager.getCurrentItem();
-		Log.i("Testing_15", "DELETING FRAGMENT at " + currentIndex);
-
-		// TODO, NAVIGATION, mPager.setCurrentItem(2);
-		mPager.removeView((View) fragmentList.get(currentIndex).getView());
-		//mPager.setCurrentItem(currentIndex+1);
-		//alternative, mPager.removeViewAt(2);
-		fragmentList.remove(currentIndex);
-		mPagerAdapter.notifyDataSetChanged();
-		//mPager.setAdapter(mPagerAdapter);
-	}
-
-	/*
-	@Override
-	public void onCanvasPressed() {
-		focusEditingFragment();
-	}
-	*/
 
 	public class ViewPagerAdapter extends FragmentPagerAdapter {
 

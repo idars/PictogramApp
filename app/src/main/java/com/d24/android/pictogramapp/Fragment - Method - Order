@@ -1,0 +1,11 @@
+ACTIVITY,   onCreate()
+    PAGER,  CustomViewPager()\\
+\\ACTIVITY, onCreate()
+PAGER,      onAttachedToWindow()
+
+ADAPTER,    getItem()\\
+FRAGMENT,   onAttach()\\
+FRAGMENT,   onCreateView()\\
+
+ADAPTER,    finishUpdate()
+

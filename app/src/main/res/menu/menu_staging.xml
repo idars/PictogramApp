@@ -16,23 +16,10 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/action_undo"
-        android:icon="@drawable/ic_undo_black_24dp"
-        android:title="@string/button_undo"
-        app:showAsAction="always"/>
-
-    <item
-        android:id="@+id/action_redo"
-        android:icon="@drawable/ic_redo_black_24dp"
-        android:title="@string/button_redo"
-        app:showAsAction="always"/>
-
-    <item
         android:id="@+id/action_save"
         android:icon="@drawable/ic_save_black_24dp"
         android:title="@string/button_save"
         app:showAsAction="always"/>
-
     <item
         android:id="@+id/action_add_page"
         android:orderInCategory="100"
