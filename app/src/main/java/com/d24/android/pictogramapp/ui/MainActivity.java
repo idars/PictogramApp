@@ -22,6 +22,8 @@ import com.d24.android.pictogramapp.R;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 		setSupportActionBar(toolbar);
 
 		File internalStorage = getFilesDir();
-		final File[] files = internalStorage.listFiles();
+		final ArrayList<File> files = new ArrayList<>(Arrays.asList(internalStorage.listFiles()));
 
 		mAdapter = new ArrayAdapter<File>(this, R.layout.list_item_file, R.id.text1, files) {
 			@NonNull
@@ -55,8 +57,8 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 				ImageView delete = (ImageView) view.findViewById(R.id.delete);
 
 				DateFormat formatter = DateFormat.getDateInstance();
-				text1.setText(files[position].getName());
-				text2.setText(formatter.format(new Date(files[position].lastModified())));
+				text1.setText(files.get(position).getName());
+				text2.setText(formatter.format(new Date(files.get(position).lastModified())));
 				edit.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
@@ -69,8 +71,11 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 					@Override
 					public void onClick(View view) {
 						// TODO show confirmation
-						remove(getItem(position));
-						notifyDataSetChanged();
+						File entry = getItem(position);
+						if (entry != null) {
+							remove(entry);
+							deleteFile(entry.getName());
+						}
 					}
 				});
 

@@ -128,7 +128,7 @@ public class StagingActivity extends AppCompatActivity
 			for (Figure figure : scene.figures) {
 				if (figure == null) continue;
 				StickerImageView sticker = createSticker(figure.id);
-
+				((ImageView) sticker.getMainView()).setColorFilter(figure.color);
 				sticker.setX(figure.x);
 				sticker.setY(figure.y);
 				sticker.getLayoutParams().height = figure.size;

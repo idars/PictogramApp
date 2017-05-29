@@ -11,8 +11,7 @@
                   android:layout_height="wrap_content"
                   android:orientation="vertical"
                   android:layout_weight="1"
-                  android:layout_gravity="center_vertical"
-                  android:layout_marginEnd="8dp">
+                  android:layout_gravity="center_vertical">
 
         <TextView android:id="@+id/text1"
                   android:layout_width="match_parent"
@@ -32,7 +31,7 @@
                android:layout_height="wrap_content"
                android:layout_gravity="center_vertical"
                android:layout_marginStart="8dp"
-               android:layout_marginEnd="8dp"
+               android:padding="7dp"
                android:src="@drawable/ic_edit_black_24dp"
                android:contentDescription="@string/content_edit" />
 
@@ -41,6 +40,7 @@
                android:layout_height="wrap_content"
                android:layout_gravity="center_vertical"
                android:layout_marginStart="8dp"
+               android:padding="7dp"
                android:src="@drawable/ic_close_black_24dp"
                android:contentDescription="@string/content_delete" />
 
