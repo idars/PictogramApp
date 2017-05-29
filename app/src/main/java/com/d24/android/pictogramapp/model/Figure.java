@@ -6,14 +6,16 @@ import com.d24.android.pictogramapp.stickerview.StickerImageView;
 public class Figure {
 
 	public int id;
+	public int color;
 	public float x;
 	public float y;
 	public int size;
 	public float rotation;
 	public boolean mirrored;
 
-	public Figure(int id, float x, float y, int size, float rotation, boolean mirrored) {
+	public Figure(int id, int color, float x, float y, int size, float rotation, boolean mirrored) {
 		this.id = id;
+		this.color = color;
 		this.x = x;
 		this.y = y;
 		this.size = size;
@@ -28,7 +30,8 @@ public class Figure {
 	 * @param view the view representing this figure
 	 */
 	public Figure(StickerImageView view) {
-		this.id = (int) view.getTag(R.integer.tag_resource);
+		this.id = (int) view.getTag(R.integer.tag_id);
+		this.color = (int) view.getTag(R.integer.tag_color);
 		this.x = view.getX();
 		this.y = view.getY();
 		this.size = view.getWidth();

@@ -1,4 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="dialog_margin">16dp</dimen>
+    <dimen name="canvas_margin">24dp</dimen>
+    <dimen name="canvas_elevation">8dp</dimen>
 </resources>

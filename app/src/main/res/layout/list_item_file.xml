@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:minHeight="?attr/listPreferredItemHeight"
+              android:paddingStart="?attr/listPreferredItemPaddingLeft"
+              android:paddingEnd="?attr/listPreferredItemPaddingRight">
+
+    <LinearLayout android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_weight="1"
+                  android:layout_gravity="center_vertical"
+                  android:layout_marginEnd="8dp">
+
+        <TextView android:id="@+id/text1"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView android:id="@+id/text2"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:textAppearance="?attr/textAppearanceListItemSmall"
+                  android:alpha="0.5" />
+
+    </LinearLayout>
+
+    <ImageView android:id="@+id/edit"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical"
+               android:layout_marginStart="8dp"
+               android:layout_marginEnd="8dp"
+               android:src="@drawable/ic_edit_black_24dp"
+               android:contentDescription="@string/content_edit" />
+
+    <ImageView android:id="@+id/delete"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical"
+               android:layout_marginStart="8dp"
+               android:src="@drawable/ic_close_black_24dp"
+               android:contentDescription="@string/content_delete" />
+
+</LinearLayout>
+

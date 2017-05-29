@@ -392,6 +392,14 @@ public abstract class StickerView extends FrameLayout {
         return pos;
     }
 
+    public boolean areControlItemsHidden() {
+        return iv_border.getVisibility() == View.INVISIBLE
+			&& iv_scale.getVisibility() == View.INVISIBLE
+			&& iv_delete.getVisibility() == View.INVISIBLE
+			&& iv_flip.getVisibility() == View.INVISIBLE
+			&& iv_rotate.getVisibility() == View.INVISIBLE;
+    }
+
     public void setControlItemsHidden(boolean isHidden){
         if(isHidden) {
             iv_border.setVisibility(View.INVISIBLE);

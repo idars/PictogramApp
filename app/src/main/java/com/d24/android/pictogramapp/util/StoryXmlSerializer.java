@@ -74,6 +74,7 @@ public class StoryXmlSerializer {
 		for (Figure figure : scene.figures) {
 			serializer.startTag(ns, "figure");
 			serializer.attribute(ns, "id", String.valueOf(figure.id));
+			serializer.attribute(ns, "color", String.valueOf(figure.color));
 			serializer.attribute(ns, "x", String.valueOf(figure.x));
 			serializer.attribute(ns, "y", String.valueOf(figure.y));
 			serializer.attribute(ns, "size", String.valueOf(figure.size));

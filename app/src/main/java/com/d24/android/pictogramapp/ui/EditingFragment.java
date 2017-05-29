@@ -15,8 +15,6 @@ import android.widget.FrameLayout;
 import com.d24.android.pictogramapp.R;
 import com.d24.android.pictogramapp.stickerview.StickerImageView;
 
-import java.util.ArrayList;
-
 import static android.content.ContentValues.TAG;
 
 public class EditingFragment extends Fragment {
@@ -74,7 +72,7 @@ public class EditingFragment extends Fragment {
         mListener = null;
     }
 
-    public void updateImageView(long item_id) {
+    public StickerImageView updateImageView(long item_id) {
 
         //final ArrayList<Drawable> imageItems = new ArrayList<>();
 
@@ -87,9 +85,10 @@ public class EditingFragment extends Fragment {
         Drawable drawable = image_ids.getDrawable(intItemId);
         StickerImageView newImg = new StickerImageView(getActivity());
         newImg.setImageDrawable(drawable);
-		newImg.setTag(R.integer.tag_resource, intItemId);
+		newImg.setTag(R.integer.tag_id, intItemId);
 
         canvas.addView(newImg);
+		return newImg;
     }
 
     public View getView(){

@@ -2,6 +2,9 @@ package com.d24.android.pictogramapp.model;
 
 import android.support.v4.view.ViewPager;
 
+import com.d24.android.pictogramapp.R;
+import com.d24.android.pictogramapp.ui.LayerLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +29,8 @@ public class Story {
 		this.title = title;
 		scenes = new ArrayList<>();
 		for (int i = 0; i < view.getChildCount(); ++i) {
-			scenes.add(new Scene(view.getChildAt(i)));
+			LayerLayout layer = (LayerLayout) view.getChildAt(i).findViewById(R.id.layer_layout);
+			scenes.add(new Scene(layer));
 		}
 	}
 

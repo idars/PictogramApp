@@ -101,14 +101,19 @@ public class StoryXmlParser {
 	private Figure readFigure(XmlPullParser parser) throws XmlPullParserException, IOException {
 		parser.require(XmlPullParser.START_TAG, ns, "figure");
 
-		int id = Integer.valueOf(parser.getAttributeValue(ns, "id"));
-		float x = Float.valueOf(parser.getAttributeValue(ns, "x"));
-		float y = Float.valueOf(parser.getAttributeValue(ns, "y"));
-		int size = Integer.valueOf(parser.getAttributeValue(ns, "size"));
-		float rotation = Float.valueOf(parser.getAttributeValue(ns, "rotation"));
-		boolean mirrored = Boolean.valueOf(parser.getAttributeValue(ns, "mirrored"));
-
-		return new Figure(id, x, y, size, rotation, mirrored);
+		try {
+			int id = Integer.valueOf(parser.getAttributeValue(ns, "id"));
+			int color = Integer.valueOf(parser.getAttributeValue(ns, "color"));
+			float x = Float.valueOf(parser.getAttributeValue(ns, "x"));
+			float y = Float.valueOf(parser.getAttributeValue(ns, "y"));
+			int size = Integer.valueOf(parser.getAttributeValue(ns, "size"));
+			float rotation = Float.valueOf(parser.getAttributeValue(ns, "rotation"));
+			boolean mirrored = Boolean.valueOf(parser.getAttributeValue(ns, "mirrored"));
+			return new Figure(id, color, x, y, size, rotation, mirrored);
+		} catch (NumberFormatException e) {
+			// Abort reading the figure
+			return null;
+		}
 	}
 
 	private void skip(XmlPullParser parser) throws XmlPullParserException, IOException {

@@ -22,5 +22,10 @@
     <string name="dialog_save">Gi historien et navn</string>
     <string name="error_file_load">Kunne ikke åpne fil</string>
     <string name="empty_figure">Et bilde av en usynlig person</string>
-    <string name="empty">Ikke noe å vise her</string>
+    <string name="empty">Ingen historier opprettet ennå</string>
+    <string name="action_add_page">Legg til ny scene</string>
+    <string name="action_remove_page">Fjern scene</string>
+    <string name="content_edit">Endre navn på historien</string>
+    <string name="content_delete">Slett denne historien</string>
+    <string name="title_stories">Dine historier</string>
 </resources>
