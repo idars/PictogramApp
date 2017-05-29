@@ -5,8 +5,10 @@
         <item>@drawable/pm_dialogue_002_bubble_think</item>
         <item>@drawable/pm_dialogue_003_bubble_shout</item>
         <item>@drawable/pm_dialogue_004_bubble_swear</item>
+
         <item>@drawable/pm_feelings_001_heart</item>
         <item>@drawable/pm_feelings_002_heart_broken</item>
+
         <item>@drawable/pm_figures_001_rolling_head</item>
         <item>@drawable/pm_figures_002_thinking_head</item>
         <item>@drawable/pm_figures_003_laying</item>
@@ -55,10 +57,12 @@
         <item>@drawable/pm_figures_047_unconscious</item>
         <item>@drawable/pm_figures_048_creeping</item>
         <item>@drawable/pm_figures_049_lifeless</item>
+
         <item>@drawable/pm_nature_001_flame</item>
         <item>@drawable/pm_nature_002_explotion</item>
         <item>@drawable/pm_nature_003_lightning</item>
         <item>@drawable/pm_nature_004_flower</item>
+        
         <item>@drawable/pm_things_001_spiral</item>
         <item>@drawable/pm_things_002_lock</item>
         <item>@drawable/pm_things_003_suitcase</item>
@@ -85,6 +89,94 @@
         <item>@drawable/pm_things_024_circle</item>
     </integer-array>
 
+    <array name="image_colors">
+        <item>@color/green_500</item>
+        <item>@color/green_500</item>
+        <item>@color/green_500</item>
+        <item>@color/green_500</item>
+
+        <item>@color/amber_100</item>
+        <item>@color/amber_100</item>
+
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+        <item>@color/brown_100</item>
+
+        <item>@color/red_100</item>
+        <item>@color/red_100</item>
+        <item>@color/red_100</item>
+        <item>@color/red_100</item>
+
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+        <item>@color/cyan_100</item>
+    </array>
     <integer-array name="background_colors">
         <item>@color/red_100</item>
         <item>@color/pink_100</item>

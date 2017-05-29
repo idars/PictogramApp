@@ -1,12 +1,11 @@
 package com.d24.android.pictogramapp.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,7 +42,24 @@ public class SelectingFragment extends Fragment {
                              Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_pictogram_select, container,false);
         gridView = (GridView)  view.findViewById(R.id.gridView);
-        gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, getData());
+
+        final ArrayList<Drawable> imageItems = new ArrayList<>();
+        final ArrayList<Integer> colorItems = new ArrayList<>();
+        Resources res = getResources();
+        TypedArray image_colors = res.obtainTypedArray(R.array.image_colors);
+        TypedArray image_ids = res.obtainTypedArray(R.array.image_ids);
+
+        for (int i = 0; i < image_ids.length(); i++) {
+            Drawable drawable = image_ids.getDrawable(i);
+            Integer color = image_colors.getInt(i,0);
+            //Log.i("bbb", "f."+color);
+            imageItems.add(drawable);
+            colorItems.add(color);
+        }
+
+
+
+        gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, imageItems, colorItems);
         gridView.setAdapter(gridAdapter);
 
         // Configure what happens when an item in the list is clicked
@@ -64,21 +80,26 @@ public class SelectingFragment extends Fragment {
         return view;
     }
 
+    /*
     // Prepare array data for gridview
     private ArrayList<Drawable> getData() {
         final ArrayList<Drawable> imageItems = new ArrayList<>();
+        final ArrayList<Integer> colorItems = new ArrayList<>();
         Resources res = getResources();
+        TypedArray image_colors = res.obtainTypedArray(R.array.image_colors);
         TypedArray image_ids = res.obtainTypedArray(R.array.image_ids);
 
         for (int i = 0; i < image_ids.length(); i++) {
             Drawable drawable = image_ids.getDrawable(i);
+            Integer color = image_colors.getInt(i,0);
+            Log.i("bbb", "f."+color);
             imageItems.add(drawable);
-
-
+            colorItems.add(color);
         }
+
         return imageItems;
     }
-
+*/
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
