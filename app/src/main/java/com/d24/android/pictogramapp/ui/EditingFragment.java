@@ -3,6 +3,7 @@ package com.d24.android.pictogramapp.ui;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import com.d24.android.pictogramapp.R;
 import com.d24.android.pictogramapp.stickerview.StickerImageView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static android.content.ContentValues.TAG;
 
@@ -23,9 +25,26 @@ public class EditingFragment extends Fragment {
 
     View view;
     FrameLayout canvas;
+    // TODO, test patch_01_frag
+    public String name = "View NOT created";
+
     private OnCanvasTouchedListener mListener;
 
+/*
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        Log.i("patch_01_frag_02", "OnCreate");
+        try {
+            int bleep = getArguments().getInt("someInt", -1);
+            Log.i("patch_01_frag_02", "Expected: 5."+bleep);
 
+        } catch (Exception e) {
+            Log.i("patch_01_frag_02", "Err." + e.getMessage());
+        }
+        Log.i("patch_01_frag_02", "OnCreate Done");
+    }
+*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,6 +72,20 @@ public class EditingFragment extends Fragment {
             }
         });
 
+        // TODO, remove patch_01_frag, debugging
+        Random rnd = new Random();
+        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        view.setBackgroundColor(color);
+        Log.i("patch_01_frag_02", "INSTANTIATE FRAGMENT");
+        if(getId() == 0){
+            // Log.i("patch_01_frag_onCreate", "\tERROR at getID(). Expected != 0");
+        }
+        Log.i("patch_01_frag_02", "Expected: 5.");
+        int bleep = getArguments().getInt("someInt");
+        Log.i("patch_01_frag_02", "Expected: 5."+bleep);
+
+
+        name = "View CREATED";
         return view;
 
     }
@@ -60,6 +93,9 @@ public class EditingFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        // Log.i("patch_01_frag_02", "FRAGMENT ATTACHED");
+
+
         if (context instanceof OnCanvasTouchedListener) {
             mListener = (OnCanvasTouchedListener) context;
         } else {
@@ -103,12 +139,7 @@ public class EditingFragment extends Fragment {
         return new EditingFragment();
     }
 
-    public void copyObject(EditingFragment editingFragment) {
-        canvas = editingFragment.canvas;
-    }
-
     public interface OnCanvasTouchedListener {
-
         void onCanvasPressed();
     }
 }

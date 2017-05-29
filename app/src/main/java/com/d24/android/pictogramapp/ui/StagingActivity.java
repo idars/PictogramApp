@@ -1,30 +1,30 @@
 package com.d24.android.pictogramapp.ui;
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
-import android.os.Parcelable;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 
 import com.d24.android.pictogramapp.R;
+import com.d24.android.pictogramapp.util.CustomFragmentPagerAdapter;
+import com.d24.android.pictogramapp.util.CustomViewPager;
 import com.d24.android.pictogramapp.util.StoryXmlSerializer;
 
 import java.io.BufferedReader;
@@ -46,92 +46,77 @@ public class StagingActivity extends AppCompatActivity
 		EditingFragment.OnCanvasTouchedListener,
 		SaveDialogFragment.SaveDialogListener {
 
-	private ImageView img;
 	private static final String BACKGROUND_FRAGMENT_TAG = "BACKGROUND_TAG";
 	private static final String SELECTING_FRAGMENT_TAG = "SELECTING_TAG";
-	private static final String EDITING_FRAGMENT_TAG = "EDITING_TAG";
-	//TODO, private static final String PREVIEW_FRAGMENT_TAG = "PREVIEW_TAG";
 
 	private List<EditingFragment> fragmentList;
-	private List<EditingFragment> fragmentList2;
 	SelectingFragment selectingFragment;
 	BackgroundPickerFragment backgroundPickerFragment;
-	//TODO, PreviewFragment previewFragment;
+	//TODO, patch_x_preview
+	// PreviewFragment previewFragment;
+	// private static final String PREVIEW_FRAGMENT_TAG = "PREVIEW_TAG";
 
 	Menu menu;
-
-
-	private ViewPager mPager;
+	public CustomViewPager mPager;
 	private static final int NUM_OF_SCENES = 5; // Initial nr of scenes to start with
-	private PagerAdapter mPagerAdapter;
+	private ViewPagerAdapter mPagerAdapter;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//Log.i("patch_01_frag_order", "Oncreate() START");
+
 
 		setContentView(R.layout.activity_staging);
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null) {
 			actionBar.setDisplayHomeAsUpEnabled(true);		// Option to navigate back
 			actionBar.setDisplayShowTitleEnabled(false);	// Remove title from bar
-			actionBar.getNavigationMode();
+			// actionBar.getNavigationMode();
 		}
 
-		// TEST, Get size
-		Log.i("Test_22.1", "FragList2");
-		int testVal = 5;
-		fragmentList2 = new ArrayList<EditingFragment>();
-		EditingFragment[] frags = new EditingFragment[5];
-		for(int i = 0; i< testVal; i++)
-			frags[i] = EditingFragment.newInstance();
+		FragmentManager manager=getSupportFragmentManager(); // create an instance of fragment manager
+		FragmentTransaction transaction=manager.beginTransaction();	// create an instance of Fragment-transaction
 
-		for(int i = 0; i < testVal; i++) {
-			fragmentList2.add(frags[i]);
-			int size = fragmentList2.size();
-			Log.i("Test_22.1", "Frag count, " + size);
-		}
-
-		// TEST, Get index
-		for(int i = 0; i < 5; i++) {
-			int index = fragmentList2.indexOf(frags[i]);
-			Log.i("Test_22.1", "Frag index, " + index);
-		}
-
-		// Remove one index
-		fragmentList2.remove(3);
-
-		// TEST, Get index
-		for(int i = 0; i < 5; i++) {
-			int index = fragmentList2.indexOf(frags[i]);
-			Log.i("Test_22.1", "\tFrag index2, " + index);
-		}
-
-
-
-
-
-
-
-
-
-
-		FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
-		FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
-
-
-		// TODO, Scene Initalization
 		// Instantiate a ViewPager and a PagerAdapter.
 		fragmentList = new ArrayList<EditingFragment>();
+
+		mPager = (CustomViewPager) findViewById(R.id.viewPager);
+		mPagerAdapter = new ViewPagerAdapter(manager);
+
+		mPager.setPagingEnabled(false);
+		mPager.setAdapter(mPagerAdapter);
+
+		mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+			@Override
+			public void onPageSelected(int index) {
+				Log.i("Test_05", "Selected");
+				Log.i("Test_05", "cur.item, " + mPager.getCurrentItem());
+				Object obj = fragmentList.get(mPager.getCurrentItem());
+				Log.i("Test_05", "obj.pos, " + mPagerAdapter.getItemPosition(obj));
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				//Log.i("Test_05", "\tchange2");
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				//Log.i("Test_05", "\t\tchange3");
+
+			}
+		});
+
 		for(int i = 0; i < NUM_OF_SCENES; i++) {
 			createNewScene(false);
 		}
+		mPagerAdapter.notifyDataSetChanged();
 
-
-		mPager = (ViewPager) findViewById(R.id.viewPager);
-		mPagerAdapter = new ViewPagerAdapter(manager);
-		mPager.setAdapter(mPagerAdapter);
-//		mViewPager.setOnPageChangeListener((ViewPager.OnPageChangeListener) this);
 
 		selectingFragment = SelectingFragment.newInstance();
 		backgroundPickerFragment = BackgroundPickerFragment.newInstance();
@@ -143,52 +128,48 @@ public class StagingActivity extends AppCompatActivity
 
 		transaction.hide(selectingFragment);
 		transaction.hide(backgroundPickerFragment);
-
+		mPager.refreshDrawableState();
 		transaction.commit();
+
+		//Log.i("patch_01_frag_order", "Oncreate() END");
+		Log.i("patch_01_frag", "\tEND of onCreate");
+	}
+
+	// TODO,
+	@Override // IKKE brukt i sammenheng
+	public View onCreateView (View parent,
+					   String name,
+					   Context context,
+					   AttributeSet attrs){
+		// Log.i("patch_01_frag", "\tonCreateView()");
+		return super.onCreateView(parent, name,context, attrs);
 	}
 
 
-	@Override
-	public void onResume(){
-		super.onResume();
-		EditingFragment f = fragmentList.get(1);
-		if(f == null) {
-		} else {
-			//Context c = this;
-			//Resources r = getResources();
-			//f.updateImageView(2, r, c);
-		}
-	}
 
-
-
+	// TODO, implement patch_x_backstack
 	@Override
 	public void onBackPressed() {
-		if (!selectingFragment.isVisible() && !backgroundPickerFragment.isVisible()) {
-
-			String text = "Press the top-left button to complete scene";
-
-			View view = findViewById(R.id.frame_layout);
-			Snackbar.make(view, text, Snackbar.LENGTH_LONG)
-					.setAction("Action", null).show();
-		}
-
-		else {
+		if (selectingFragment.isVisible() || backgroundPickerFragment.isVisible()) {
 			FragmentManager manager=getSupportFragmentManager();//create an instance of fragment manager
 			FragmentTransaction transaction=manager.beginTransaction();	//create an instance of Fragment-transaction
-
 			transaction.hide(selectingFragment);
 			transaction.hide(backgroundPickerFragment);
+			// TODO, push patch_01_swipe
+			mPager.setPagingEnabled(true);
 			transaction.commit();
 		}
 
-		// TODO, new shit
-		if (mPager.getCurrentItem() == 0) {
+		// TODO, implement patch_x_backstack
+		else if (mPager.getCurrentItem() <= 0) {
 			// If the user is currently looking at the first step, allow the system to handle the
 			// Back button. This calls finish() on this activity and pops the back stack.
-			super.onBackPressed();
+			String text = "Do you wish to exit? Promt save & exit, give option for Cancel";
+			helpfulNotification(text);
+			//super.onBackPressed();
 		} else {
 			// Otherwise, select the previous step.
+			Log.i("patch_x_backstack", "BackButton pushed, going to fragment." + (mPager.getCurrentItem() - 1));
 			mPager.setCurrentItem(mPager.getCurrentItem() - 1);
 		}
 	}
@@ -201,12 +182,10 @@ public class StagingActivity extends AppCompatActivity
 			transaction.hide(backgroundPickerFragment);
 			transaction.commit();
 		}
-
 	}
 
 
-	/*TODO, DENNE VIL BLI ET PROBLEM SENERE */
-	/*TODO, verdien på oppdateres når scener slettes */
+	// TODO, confirm patch_01_misc
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
@@ -217,7 +196,6 @@ public class StagingActivity extends AppCompatActivity
 		}
 		if (id == R.id.action_pictogram) {
 			// This ID represents the Add Pictogram button.
-
 			onAddButtonClicked();
 			return true;
 		}
@@ -251,24 +229,26 @@ public class StagingActivity extends AppCompatActivity
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.show(selectingFragment);
+		transaction.hide(backgroundPickerFragment);
 		transaction.commit();
 	}
 
 	public void onBackgroundButtonClicked() {
-		// TODO Display list of backgrounds below toolbar
-		BackgroundPickerFragment fragment = BackgroundPickerFragment.newInstance();
+
 
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.show(backgroundPickerFragment);
+		transaction.hide(selectingFragment);
+		// TODO, patch_x_backstack
 		//transaction.add(R.id.frame_layout, fragment, BACKGROUND_FRAGMENT_TAG);
 		//transaction.addToBackStack(null);
 		transaction.commit();
 	}
 
+	// TODO, patch_01_frag
 	public void onUndoButtonClicked() {
 		boolean buttonIsActive = true;
-		//createNewScene(true); //Todo, remove
 		if (buttonIsActive) {
 			int color_white = getResources().getColor(R.color.white);
 			menu.findItem(R.id.action_undo).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
@@ -277,7 +257,6 @@ public class StagingActivity extends AppCompatActivity
 			menu.findItem(R.id.action_undo).getIcon().setColorFilter(color_grey, PorterDuff.Mode.SRC_IN);
 		}
 
-        //createNewScene(true); // TODO, Temporary use for testing: Adding new Scene
         deleteCurrentScene(); // TODO, Temporary use for testing: Deleting Scene
 
 
@@ -288,9 +267,10 @@ public class StagingActivity extends AppCompatActivity
 		// toolFragment.setUndoAvailable(false);
 	}
 
+	// TODO, patch_01_frag
 	public void onRedoButtonClicked() {
 		boolean buttonIsActive = true;
-		deleteCurrentScene(); //Todo, remove
+		createNewScene(true);
 		if (buttonIsActive) {
 			int color_white = getResources().getColor(R.color.white);
 			menu.findItem(R.id.action_redo).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
@@ -306,44 +286,75 @@ public class StagingActivity extends AppCompatActivity
 	}
 
 
+	// TODO create patch_x_preview
 	// Not implemented, Created for PreviewFragment. Navigation & Management of Scenes
 	private void navigateScene(boolean positiveIndexChange) {
-		// TODO <Get visible index>
-		// TODO <Get wanted new direction (or index)>
 		int index = 0;
 		if (positiveIndexChange){
 			index = 1;
 		}
 	}
 
+	// TODO, remove patch_01_frag (frag.name)
 	// Not fully implemented, Created for PreviewFragment. Navigation & Management of Scenes
 	private void createNewScene(boolean notifyChange) {
-		Log.i("Testing_15", "ADDING NEW FRAGMENT");
-		//TEST_22.3EditingFragment frag = EditingFragment.newInstance();
+
 		EditingFragment frag = new EditingFragment();
+		//Bundle args = new Bundle();
+		//args.putInt("someInt", 5);
+		//frag.setArguments(args);
+
 		fragmentList.add(frag);
+		int size = fragmentList.size()-1;
 		if(notifyChange) {
 			mPagerAdapter.notifyDataSetChanged();
+			//mPager.setCurrentItem(size);
 		}
+
+
+		/*EditingFragment newFrag = new EditingFragment();
+		Bundle args = new Bundle();
+		args.putInt("someInt", 5);
+		newFrag.setArguments(args);
+
+		fragmentList.add(newFrag);
+		Log.i("patch_01_frag_02", "fragmentList.size." + fragmentList.size());
+		EditingFragment f = fragmentList.get(fragmentList.size()-1);
+		Log.i("patch_01_frag_02", "\tfrag.null." + (f == null));
+		if(f != null){
+			Log.i("patch_01_frag_02", "\tfrag.name." + (f.name));
+		}
+		mPagerAdapter.attachFragment(mPager,newFrag, fragmentList.size()-1);
+
+
+		mPagerAdapter.notifyDataSetChanged();*/
+
 	}
 
 
+	// TODO, remove/create patch_01_frag, update mPager.currentItem
 	// Not fully implemented, Created for PreviewFragment. Navigation & Management of Scenes
 	private void deleteCurrentScene() {
 
 		int currentIndex = mPager.getCurrentItem();
-		Log.i("Testing_15", "DELETING FRAGMENT at " + currentIndex);
+		//Log.i("patch_01_frag_action", "Delete fragment." + currentIndex);
 
-		// TODO, NAVIGATION, mPager.setCurrentItem(2);
-		//mPager.removeView((View) fragmentList.get(currentIndex).getView());
-		//mPager.setCurrentItem(currentIndex+1);
-		//alternative, mPager.removeViewAt(2);
+		/*
+		mPager.setCurrentItem(2);
+		mPager.removeView((View) fragmentList.get(currentIndex).getView());
+		mPager.setCurrentItem(currentIndex+1);
+		alternative, mPager.removeViewAt(2);
+		*/
 
 		fragmentList.remove(currentIndex);
-		Log.i("Test_22.size", "Size after " + fragmentList.size());
-
-		mPagerAdapter.notifyDataSetChanged();
+		// Log.i("patch_01_frag_stat", "REMOVED");
 		//mPager.setAdapter(mPagerAdapter);
+		//Log.i("patch_01_frag", "\tNEW adapter SET");
+		mPagerAdapter.notifyDataSetChanged();
+		//mPager.setCurrentItem(0);
+		//Log.i("patch_01_frag", "Current." + mPager.getCurrentItem());
+
+		//mPagerAdapter.notifyDataSetChanged();
 	}
 
 
@@ -367,10 +378,10 @@ public class StagingActivity extends AppCompatActivity
 			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 			StringBuilder sb = new StringBuilder();
 			String line;
+			reader.close();
 			while ((line = reader.readLine()) != null) {
 				sb.append(line).append("\n");
 			}
-			reader.close();
 
 			Log.d(getLocalClassName(), "File output: " + filename + "\n" + sb.toString());
 
@@ -389,17 +400,35 @@ public class StagingActivity extends AppCompatActivity
 		}
 	}
 
+
+	// TODO, fix patch_01_frag, scene not properly loaded
+	// TODO, patch_x_misc, adapterView, view and l is unused.
 	@Override
 	public void onSolidColorSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
 		TypedArray colors = getResources().obtainTypedArray(R.array.background_colors);
 		int color = colors.getColor(i, -1);
 
-		int index = 0;
+		int index;
 		index = mPager.getCurrentItem();
 		EditingFragment frag = fragmentList.get(index);
 
 		if(frag != null) {
-			frag.getView().setBackgroundColor(color);
+			View fragView = frag.getView();
+			if (fragView != null) {
+				frag.getView().setBackgroundColor(color);
+			} else {
+				helpfulNotification("ERROR at onSolidColorSelected");
+				Log.i("patch_01_frag_error", "frag.view.null: " + (frag.getView() == null));
+
+				try {
+					// INSTANTIATING view
+
+
+				} catch (Exception e) {
+					Log.i("patch_01_frag_error", "Exception at try-catch: " + e.toString());
+				}
+			}
 		}
 	}
 
@@ -435,13 +464,16 @@ public class StagingActivity extends AppCompatActivity
 
 		if(frag != null){
 			try {
-					frag.updateImageView(item_id);
+				Log.i("Test_22.3", "pre update");
+				frag.updateImageView(item_id);
 			} catch (Exception e) {
+				helpfulNotification("Please swipe for a bit first");
 				Log.i("Test_22.3", "Error at updateImg: " + e.toString());
 			}
 
 		}
 		else {
+			Log.i("Test_22.3", "error update");
 			Log.d("StagingActivity","EditingFragment from fragmentList.get(" + item_id + ") is null");
 		}
 	}
@@ -449,6 +481,23 @@ public class StagingActivity extends AppCompatActivity
 	@Override
 	public void onCanvasPressed() {
 		focusEditingFragment();
+
+		// TODO, patch_01_swipe
+		mPager.setPagingEnabled(true);
+	}
+
+	public void helpfulNotification (String text) {
+		View view = findViewById(R.id.frame_layout);
+		Snackbar.make(view, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+	}
+
+	@Override
+	public void onAttachFragment(Fragment fragment) {
+		super.onAttachFragment(fragment);
+		Log.i("patch_01_frag", "onAttachFr");
+		EditingFragment f = (EditingFragment) fragment;
+		Log.i("patch_01_frag", "f.name."+f.name);
 	}
 
 
@@ -467,21 +516,10 @@ public class StagingActivity extends AppCompatActivity
 
 
 
+	private class ViewPagerAdapter extends CustomFragmentPagerAdapter {
 
-
-
-
-
-
-
-
-
-
-	public class ViewPagerAdapter extends FragmentStatePagerAdapter {
-
-		public boolean newlyDestroyed = false;
 		public ViewPagerAdapter(FragmentManager fm) {
-			super(fm);
+			super(fm,mPager);
 		}
 
 		@Override
@@ -490,62 +528,6 @@ public class StagingActivity extends AppCompatActivity
 		}
 
 
-		//Destroying Item at (position / getCount())
-		@Override
-		public void destroyItem(ViewGroup container, int position, Object object) {
-			if (object instanceof EditingFragment) {
-				EditingFragment fr = (EditingFragment) object;
-				int index = -1;
-				int index1 = fragmentList.indexOf(fr);
-				for(int i = 0; i < getCount(); i++) {
-					EditingFragment item = (EditingFragment) fragmentList.get(i);
-					if(item.equals(fr)) {
-						// item still exists in dataset; return position
-						index = i;
-						break;
-					}
-				}
-				Log.i("Test_22.3", "Hiding Frag:\t" + (index1 + 1));
-
-
-				if(index == -1) {
-					Log.i("Test_22.3", "\tDestroying fragment at:\t" + (position+1));
-					super.destroyItem(container, position, object);
-					newlyDestroyed = true;
-				}
-			}
-		}
-
-
-		/* METODE blir kalt fra mPagerAdapter.notifyDataSetChanged()
-		 Dette er når fragmentList får nye elementer eller det fjernes et element
-		 POSITION_NONE, om objekt er fjernet fra listen
-		 */
-		@Override
-		public int getItemPosition(Object object)
-		{
-			//			Log.i("Testing_15", "1.0\tgetItemPosition(), return " + 			super.getItemPosition(object));
-			//Log.i("Testing_15", "Checking, how much have this object moved?, Position (" + 			super.getItemPosition(object) + ")*?");
-			//Log.i("Testing_15", "(Check visible fragment) (" + index + "/" + (getCount()-1) + ")");
-			//Log.i("Test_22.2", "(-/" + (getCount()-1) + ") Check visible fragments");
-			EditingFragment fr = (EditingFragment) object;
-			int index = fragmentList.indexOf(fr);
-
-			Log.i("Test_22.3", "gtItemPos. frag.index,\t" + index);
-
-			//Log.i("Testing_15", "" + object.);
-
-			// TODO, could test a boolean variable if fragment found
-			if ((object instanceof  EditingFragment) && (index != -1)) {
-				Log.i("Test_22.3", "\t\tFragment found");
-				EditingFragment f = (EditingFragment) object;
-				return index;
-			} else {
-				((EditingFragment) object).copyObject(fragmentList.get(0));
-				Log.i("Test_22.3", "\t\tFragment NOT found, delete");
-				return POSITION_NONE;
-			}
-		}
 
 
 		/*Create the page for the given position.*/
@@ -553,92 +535,110 @@ public class StagingActivity extends AppCompatActivity
 		public Object instantiateItem(ViewGroup container, int position) {
 
 			Fragment fragment = getItem(position);
+			// Test_22.3, Log.i("Test_22.3", "inst, name: " + ((EditingFragment) fragment).name);
 			if(fragment.getId() == 0){
-				Log.i("Test_22.3", "GOOD, GOOD at " + position);
-				return super.instantiateItem(container, position);
+				// Log.i("patch_01_frag", "Super: instantiateItem");
+				Object obj = super.instantiateItem(container, position);
+				// Log.i("patch_01_frag", "Container: id."+container.getId());
+				// Log.i("patch_01_frag", "Object: id."+((EditingFragment)obj).getId());
+				//Log.i("patch_01_frag", "Object: tag."+((EditingFragment)obj).getTag());
+				return obj;
 			} else {
-				Log.i("Test_22.3", "BAD, BAD at " + position);
+				// Todo, IF FRAGMENT IS RETURNED... it better be attached
+				// Log.i("patch_01_frag", "Super: instantiateItem, NOT");
 				return fragment;
 
-				/*Log.i("Test_22.3", "BAD, BAD at " + position);
-				try{
-					return super.instantiateItem(container, position);
-				} catch (Exception e) {
-					Log.i("Test_22.3", "Error at instantiate: " + e.toString());
-					return fragment;
-				}*/
 			}
 
+		}
 
-			/* Trying out some new things
-			Log.i("Test_22.3", "Showing fragment at:\t" + (position+1));
-			if(newlyDestroyed){
-				Log.i("Test_22.3", "Trixy:\t" + (position+1));
-				newlyDestroyed = false;
-				//return getItem(position);
+		// patch_01_frag
+    /* METODE blir kalt fra mPagerAdapter.notifyDataSetChanged()
+         Dette er når fragmentList får nye elementer eller det fjernes et element
+         POSITION_NONE, om objekt er fjernet fra listen
+         */
+		@Override
+		public int getItemPosition(Object object)
+		{
+			EditingFragment fr = (EditingFragment) object;
+			int index = fragmentList.indexOf(fr);
+			//int index = fragmentList.indexOf(fr);
+
+			//Log.i("patch_01_frag_m", "getItemPos obj.index." + index);
+
+			if ((object instanceof  EditingFragment) && (index != -1)) {
+				//Log.i("patch_01_frag_m", "\t\tFragment found");
+				EditingFragment f = (EditingFragment) object;
+				return index;
+			} else {
+				mPager.removeView(((EditingFragment) object).getView());
+				//Log.i("patch_01_frag_m", "\t\tFragment not in list, delete it");
+				return POSITION_NONE;
 			}
-
-			// Test_22 Problem here??
-			Object obj = null;
-			try{
-				obj = super.instantiateItem(container, position);
-			} catch (Exception e){
-				Log.i("Test_22.3", "\t Error at instansiate: " + e.toString());
-				EditingFragment f = (EditingFragment) getItem(position);
-				return getItem(position);
-			}
-			return obj;*/
-
-
 		}
 
 
 
+		//Destroying Item at (position / getCount())
+		@Override // IKKE BRUKT (før onAttach)
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			if (object instanceof EditingFragment) {
+				EditingFragment fr = (EditingFragment) object;
+				int index = -1;
+				int index1 = fragmentList.indexOf(fr);
+				for(int i = 0; i < getCount(); i++) {
+					EditingFragment item = fragmentList.get(i);
+					if(item.equals(fr)) {
+						// item still exists in dataset; return position
+						index = i;
+						break;
+					}
+				}
+
+				// Log.i("patch_01_frag", "Hiding Frag:\t" + (index1 + 1));
+
+				if(index == -1) {
+					// Log.i("patch_01_frag", "Destroying fragment at:\t" + (position));
+					// Log.i("patch_01_frag", "Super: Destroy." + position);
+					super.destroyItem(container, position, object);
+					// Log.i("patch_01_frag", "\t\t(This should trigger, mFragment.set(position,object))");
+				}
+			}
+		}
 
 
 
-
-
-
-
-
+		// TODO, fix patch_01_frag, call super?
 		/*Return the Fragment associated with a specified position.*/
 		@Override
 		public Fragment getItem(int position) {
-			EditingFragment fragment = null;
-			fragment = fragmentList.get(position);
-			if(fragment.getId() == 0) {
-				return fragment;
+			Log.i("patch_01_frag", "getItem("+position+")");
+
+			EditingFragment item = fragmentList.get(position);
+			if(item.isDetached()){
+				 Log.i("patch_01_frag", "\tERROR: isDetached().true. EXPECTED isDetached().false");
 			}
-			Log.i("Test_22.3", "BAD");
-			return fragment;
-		}
-
-		// Setting new primary fragment at(" + position + ")
-		@Override
-		public void 	setPrimaryItem(ViewGroup container, int position, Object object){
-			super.setPrimaryItem(container, position, object);
-			//Log.i("Test_22.3", (position+1) + " ID: "+((EditingFragment) object).getId());
-
-		}
-
-
-		//Called when the a change in the shown pages has been completed.
-		//Transaction completed
-		@Override
-		public void finishUpdate(ViewGroup container){
-			try {
-				super.finishUpdate(container);
-			} catch (Exception e){
-				Log.i("Test_22.3", "Error at finish: " + e.toString());
+			else if(item != null){
+				View itemView = item.getView();
+				if(item.getId() != 0) {
+					if(itemView == null){
+						 Log.i("patch_01_frag_getItem", "\tERROR: EXPECTED view.null @ID.null, pos." + position);
+					} else {
+						// Log.i("patch_01_frag_getItem", "\tEverything good?");
+						return item;
+					}
+				} else {
+					Log.i("patch_01_frag_getItem", "\tERROR: instantiating");
+					instantiateItem(mPager,position);
+				}
+			} else {
+				 Log.i("patch_01_frag", "\tERROR: EXPECTED item.!null, @pos." + position);
+				item = EditingFragment.newInstance();
+				return item;
 			}
-			int start = mPager.getCurrentItem();
-			//Log.i("Test_22.3", "Now viewing fragment: " + ++start);
+
+			Log.i("patch_01_frag", "ERROR: unhandled." + position);
+			return item;
 		}
-
-
 	}
-
-
 }
-

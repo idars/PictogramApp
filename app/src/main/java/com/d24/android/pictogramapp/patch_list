@@ -1,0 +1,55 @@
+patch_list
+
+patch_01_frag -- Fixing the bug where an empty scene is loaded
+    [0] StagingActivity
+        0) deleteCurrentScene()
+        0) onRedoButtonClicked
+        0) onUndoButtonClicked
+    [1] EditingFragment
+        1) copyObject
+    [2]CustomFragmentPagerAdapter
+        [2] destroyItem()
+    [3] activity_staging.xml
+
+patch_01_misc
+    [0] StagingActivity
+        0) onBackPressed(); using helpfulNotification(text)
+        0) onOptionsItemSelected, ?
+
+patch_01_stick
+    [0]StickerView
+        0) centerX - fixed
+
+patch_01_swipe
+- Deaktiver swipe funksjonen når vi driver med redigering
+    [0] StickerView
+        0) OnTouchListener
+            setFalse, blir ofte kalt (bevegelse)
+            Canvas blir ikke trykket ved tast på StickerView (kaller ikke setTrue())
+    [1] StagingActivity
+        0) onBackPressed - activated
+    [2] CustomViewAdapter
+        * Koden blir kalt ofte (stickerView?)
+
+
+
+
+
+
+
+
+
+patch_x_misc
+    [0] StagingActivity
+        0) onSolidColorSelected(); remove parameters
+
+
+patch_x_backstack
+    [0] StagingActivity
+        0) onBackgroundButtonClicked
+        0) onBackPressed
+
+patch_x_preview
+    [0] StagingActivity
+        0) variables: fragmentTag
+        0) navigateScene
