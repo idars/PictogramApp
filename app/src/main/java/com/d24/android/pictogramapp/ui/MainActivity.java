@@ -26,6 +26,8 @@ import com.d24.android.pictogramapp.R;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 
@@ -34,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 	private static final int SHOW_INTRODUCTION = 1;
 
 	private ArrayAdapter<File> mAdapter;
-	private ListView mContainer;
 	private int mPosition;
 
 	@Override
@@ -49,6 +50,13 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 		File internalStorage = new File(getFilesDir() + File.separator + "stories");
 		if (!internalStorage.exists()) internalStorage.mkdir();
 		final ArrayList<File> files = new ArrayList<>(Arrays.asList(internalStorage.listFiles()));
+		Collections.sort(files, new Comparator<File>() {
+			@Override
+			public int compare(File f1, File f2) {
+				// For reverse order (most recently modified first), we need to swap the positions
+				return Long.compare(f2.lastModified(), f1.lastModified());
+			}
+		});
 
 		mAdapter = new ArrayAdapter<File>(this, R.layout.list_item_file, R.id.text1, files) {
 			@NonNull
@@ -100,9 +108,9 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 			}
 		};
 
-		mContainer = (ListView) findViewById(R.id.list_files);
-		mContainer.setAdapter(mAdapter);
-		mContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		ListView container = (ListView) findViewById(R.id.list_files);
+		container.setAdapter(mAdapter);
+		container.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 				Intent intent = new Intent(MainActivity.this, StagingActivity.class);
@@ -113,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 		});
 
 		View empty = findViewById(R.id.empty);
-		mContainer.setEmptyView(empty);
+		container.setEmptyView(empty);
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener() {
