@@ -40,4 +40,6 @@
     <string name="content_edit">Change the name of this story</string>
     <string name="content_delete">Delete this story</string>
     <string name="title_stories">Your stories</string>
+    <string name="action_move_forward">Move scene right</string>
+    <string name="action_move_back">Move scene left</string>
 </resources>

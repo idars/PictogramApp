@@ -28,4 +28,6 @@
     <string name="content_edit">Endre navn på historien</string>
     <string name="content_delete">Slett denne historien</string>
     <string name="title_stories">Dine historier</string>
+    <string name="action_move_back">Flytt scene til venstre</string>
+    <string name="action_move_forward">Flytt scene til høyre</string>
 </resources>

@@ -33,4 +33,16 @@
         android:title="@string/action_remove_page"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/action_move_back"
+        android:orderInCategory="100"
+        android:title="@string/action_move_back"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_move_forward"
+        android:orderInCategory="100"
+        android:title="@string/action_move_forward"
+        app:showAsAction="never"/>
+
 </menu>
