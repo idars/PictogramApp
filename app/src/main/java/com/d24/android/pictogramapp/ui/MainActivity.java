@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 		toolbar.setTitle(R.string.title_stories);
 		setSupportActionBar(toolbar);
 
-		File internalStorage = getFilesDir();
+		File internalStorage = new File(getFilesDir() + File.separator + "stories");
+		if (!internalStorage.exists()) internalStorage.mkdir();
 		final ArrayList<File> files = new ArrayList<>(Arrays.asList(internalStorage.listFiles()));
 
 		mAdapter = new ArrayAdapter<File>(this, R.layout.list_item_file, R.id.text1, files) {

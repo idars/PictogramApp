@@ -88,7 +88,7 @@ public class StagingActivity extends AppCompatActivity
 		if (filename != null) {
 			// Read from the provided file
 			try {
-				File file = new File(getFilesDir(), filename);
+				File file = new File(getFilesDir() + File.separator + "stories", filename);
 				FileInputStream inputStream = new FileInputStream(file);
 				StoryXmlParser parser = new StoryXmlParser();
 				populateFrom(parser.parse(inputStream));
@@ -352,7 +352,7 @@ public class StagingActivity extends AppCompatActivity
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog, String filename) {
 		try {
-			File file = new File(getFilesDir(), filename);
+			File file = new File(getFilesDir() + File.separator + "stories", filename);
 			FileOutputStream outputStream = new FileOutputStream(file);
 			StoryXmlSerializer serializer = new StoryXmlSerializer();
 			serializer.write(outputStream, new Story(filename, (ViewPagerToggleSwipe) findViewById(R.id.viewPager)));
