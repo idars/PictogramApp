@@ -71,7 +71,7 @@ public class EditingFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
+/*
     public StickerImageView updateImageView(long item_id) {
 
         //final ArrayList<Drawable> imageItems = new ArrayList<>();
@@ -89,15 +89,16 @@ public class EditingFragment extends Fragment {
 
         canvas.addView(newImg);
 		return newImg;
-    }
+    }*/
 
     public View getView(){
         return view;
     }
 
+    /*
     public static EditingFragment newInstance() {
         return new EditingFragment();
-    }
+    }*/
 
     public interface OnCanvasTouchedListener {
 

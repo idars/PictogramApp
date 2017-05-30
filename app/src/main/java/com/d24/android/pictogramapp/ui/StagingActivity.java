@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -20,6 +21,7 @@ import android.support.v4.app.NavUtils;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.d24.android.pictogramapp.R;
 import com.d24.android.pictogramapp.model.Figure;
@@ -49,7 +51,8 @@ import static android.content.ContentValues.TAG;
 public class StagingActivity extends AppCompatActivity
 		implements SelectingFragment.PictogramSelectedListener,
 		BackgroundPickerFragment.OnBackgroundSelectedListener,
-		SaveDialogFragment.SaveDialogListener {
+		SaveDialogFragment.SaveDialogListener,
+		SaveAndExitDialogFragment.SaveAndExitDialogListener {
 
 	private static final String BACKGROUND_FRAGMENT_TAG = "BACKGROUND_TAG";
 	private static final String SELECTING_FRAGMENT_TAG = "SELECTING_TAG";
@@ -164,7 +167,6 @@ public class StagingActivity extends AppCompatActivity
 	}
 
 	// Methods for altering the pages (scenes) shown through the ViewPager
-
 	public void addPage(View v) {
 		int position = mPager.getCurrentItem();
 		mPagerAdapter.addView(v, position + 1);
@@ -218,9 +220,12 @@ public class StagingActivity extends AppCompatActivity
 			transaction.hide(backgroundPickerFragment);
 			transaction.commit();
 			mPager.setPagingEnabled(true);
-		}
-		else if (mPager.getCurrentItem() > 0) {
+		} else if (mPager.getCurrentItem() > 0) {
 			mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+		} else if (mPager.getCurrentItem() == 0){
+			SaveAndExitDialogFragment dialog = new SaveAndExitDialogFragment();
+			dialog.show(getFragmentManager(), "save_and_exit");
+
 		}
 	}
 
@@ -348,6 +353,15 @@ public class StagingActivity extends AppCompatActivity
 		transaction.hide(selectingFragment);
 		transaction.commit();
 	}
+	@Override
+	public void onDialogConfirmExit(boolean saveAndExit) {
+		if(saveAndExit){
+			super.onBackPressed();
+		} else {
+			Snackbar.make(findViewById(R.id.frame_layout),
+					R.string.dialog_cancel, Snackbar.LENGTH_LONG).show();
+		}
+	}
 
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog, String filename) {
@@ -421,6 +435,7 @@ public class StagingActivity extends AppCompatActivity
 	{
 		LayerLayout focusedView = (LayerLayout) getCurrentPage().findViewById(R.id.layer_layout);
 		StickerImageView sticker = createSticker(item_id);
+
 		focusedView.addView(sticker);
 	}
 

@@ -20,6 +20,10 @@
     <string name="error_file_save">Kunne ikke lagre fil</string>
     <string name="success_file_save">Fil lagret</string>
     <string name="dialog_save">Gi historien et navn</string>
+    <string name="dialog_save_and_exit">Lagre og avslutte?</string>
+    <string name="dialog_exit_info">Lagre fortellingen og returner til hovedmenyen</string> //
+    <string name="dialog_confirm">Godkjenn</string>
+    <string name="dialog_cancel">Avbryt</string>
     <string name="error_file_load">Kunne ikke åpne fil</string>
     <string name="empty_figure">Et bilde av en usynlig person</string>
     <string name="empty">Ingen historier opprettet ennå</string>
