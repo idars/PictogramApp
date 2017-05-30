@@ -19,6 +19,7 @@
             android:layout_height="match_parent"
             android:clickable="true"
             android:onClick="onCanvasPressed"
+            android:background="@color/white"
             tools:context=".ui.LayerLayout"/>
 
     </android.support.v7.widget.CardView>
