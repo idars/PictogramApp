@@ -59,6 +59,7 @@ public class StagingActivity extends AppCompatActivity
 
     private ViewPagerToggleSwipe mPager;
     private MyViewPagerAdapter mPagerAdapter;
+	private String mName;
 
 
 	@Override
@@ -90,6 +91,9 @@ public class StagingActivity extends AppCompatActivity
 				FileInputStream inputStream = new FileInputStream(file);
 				StoryXmlParser parser = new StoryXmlParser();
 				populateFrom(parser.parse(inputStream));
+
+				// If successful, save filename for later use
+				mName = filename;
 			} catch (XmlPullParserException | IOException e) {
 				e.printStackTrace();
 				Snackbar.make(findViewById(R.id.frame_layout),
@@ -377,7 +381,8 @@ public class StagingActivity extends AppCompatActivity
 			// Attempt initializing model class instances and serialize the resulting Story
 			serializer.write(outputStream, new Story(filename, (ViewPagerToggleSwipe) findViewById(R.id.viewPager)));
 
-			// If successful, show message
+			// If successful, save filename for later and show message
+			mName = filename;
 			Snackbar.make(findViewById(R.id.frame_layout),
 					R.string.success_file_save, Snackbar.LENGTH_SHORT).show();
 		} catch (IOException e) {
@@ -395,6 +400,13 @@ public class StagingActivity extends AppCompatActivity
 	public void onSaveButtonClicked() {
 		focusEditingFragment(true);
 		SaveDialogFragment dialog = new SaveDialogFragment();
+
+		if (mName != null) {
+			Bundle bundle = new Bundle();
+			bundle.putString("filename", mName);
+			dialog.setArguments(bundle);
+		}
+
 		dialog.show(getFragmentManager(), "save");
 	}
 
