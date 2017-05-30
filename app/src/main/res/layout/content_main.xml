@@ -15,6 +15,7 @@
         android:id="@+id/list_files"
         android:animateLayoutChanges="true"
         android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay"
         android:paddingBottom="88dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

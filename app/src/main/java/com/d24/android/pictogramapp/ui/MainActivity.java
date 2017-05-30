@@ -1,11 +1,13 @@
 package com.d24.android.pictogramapp.ui;
 
-import android.app.DialogFragment;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
@@ -22,7 +24,6 @@ import android.widget.TextView;
 import com.d24.android.pictogramapp.R;
 
 import java.io.File;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 
 	private ArrayAdapter<File> mAdapter;
 	private ListView mContainer;
+	private int mPosition;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 				ImageView edit = (ImageView) view.findViewById(R.id.edit);
 				ImageView delete = (ImageView) view.findViewById(R.id.delete);
 
-				text1.setText(files.get(position).getName());
+				final String name = files.get(position).getName();
+				text1.setText(name);
 				text2.setText(DateUtils.getRelativeTimeSpanString(
 						files.get(position).lastModified(),
 						new Date().getTime(),
@@ -67,20 +70,29 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 				edit.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
+						Bundle bundle = new Bundle();
+						bundle.putString("filename", name);
+						mPosition = position;
+
 						SaveDialogFragment dialog = new SaveDialogFragment();
-						// TODO set current filename as argument
+						dialog.setArguments(bundle);
 						dialog.show(getFragmentManager(), "save");
 					}
 				});
 				delete.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						// TODO show confirmation
-						File entry = getItem(position);
-						if (entry != null) {
-							remove(entry);
-							deleteFile(entry.getName());
-						}
+						mPosition = position;
+						AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+						builder.setMessage(R.string.dialog_delete);
+						builder.setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialogInterface, int i) {
+								onConfirmationPositiveClick();
+							}
+						});
+						builder.setNegativeButton(R.string.dialog_cancel, null);
+						builder.create().show();
 					}
 				});
 
@@ -163,12 +175,45 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 	}
 
 	@Override
-	public void onDialogPositiveClick(DialogFragment dialog, String filename) {
-		File internalStorage = getFilesDir();
+	public void onDialogPositiveClick(String filename) {
+		// Get current file
+		String directory = getFilesDir() + File.separator + "stories";
+		File oldFile = mAdapter.getItem(mPosition);
+		if (oldFile == null) {
+			Snackbar.make(findViewById(R.id.main_layout),
+					R.string.error_file_rename, Snackbar.LENGTH_SHORT).show();
+			return;
+		}
+
+		// Check if it's necessary to rename
+		String oldName = oldFile.getName();
+		if (oldName.equals(filename)) {
+			return;
+		}
+
+		// Rename old file to new file
+		File newFile = new File(directory, filename);
+		if (!oldFile.renameTo(newFile)) {
+			Snackbar.make(findViewById(R.id.main_layout),
+					R.string.error_file_rename, Snackbar.LENGTH_SHORT).show();
+		}
+
+		// Replace old file in adapter with new file
+		mAdapter.remove(oldFile);
+		mAdapter.insert(newFile, mPosition);
 	}
 
-	public void onConfirmationPositiveClick(DialogFragment dialog, int index) {
-		mAdapter.remove(mAdapter.getItem(index));
+	public void onConfirmationPositiveClick() {
+		File entry = mAdapter.getItem(mPosition);
+
+		if (entry != null) {
+			mAdapter.remove(entry);
+			if (!entry.delete()) {
+				Snackbar.make(findViewById(R.id.main_layout),
+						R.string.error_file_delete, Snackbar.LENGTH_SHORT).show();
+			}
+		}
+
 		mAdapter.notifyDataSetChanged();
 	}
 }

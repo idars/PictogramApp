@@ -1,11 +1,9 @@
 package com.d24.android.pictogramapp.ui;
 
-import android.app.DialogFragment;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,7 +19,6 @@ import android.support.v4.app.NavUtils;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.d24.android.pictogramapp.R;
 import com.d24.android.pictogramapp.model.Figure;
@@ -35,12 +32,10 @@ import com.d24.android.pictogramapp.util.ViewPagerToggleSwipe;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import static android.content.ContentValues.TAG;
 
@@ -340,8 +335,12 @@ public class StagingActivity extends AppCompatActivity
 	public void onAddButtonClicked() {
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
-		transaction.show(selectingFragment);
-		transaction.hide(backgroundPickerFragment);
+		if (selectingFragment.isVisible()) {
+			transaction.hide(selectingFragment);
+		} else {
+			transaction.show(selectingFragment);
+			transaction.hide(backgroundPickerFragment);
+		}
 		transaction.commit();
 	}
 
@@ -349,8 +348,12 @@ public class StagingActivity extends AppCompatActivity
 	public void onColorButtonClicked() {
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
-		transaction.show(backgroundPickerFragment);
-		transaction.hide(selectingFragment);
+		if (backgroundPickerFragment.isVisible()) {
+			transaction.hide(backgroundPickerFragment);
+		} else {
+			transaction.show(backgroundPickerFragment);
+			transaction.hide(selectingFragment);
+		}
 		transaction.commit();
 	}
 	@Override
@@ -364,29 +367,20 @@ public class StagingActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void onDialogPositiveClick(DialogFragment dialog, String filename) {
+	public void onDialogPositiveClick(String filename) {
 		try {
+			// Set up streams and serializer
 			File file = new File(getFilesDir() + File.separator + "stories", filename);
 			FileOutputStream outputStream = new FileOutputStream(file);
 			StoryXmlSerializer serializer = new StoryXmlSerializer();
+
+			// Attempt initializing model class instances and serialize the resulting Story
 			serializer.write(outputStream, new Story(filename, (ViewPagerToggleSwipe) findViewById(R.id.viewPager)));
 
-			// Debug code; to display output code
-			FileInputStream inputStream = new FileInputStream(file);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-			StringBuilder sb = new StringBuilder();
-			String line;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line).append("\n");
-			}
-			reader.close();
-
-			Log.d(getLocalClassName(), "File output: " + filename + "\n" + sb.toString());
-
+			// If successful, show message
 			Snackbar.make(findViewById(R.id.frame_layout),
 					R.string.success_file_save, Snackbar.LENGTH_SHORT).show();
 		} catch (IOException e) {
-			// Display error message
 			Snackbar.make(findViewById(R.id.frame_layout),
 					R.string.error_file_save, Snackbar.LENGTH_LONG)
 					.setAction(R.string.button_retry, new View.OnClickListener() {
@@ -399,6 +393,7 @@ public class StagingActivity extends AppCompatActivity
 	}
 
 	public void onSaveButtonClicked() {
+		focusEditingFragment(true);
 		SaveDialogFragment dialog = new SaveDialogFragment();
 		dialog.show(getFragmentManager(), "save");
 	}

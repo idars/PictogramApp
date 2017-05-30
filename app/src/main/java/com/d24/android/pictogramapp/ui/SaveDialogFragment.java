@@ -6,20 +6,21 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.TableLayout;
 
 import com.d24.android.pictogramapp.R;
 
 public class SaveDialogFragment extends DialogFragment {
 
+	private static final String PARAM_FILENAME = "filename";
+
+	private String mFilename;
+
 	public interface SaveDialogListener {
-		public void onDialogPositiveClick(DialogFragment dialog, String filename);
+		void onDialogPositiveClick(String filename);
 	}
 
 	SaveDialogListener mListener;
@@ -45,6 +46,14 @@ public class SaveDialogFragment extends DialogFragment {
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) {
+			mFilename = getArguments().getString(PARAM_FILENAME);
+		}
+	}
+
+	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT,
@@ -54,8 +63,13 @@ public class SaveDialogFragment extends DialogFragment {
 		params.setMargins(margin, 0, margin, 0);
 
 		mField = new EditText(mContext);
-		mField.setHint("Name");
+		mField.setHint(R.string.field_name);
 		mField.setLayoutParams(params);
+
+		if (mFilename != null) {
+			mField.setText(mFilename);
+			mField.setSelection(mField.getText().length());
+		}
 
 		FrameLayout frame = new FrameLayout(mContext);
 		frame.addView(mField);
@@ -69,7 +83,6 @@ public class SaveDialogFragment extends DialogFragment {
 						String filename = mField.getText().toString();
 						if (!filename.isEmpty()) {
 							mListener.onDialogPositiveClick(
-									SaveDialogFragment.this,
 									mField.getText().toString()
 							);
 						}

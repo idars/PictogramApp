@@ -34,4 +34,8 @@
     <string name="title_stories">Dine historier</string>
     <string name="action_move_back">Flytt scene til venstre</string>
     <string name="action_move_forward">Flytt scene til høyre</string>
+    <string name="field_name">Navn</string>
+    <string name="error_file_rename">Kunne ikke endre navn på fil</string>
+    <string name="dialog_delete">Vil du slette denne historien?</string>
+    <string name="error_file_delete">Kunne ikke slette fil</string>
 </resources>

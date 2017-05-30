@@ -34,4 +34,8 @@
     <string name="title_stories">Dine historiar</string>
     <string name="action_move_back">Flytt scene til venstre</string>
     <string name="action_move_forward">Flytt scene til høgre</string>
+    <string name="field_name">Navn</string>
+    <string name="error_file_rename">Kunne ikkje endra namn på fil</string>
+    <string name="dialog_delete">Vil du sletta denne historien?</string>
+    <string name="error_file_delete">Kunne ikkje sletta fil</string>
 </resources>
