@@ -39,7 +39,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -128,15 +127,19 @@ public class StagingActivity extends AppCompatActivity
 			for (Figure figure : scene.figures) {
 				if (figure == null) continue;
 				StickerImageView sticker = createSticker(figure.id);
-				((ImageView) sticker.getMainView()).setColorFilter(figure.color);
-				sticker.setX(figure.x);
-				sticker.setY(figure.y);
-				sticker.getLayoutParams().height = figure.size;
-				sticker.getLayoutParams().width = figure.size;
-				sticker.setRotation(figure.rotation);
-				if (figure.mirrored) sticker.setRotationY(-180f);
+				ImageView image = (ImageView) sticker.getMainView();
 
-				layer.addView(sticker);
+				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(figure.size, figure.size);
+				params.leftMargin = (int) figure.x;
+				params.topMargin = (int) figure.y;
+
+				image.setColorFilter(Color.parseColor(figure.color));
+				sticker.setTag(R.integer.tag_color, figure.color);
+				sticker.setRotation(figure.rotation);
+				if (figure.mirrored) image.setRotationY(-180f);
+
+				sticker.setControlItemsHidden(true);
+				layer.addView(sticker, params);
 				sticker.requestLayout();
 			}
 		}
@@ -145,12 +148,18 @@ public class StagingActivity extends AppCompatActivity
 	}
 
 	public StickerImageView createSticker(long id) {
-		TypedArray image_ids = getResources().obtainTypedArray(R.array.image_ids);
-		Integer intItemId = (int) id;
-		Drawable drawable = image_ids.getDrawable(intItemId);
 		StickerImageView newImg = new StickerImageView(this);
-		newImg.setImageDrawable(drawable);
+		Integer intItemId = (int) id;
 		newImg.setTag(R.integer.tag_id, intItemId);
+
+		TypedArray image_ids = getResources().obtainTypedArray(R.array.image_ids);
+		Drawable drawable = image_ids.getDrawable(intItemId);
+		newImg.setImageDrawable(drawable);
+
+		ImageView figure = (ImageView) newImg.getMainView();
+		figure.setColorFilter(Color.BLACK);
+		newImg.setTag(R.integer.tag_color, "#" + Integer.toHexString(Color.BLACK));
+
 		return newImg;
 	}
 
@@ -351,7 +360,7 @@ public class StagingActivity extends AppCompatActivity
 				if (!sticker.areControlItemsHidden()) {
 					ImageView figure = (ImageView) sticker.getMainView();
 					figure.setColorFilter(color);
-					sticker.setTag(R.integer.tag_color, color);
+					sticker.setTag(R.integer.tag_color, "#" + Integer.toHexString(color));
 					stickerPainted = true;
 				}
 			}
