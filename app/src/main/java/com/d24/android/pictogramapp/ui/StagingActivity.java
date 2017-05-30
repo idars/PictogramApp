@@ -356,7 +356,7 @@ public class StagingActivity extends AppCompatActivity
 	@Override
 	public void onDialogConfirmExit(boolean saveAndExit) {
 		if(saveAndExit){
-			super.onBackPressed();
+			NavUtils.navigateUpFromSameTask(this);
 		} else {
 			Snackbar.make(findViewById(R.id.frame_layout),
 					R.string.dialog_cancel, Snackbar.LENGTH_LONG).show();
