@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,9 +58,12 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 				ImageView edit = (ImageView) view.findViewById(R.id.edit);
 				ImageView delete = (ImageView) view.findViewById(R.id.delete);
 
-				DateFormat formatter = DateFormat.getDateInstance();
 				text1.setText(files.get(position).getName());
-				text2.setText(formatter.format(new Date(files.get(position).lastModified())));
+				text2.setText(DateUtils.getRelativeTimeSpanString(
+						files.get(position).lastModified(),
+						new Date().getTime(),
+						0)
+				);
 				edit.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
