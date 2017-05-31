@@ -34,7 +34,7 @@
     <string name="dialog_save_canceled">Saving cancel</string>
 
     <string name="error_file_save">Could not save file to storage</string>
-    <string name="success_file_save">File saved successfully</string>
+    <string name="success_file_save">Story saved successfully</string>
     <string name="button_retry">Try again</string>
     <string name="button_cancel">Cancel</string>
     <string name="dialog_save">Name your story</string>
@@ -52,4 +52,19 @@
     <string name="error_file_rename">Could not rename file</string>
     <string name="dialog_delete">Do you want to delete this story?</string>
     <string name="error_file_delete">Could not delete file</string>
+    <string name="key_file" translatable="false">filename</string>
+    <string name="success_story_delete">Story deleted</string>
+    <string name="intro_about">Create your own stories with symbolic figures</string>
+    <string name="error_file_restore">Could not restore file</string>
+    <string name="intro_adding_description">Add figures and set colors through the top action bar</string>
+    <string name="intro_credits">Developed in cooperation with</string>
+    <string name="intro_adding_title">Create content</string>
+    <string name="intro_editing_title">Edit content</string>
+    <string name="intro_editing_description">Adjust position, size and rotation through the rectangular controls</string>
+    <string name="intro_credits_and">and</string>
+    <string name="logo_uib_description">Logo for the University of Bergen</string>
+    <string name="logo_kb_description">Logo for the Church City Mission</string>
+    <string name="app_intro_skip_button">Skip</string>
+    <string name="app_intro_done_button">Done</string>
+    <string name="action_show_intro">Show intro sequence</string>
 </resources>

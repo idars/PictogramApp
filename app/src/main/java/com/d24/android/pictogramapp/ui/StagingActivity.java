@@ -83,7 +83,7 @@ public class StagingActivity extends AppCompatActivity
 		mPager.setAdapter(mPagerAdapter);
 
 		// Check if this activity has been initiated with a pre-made story
-		String filename = getIntent().getStringExtra("filename");
+		String filename = getIntent().getStringExtra(getString(R.string.key_file));
 		if (filename != null) {
 			// Read from the provided file
 			try {
@@ -425,7 +425,7 @@ public class StagingActivity extends AppCompatActivity
 
 		if (mName != null) {
 			Bundle bundle = new Bundle();
-			bundle.putString("filename", mName);
+			bundle.putString(SaveDialogFragment.PARAM_NAME, mName);
 			dialog.setArguments(bundle);
 		}
 

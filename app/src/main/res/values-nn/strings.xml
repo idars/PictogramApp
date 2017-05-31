@@ -18,7 +18,7 @@
     <string name="button_cancel">Avbryt</string>
     <string name="button_retry">Prøv igjen</string>
     <string name="error_file_save">Kunne ikkje lagra fil</string>
-    <string name="success_file_save">Fil lagra</string>
+    <string name="success_file_save">Historie lagra</string>
     <string name="dialog_save">Gje historia eit namn</string>
     <string name="dialog_save_and_exit">Lagra og avslutta?</string>
     <string name="dialog_exit_info">Lagre forteljinga og returner til hovudmenyen</string>
@@ -39,4 +39,17 @@
     <string name="error_file_rename">Kunne ikkje endra namn på fil</string>
     <string name="dialog_delete">Vil du sletta denne historien?</string>
     <string name="error_file_delete">Kunne ikkje sletta fil</string>
+    <string name="success_story_delete">Historie sletta</string>
+    <string name="intro_about">Lag dine eigne historiar med symbolske figurar</string>
+    <string name="intro_adding_description">Legg til figurar og fargar via handlingslinja</string>
+    <string name="intro_credits">Utvikla i samarbeid med</string>
+    <string name="intro_adding_title">Skap innhold</string>
+    <string name="intro_editing_description">Endra position, størrelse og rotasjon med firkantboksen</string>
+    <string name="intro_editing_title">Endra innhold</string>
+    <string name="logo_kb_description">Logo for Kirkens Bymisjon</string>
+    <string name="logo_uib_description">Logo for Universitetet i Bergen</string>
+    <string name="intro_credits_and">og</string>
+    <string name="app_intro_skip_button">Hopp over</string>
+    <string name="app_intro_done_button">Ferdig</string>
+    <string name="action_show_intro">Vis introsekvens</string>
 </resources>

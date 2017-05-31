@@ -1,7 +1,5 @@
 package com.d24.android.pictogramapp.ui;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +22,10 @@ import android.widget.TextView;
 
 import com.d24.android.pictogramapp.R;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,6 +36,9 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity implements SaveDialogFragment.SaveDialogListener {
 
 	private static final int SHOW_INTRODUCTION = 1;
+
+	private String DIR_STORIES;
+	private String DIR_DELETED;
 
 	private ArrayAdapter<File> mAdapter;
 	private int mPosition;
@@ -47,7 +52,43 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 		toolbar.setTitle(R.string.title_stories);
 		setSupportActionBar(toolbar);
 
-		File internalStorage = new File(getFilesDir() + File.separator + "stories");
+		// Check for first run
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				SharedPreferences pref = getSharedPreferences(
+						getString(R.string.preference_file_key), MODE_PRIVATE
+				);
+
+				// Check if the app is started for the first time
+				String key = getString(R.string.preference_value_firstrun);
+				if (pref.getBoolean(key, true)) {
+					Intent intent = new Intent(MainActivity.this, IntroActivity.class);
+					startActivityForResult(intent, SHOW_INTRODUCTION);
+				}
+
+				// Indicate that the welcome screen no longer requires to be shown
+				SharedPreferences.Editor editor = pref.edit();
+				editor.putBoolean(getString(R.string.preference_value_firstrun), false);
+				editor.apply();
+			}
+		});
+		thread.start();
+
+		DIR_STORIES = getFilesDir() + File.separator + "stories";
+		DIR_DELETED = getFilesDir() + File.separator + "deleted";
+
+		// Delete files in "deleted" subfolder
+		File deletedStorage = new File(DIR_DELETED);
+		if (!deletedStorage.exists()) deletedStorage.mkdir();
+		try {
+			FileUtils.cleanDirectory(deletedStorage);
+		} catch (IOException e) {
+			Log.i(getLocalClassName(), "Deleted stories remain in internal storage");
+		}
+
+		// Sort and show files in "stories" subfolder
+		File internalStorage = new File(DIR_STORIES);
 		if (!internalStorage.exists()) internalStorage.mkdir();
 		final ArrayList<File> files = new ArrayList<>(Arrays.asList(internalStorage.listFiles()));
 		Collections.sort(files, new Comparator<File>() {
@@ -79,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 					@Override
 					public void onClick(View view) {
 						Bundle bundle = new Bundle();
-						bundle.putString("filename", name);
+						bundle.putString(SaveDialogFragment.PARAM_NAME, name);
 						mPosition = position;
 
 						SaveDialogFragment dialog = new SaveDialogFragment();
@@ -91,16 +132,7 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 					@Override
 					public void onClick(View view) {
 						mPosition = position;
-						AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-						builder.setMessage(R.string.dialog_delete);
-						builder.setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialogInterface, int i) {
-								onConfirmationPositiveClick();
-							}
-						});
-						builder.setNegativeButton(R.string.dialog_cancel, null);
-						builder.create().show();
+						onDeleteClick();
 					}
 				});
 
@@ -115,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 				Intent intent = new Intent(MainActivity.this, StagingActivity.class);
 				TextView text = (TextView) view.findViewById(R.id.text1);
-				intent.putExtra("filename", (text.getText().toString()));
+				intent.putExtra(getString(R.string.key_file), (text.getText().toString()));
 				startActivity(intent);
 			}
 		});
@@ -131,21 +163,6 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 				startActivity(intent);
 			}
 		});
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-
-		SharedPreferences pref = getSharedPreferences(
-				getString(R.string.preference_file_key), MODE_PRIVATE
-		);
-
-		// Check if the app is started for the first time
-		if (pref.getBoolean(getString(R.string.preference_value_firstrun), true)) {
-			Intent intent = new Intent(this, IntroActivity.class);
-			startActivityForResult(intent, SHOW_INTRODUCTION);
-		}
 	}
 
 	@Override
@@ -174,9 +191,9 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
-			return true;
+		if (id == R.id.action_show_intro) {
+			Intent intent = new Intent(MainActivity.this, IntroActivity.class);
+			startActivityForResult(intent, SHOW_INTRODUCTION);
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -185,7 +202,6 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 	@Override
 	public void onDialogPositiveClick(String filename, boolean exitActivity) {
 		// Get current file
-		String directory = getFilesDir() + File.separator + "stories";
 		File oldFile = mAdapter.getItem(mPosition);
 		if (oldFile == null) {
 			Snackbar.make(findViewById(R.id.main_layout),
@@ -200,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 		}
 
 		// Rename old file to new file
-		File newFile = new File(directory, filename);
+		File newFile = new File(DIR_STORIES, filename);
 		if (!oldFile.renameTo(newFile)) {
 			Snackbar.make(findViewById(R.id.main_layout),
 					R.string.error_file_rename, Snackbar.LENGTH_SHORT).show();
@@ -211,17 +227,47 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 		mAdapter.insert(newFile, mPosition);
 	}
 
-	public void onConfirmationPositiveClick() {
-		File entry = mAdapter.getItem(mPosition);
+	public void onDeleteClick() {
+		final File source = mAdapter.getItem(mPosition);
 
-		if (entry != null) {
-			mAdapter.remove(entry);
-			if (!entry.delete()) {
-				Snackbar.make(findViewById(R.id.main_layout),
-						R.string.error_file_delete, Snackbar.LENGTH_SHORT).show();
-			}
+		if (source == null) {
+			return;
+		}
+
+		final File destination = new File(DIR_DELETED, source.getName());
+		mAdapter.remove(source);
+
+		try {
+			FileUtils.copyFile(source, destination); // Can also throw exception
+			if (!source.delete()) throw new IOException();
+		} catch (IOException e) {
+			Snackbar.make(findViewById(R.id.main_layout),
+					R.string.error_file_delete, Snackbar.LENGTH_SHORT).show();
 		}
 
 		mAdapter.notifyDataSetChanged();
+
+		// The destination file will be deleted once the activity is created again,
+		// unless the user wants to restore it through the following Snackbar
+
+		Snackbar.make(findViewById(R.id.main_layout),
+				R.string.success_story_delete, Snackbar.LENGTH_LONG)
+				.setAction(R.string.button_undo, new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// Restore file
+				try {
+					FileUtils.copyFile(destination, source);
+					if (!destination.delete()) throw new IOException();
+				} catch (IOException e) {
+					Snackbar.make(findViewById(R.id.main_layout),
+							R.string.error_file_restore, Snackbar.LENGTH_SHORT).show();
+				}
+
+				// Insert file to view where it was located previously
+				mAdapter.insert(source, mPosition);
+				mAdapter.notifyDataSetChanged();
+			}
+		}).show();
 	}
 }

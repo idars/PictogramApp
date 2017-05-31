@@ -15,7 +15,7 @@ import com.d24.android.pictogramapp.R;
 
 public class SaveDialogFragment extends DialogFragment {
 
-	private static final String PARAM_FILENAME = "filename";
+	public static final String PARAM_NAME = "name";
 
 	private String mFilename;
 
@@ -51,7 +51,7 @@ public class SaveDialogFragment extends DialogFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			mFilename = getArguments().getString(PARAM_FILENAME);
+			mFilename = getArguments().getString(PARAM_NAME);
 		}
 	}
 
