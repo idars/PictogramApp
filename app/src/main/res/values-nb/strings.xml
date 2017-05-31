@@ -23,6 +23,7 @@
     <string name="dialog_save_and_exit">Lagre og avslutte?</string>
     <string name="dialog_exit_info">Lagre fortellingen og returner til hovedmenyen</string> //
     <string name="dialog_confirm">Godkjenn</string>
+    <string name="dialog_discard">Forkast</string>
     <string name="dialog_cancel">Avbryt</string>
     <string name="error_file_load">Kunne ikke åpne fil</string>
     <string name="empty_figure">Et bilde av en usynlig person</string>

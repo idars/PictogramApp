@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 	}
 
 	@Override
-	public void onDialogPositiveClick(String filename) {
+	public void onDialogPositiveClick(String filename, boolean exitActivity) {
 		// Get current file
 		String directory = getFilesDir() + File.separator + "stories";
 		File oldFile = mAdapter.getItem(mPosition);

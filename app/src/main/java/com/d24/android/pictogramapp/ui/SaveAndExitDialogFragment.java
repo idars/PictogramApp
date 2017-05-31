@@ -24,6 +24,8 @@ public class SaveAndExitDialogFragment extends DialogFragment {
 
     public interface SaveAndExitDialogListener {
         public void onDialogConfirmExit(boolean saveAndExit);
+        public void onDialogDiscardExit();
+
     }
 
     SaveAndExitDialogListener mListener;
@@ -70,11 +72,19 @@ public class SaveAndExitDialogFragment extends DialogFragment {
             builder.setMessage(R.string.dialog_save_and_exit)
                     .setView(frame)
                     .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                        @Override
                         public void onClick(DialogInterface dialog, int id) {
                             mListener.onDialogConfirmExit(false);
                         }
                     })
+                    .setNeutralButton(R.string.dialog_discard, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            mListener.onDialogDiscardExit();
+                        }
+                    })
                     .setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
+                        @Override
                         public void onClick(DialogInterface dialog, int id) {
                             mListener.onDialogConfirmExit(true);
                         }

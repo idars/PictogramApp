@@ -19,8 +19,10 @@ public class SaveDialogFragment extends DialogFragment {
 
 	private String mFilename;
 
+	private boolean exitActivity = false;
+
 	public interface SaveDialogListener {
-		void onDialogPositiveClick(String filename);
+		void onDialogPositiveClick(String filename, boolean exitActivity);
 	}
 
 	SaveDialogListener mListener;
@@ -83,7 +85,7 @@ public class SaveDialogFragment extends DialogFragment {
 						String filename = mField.getText().toString();
 						if (!filename.isEmpty()) {
 							mListener.onDialogPositiveClick(
-									mField.getText().toString()
+									mField.getText().toString(), exitActivity
 							);
 						}
 					}
@@ -92,10 +94,17 @@ public class SaveDialogFragment extends DialogFragment {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 						SaveDialogFragment.this.getDialog().cancel();
+						exitActivity = false;
 					}
 				});
 
 		return builder.create();
 	}
+
+	public void setExitActivity(boolean exitActivity) {
+		this.exitActivity = exitActivity;
+	}
+
+
 
 }

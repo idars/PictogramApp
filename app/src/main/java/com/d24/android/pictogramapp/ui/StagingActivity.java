@@ -303,7 +303,9 @@ public class StagingActivity extends AppCompatActivity
 		int id = item.getItemId();
 		if (id == android.R.id.home) {
 			// This ID represents the Home or Up button.
-			NavUtils.navigateUpFromSameTask(this);
+
+			SaveAndExitDialogFragment dialog = new SaveAndExitDialogFragment();
+			dialog.show(getFragmentManager(), "save_and_exit");
 			return true;
 		} else if (id == R.id.action_add_figure) {
 			// This ID represents the pictogram button.
@@ -363,7 +365,16 @@ public class StagingActivity extends AppCompatActivity
 	@Override
 	public void onDialogConfirmExit(boolean saveAndExit) {
 		if(saveAndExit){
-			NavUtils.navigateUpFromSameTask(this);
+			focusEditingFragment(true);
+			SaveDialogFragment dialog = new SaveDialogFragment();
+
+			if (mName != null) {
+				Bundle bundle = new Bundle();
+				bundle.putString("filename", mName);
+				dialog.setArguments(bundle);
+			}
+			dialog.setExitActivity(true);
+			dialog.show(getFragmentManager(), "save");
 		} else {
 			Snackbar.make(findViewById(R.id.frame_layout),
 					R.string.dialog_cancel, Snackbar.LENGTH_LONG).show();
@@ -371,7 +382,14 @@ public class StagingActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void onDialogPositiveClick(String filename) {
+	public void onDialogDiscardExit() {
+		NavUtils.navigateUpFromSameTask(this);
+
+	}
+
+
+	@Override
+	public void onDialogPositiveClick(String filename, boolean exitActivity) {
 		try {
 			// Set up streams and serializer
 			File file = new File(getFilesDir() + File.separator + "stories", filename);
@@ -394,6 +412,10 @@ public class StagingActivity extends AppCompatActivity
 							onSaveButtonClicked();
 						}
 					}).show();
+		}
+
+		if(exitActivity){
+			NavUtils.navigateUpFromSameTask(this);
 		}
 	}
 

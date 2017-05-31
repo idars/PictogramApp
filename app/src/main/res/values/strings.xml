@@ -29,6 +29,7 @@
     <string name="dialog_save_and_exit">Save and exit</string>
     <string name="dialog_exit_info">Save your story and return to the main menu</string>
     <string name="dialog_confirm">Confirm</string>
+    <string name="dialog_discard">Discard</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_save_canceled">Saving cancel</string>
 
