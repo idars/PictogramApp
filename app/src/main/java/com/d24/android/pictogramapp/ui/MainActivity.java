@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements SaveDialogFragmen
 
 		setContentView(R.layout.activity_main);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		toolbar.setTitle(R.string.title_stories);
 		setSupportActionBar(toolbar);
 
 		// Check for first run

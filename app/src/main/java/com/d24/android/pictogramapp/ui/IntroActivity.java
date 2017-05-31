@@ -52,14 +52,14 @@ public class IntroActivity extends AppIntro {
 
 	@Override
 	public void onSkipPressed(Fragment currentFragment) {
-		// Do something when users tap on Skip button.
+		// We'll let both the skip and done buttons finish the activity
 		setResult(RESULT_OK);
 		finish();
 	}
 
 	@Override
 	public void onDonePressed(Fragment currentFragment) {
-		// Do something when users tap on Done button.
+		// We'll let both the skip and done buttons finish the activity
 		setResult(RESULT_OK);
 		finish();
 	}
