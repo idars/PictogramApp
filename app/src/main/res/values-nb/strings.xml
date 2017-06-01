@@ -41,14 +41,13 @@
     <string name="error_file_delete">Kunne ikke slette fortelling</string>
     <string name="success_story_delete">Fortelling slettet</string>
     <string name="intro_about">Lag dine egne fortellinger med symbolske figurer</string>
-    <string name="intro_adding_description">Legg til figurer og farger via handlingslinjen</string>
+    <string name="intro_adding_description">Legg til figurer og sett farger via handlingslinjen</string>
     <string name="intro_credits">Utviklet i samarbeid med</string>
     <string name="intro_adding_title">Skap innhold</string>
     <string name="intro_editing_description">Endre position, størrelse og rotasjon med firkantboksen</string>
     <string name="intro_editing_title">Endre innhold</string>
     <string name="logo_kb_description">Logo for Kirkens Bymisjon</string>
     <string name="logo_uib_description">Logo for Universitetet i Bergen</string>
-    <string name="intro_credits_and">og</string>
     <string name="app_intro_skip_button">Hopp over</string>
     <string name="app_intro_done_button">Ferdig</string>
     <string name="action_show_intro">Vis introduksjon</string>

@@ -5,44 +5,48 @@
 
     <item
         android:id="@+id/action_add_figure"
-        android:icon="@drawable/ic_add_circle_black_24dp"
+        android:icon="@drawable/ic_person_add_black_24dp"
         android:title="@string/button_add"
+        android:orderInCategory="1"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_color"
         android:icon="@drawable/ic_color_lens_black_24dp"
         android:title="@string/button_background"
+        android:orderInCategory="2"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_save"
         android:icon="@drawable/ic_save_black_24dp"
         android:title="@string/button_save"
+        android:orderInCategory="3"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_add_page"
-        android:orderInCategory="100"
+        android:icon="@drawable/ic_note_add_black_24dp"
         android:title="@string/action_add_page"
-        app:showAsAction="never"/>
+        android:orderInCategory="4"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_remove_page"
-        android:orderInCategory="100"
         android:title="@string/action_remove_page"
+        android:orderInCategory="5"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_move_back"
-        android:orderInCategory="100"
         android:title="@string/action_move_back"
+        android:orderInCategory="6"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_move_forward"
-        android:orderInCategory="100"
         android:title="@string/action_move_forward"
+        android:orderInCategory="7"
         app:showAsAction="never"/>
 
 </menu>

@@ -269,6 +269,7 @@ public class StagingActivity extends AppCompatActivity
 		menu.findItem(R.id.action_add_figure).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
 		menu.findItem(R.id.action_color).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
 		menu.findItem(R.id.action_save).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
+		menu.findItem(R.id.action_add_page).getIcon().setColorFilter(color_white, PorterDuff.Mode.SRC_IN);
 
 		return true;
 	}
