@@ -5,37 +5,45 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/grey_200"
+              android:paddingBottom="96dp"
               tools:context="com.d24.android.pictogramapp.ui.IntroActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_vertical"
-        android:layout_weight="0"
+        android:layout_gravity="center"
+        android:layout_margin="32dp"
         android:textSize="16sp"
-        android:text="@string/intro_credits"
-        android:layout_marginTop="48dp"/>
+        android:text="@string/intro_credits"/>
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/logo_margin"
+        android:adjustViewBounds="true"
+        android:src="@drawable/logo_hvl"
+        android:contentDescription="@string/logo_hvl_description"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_margin="16dp"
-        android:src="@drawable/logo_uib"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/logo_margin"
+        android:adjustViewBounds="true"
+        android:src="@drawable/logo_uib_v"
         android:contentDescription="@string/logo_uib_description"/>
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/logo_margin"
+        android:adjustViewBounds="true"
         android:src="@drawable/logo_kb"
-        android:contentDescription="@string/logo_kb_description"
-        android:layout_marginBottom="112dp"/>
-
+        android:contentDescription="@string/logo_kb_description"/>
 
 </LinearLayout>
