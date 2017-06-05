@@ -1,28 +1,19 @@
 # PictogramApp
 Android application for digital staging of pictograms
 
+<a href='https://play.google.com/store/apps/details?id=com.d24.android.pictogramapp&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="256" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+
+## About
+Create stories, scenes, figures and their relationships. It's up to you how you want to express your emotions and feelings, to tell about vast experiences, and how they compare to today.
+
 ## Context
-This project is a part of a Bachelor thesis and will be worked upon in private until the thesis is complete.
+This project is part of a Bachelor thesis written at the Western University of Applied Sciences. The application is based on an artistic research project named [Pictogram-me](pictogram-me.com) which utilize symbolic figures to both express and engage.
 
+## Credits
+[StickerView](https://github.com/wuapnjie/StickerView)
 
-## Oppgaver
+[AppIntro](https://github.com/apl-devs/AppIntro)
 
-### Velkomstskjerm
-- [x] Opprett skjerm med en velkomstsetning
-- [x] Legg til knapp for å gå til appen
-### Menyskjerm
-- [x] Ha mulighet til å lage ny scene
-### Grafikkredigering
-- [x] Laste ned piktogram fra nettside
-- [x] Konvertere piktogram til kompatibelt format
-- [x] Legg til pluss-knapp
-- [x] Lag liste (helst ikke heldekkende) som inneholder piktogram [Nicho]
-- [x] Vise frem liste ved klikk på pluss-knapp
-- [x] Få piktogram til å dukke opp på skjermen ved å klikke på listen
-- [x] Flytte på piktogram
-- [x] Sett inn default bakgrunn
-### Lagring
-- [ ] Planlegg lagringsformat (xml?)
-- [ ] Gjør klart programmet for å spørre om lagringstillatelse og eventuelt 
-### Testing
-- [ ] Lage test cases
+Made in cooperation with the University of Bergen and the Church City Mission.
+
+*Google Play and the Google Play logo are trademarks of Google Inc.*
